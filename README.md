@@ -1,2 +1,2 @@
 # remind_me
-Remind_me is a personal pwd application. The main idea of the app is to build my own world of word (your own English database), which helps to memorise vocabulary.
+Remind_me is a personal pwd application. The main idea of the app is to build your own English world of word (your own database), which helps you to memorise vocabulary.
