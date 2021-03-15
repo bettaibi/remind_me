@@ -1,0 +1,10 @@
+
+$theme-colors: (
+  "primary": #4e6e91,
+  "dark": #363945,
+  "secondary": #939597
+);
+
+@import './assets/scss/utility';
+@import './assets/scss/base';
+@import "~bootstrap/scss/bootstrap";
