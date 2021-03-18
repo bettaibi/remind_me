@@ -1,0 +1,33 @@
+
+.sidenav-items{
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    ul, li{
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        text-decoration: none;
+    }
+    .nav-item{
+        cursor: pointer;
+        margin-bottom: 0.5rem;
+        &:hover{
+            color: #ccc;
+        }
+    }
+
+    .sub-items {
+        padding: 0 0.5rem 0 2rem;
+        li{
+            margin: .25rem 0;
+            &:hover{
+                a{
+                    color: #fff;
+                }
+            }
+            a{
+                color: #ccc;
+                text-decoration: none;
+            }
+        }
+    }
+}

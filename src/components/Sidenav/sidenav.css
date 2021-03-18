@@ -1,0 +1,37 @@
+.sidenav-items {
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.sidenav-items ul, .sidenav-items li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+}
+
+.sidenav-items .nav-item {
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.sidenav-items .nav-item:hover {
+  color: #ccc;
+}
+
+.sidenav-items .sub-items {
+  padding: 0 0.5rem 0 2rem;
+}
+
+.sidenav-items .sub-items li {
+  margin: .25rem 0;
+}
+
+.sidenav-items .sub-items li:hover a {
+  color: #fff;
+}
+
+.sidenav-items .sub-items li a {
+  color: #ccc;
+  text-decoration: none;
+}
+/*# sourceMappingURL=sidenav.css.map */
