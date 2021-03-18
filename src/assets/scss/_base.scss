@@ -23,7 +23,24 @@ html, body{
     position: -webkit-sticky;
     position: sticky !important;
     top: 0 !important;
-    z-index: 99999;
+    z-index: 10;
+}
+
+.btn-icon{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 0.2rem 0.5rem;
+    transition: color 200ms ease-out, background-color 200ms ease-out;
+    &:active{
+        background-color: lighten($primary, 50%);
+        color: $secondary !important;
+    }
+
+    &.active{
+        color: $primary;
+    }
 }
 
 @media (max-width: 767px){

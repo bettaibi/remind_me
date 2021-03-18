@@ -1,0 +1,71 @@
+.sidenav-overlay-container{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    opacity: 0;
+}
+
+.sidenavContainer{
+    position: fixed;
+    left: -260px;
+    width: 260px;
+    height: 100%;
+    top:0;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+.fadeIn{
+    animation: fadeIn .35s ease-in-out forwards;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.fadeOut{
+    animation: fadeOut .3s ease-in-out forwards;
+}
+
+@keyframes fadeOut{
+    from{
+        opacity: 1;
+    }
+    to{opacity: 0;}
+}
+
+.slideInLeft{
+    animation: slideInLeft .35s ease-in-out forwards;
+}
+
+@keyframes slideInLeft{
+    from {
+        left: -260px;
+    }
+    to{
+        left: 0;
+    }
+}
+
+.slideOut{
+    animation: slideOut .3s ease-in-out forwards;
+}
+
+@keyframes slideOut{
+    from{
+        left: 0;
+    }
+    to{
+        left: -260px;
+    }
+}
+

@@ -1,8 +1,11 @@
+$primary: #4e6e91;
+$dark: #363945;
+$secondary:  #939597;
 
 $theme-colors: (
-  "primary": #4e6e91,
-  "dark": #363945,
-  "secondary": #939597
+  "primary": $primary,
+  "dark": $dark,
+  "secondary": $secondary
 );
 
 @import './assets/scss/utility';

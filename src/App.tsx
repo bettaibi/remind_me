@@ -19,7 +19,7 @@ function App() {
      <Container>
          <Row>
           <Col className="display-xs-none bg-primary rounded text-white mt-3 mb-3" 
-          sm={3} style={sideNavStyle}>
+          sm={4} style={sideNavStyle}>
             <Sidenav />
           </Col>
           <Col className="mb-3 mt-3">
