@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "firebase": "^8.3.1",
+    "formik": "^2.2.6",
     "gsap": "^3.6.0",
     "localbase": "^0.7.4",
     "node-sass": "^5.0.0",
@@ -36,7 +37,8 @@
     "workbox-range-requests": "^5.1.4",
     "workbox-routing": "^5.1.4",
     "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4"
+    "workbox-streams": "^5.1.4",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -63,6 +65,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "@types/uuid": "^8.3.0"
   }
 }

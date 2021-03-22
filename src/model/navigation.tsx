@@ -22,8 +22,8 @@ export const navigations: Navigation[] = [
         {id: v4(),title: 'New Vacab', path: '/word'},
         {id: v4(),title: 'New Game', path: '/word'}
     ]},
-    {id: v4(), title: 'Definition & Synonyms', icon: <ClipboardCheck />, path: '/home/grammar-search'},
-    {id: v4(), title: 'Conjugation & Grammar', icon: <CardChecklist />, path: '/home/word-definition'},
+    {id: v4(), title: 'Definition & Synonyms', icon: <ClipboardCheck />, path: '/home/word-definition'},
+    {id: v4(), title: 'Conjugation & Grammar', icon: <CardChecklist />, path: '/home/grammar-search'},
 
     {id: v4(), title: 'Settings', icon: <Gear />, subItems: [
         {id: v4(), title: 'Notification', path: '/word'},

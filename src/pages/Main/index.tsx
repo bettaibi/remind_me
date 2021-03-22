@@ -7,7 +7,6 @@ import { WordDefinition } from './wordDefinition';
 import { MyProgress } from './MyProgress';
 import { Games } from './Games';
 
-const linguaApi = "https://lt-nlgservice.herokuapp.com/rest/english/conjugate";
 const definitionApi = "https://api.dictionaryapi.dev/api/v2/entries/en";
 
 export const Main: React.FC = () => {
@@ -35,16 +34,6 @@ export const Main: React.FC = () => {
         }
     };
 
-    // Conjugate A Verb
-    const conjugate = async (verb: string) =>{
-        try{
-            const res = await axios.get(`${linguaApi}?verb=${verb}`);
-            return await res.data;
-        }
-        catch(err){
-            throw err;
-        }
-    };
 
     return (
         <main>
