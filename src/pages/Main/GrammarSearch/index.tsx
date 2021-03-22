@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Form, NavItem } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { v4 } from 'uuid';
@@ -14,8 +14,6 @@ const schema = Yup.object().shape({
 export const GrammarSearch: React.FC = () => {
 
     const [data, setData] = useState<any>(null);
-    
-    console.log(data);
 
     const conjugate = async (verb: string) => {
         try {

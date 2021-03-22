@@ -1,5 +1,4 @@
 import { Book, Gear, ClipboardCheck, CardChecklist } from 'react-bootstrap-icons';
-// @ts-ignore
 import { v4 } from 'uuid';
 
 interface SubItemsNavigation{
@@ -9,7 +8,7 @@ interface SubItemsNavigation{
 }
 
 export interface Navigation{
-    id: number;
+    id: string;
     title: string;
     icon: any,
     path?: string;
@@ -26,6 +25,7 @@ export const navigations: Navigation[] = [
     {id: v4(), title: 'Conjugation & Grammar', icon: <CardChecklist />, path: '/home/grammar-search'},
 
     {id: v4(), title: 'Settings', icon: <Gear />, subItems: [
+        {id: v4(), title: 'Voice Assistance', path: '/home/voice-assistance'},
         {id: v4(), title: 'Notification', path: '/word'},
         {id: v4(), title: 'Account', path: '/word'},
         {id: v4(), title: 'App Theme', path: '/word'}
