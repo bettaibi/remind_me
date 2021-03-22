@@ -27,12 +27,12 @@ html, body{
 }
 
 .btn-icon{
-    border: none;
-    outline: none;
     background-color: transparent;
+    text-decoration: none !important;
     border-radius: 5px;
     padding: 0.2rem 0.5rem;
     transition: color 200ms ease-out, background-color 200ms ease-out;
+    color: rgba(0,0,0,.8);
     &:active{
         background-color: lighten($primary, 50%);
         color: $secondary !important;

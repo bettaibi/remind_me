@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Collapse, Row, Col, Fade } from 'react-bootstrap';
+import { Collapse, Fade } from 'react-bootstrap';
 import { ChevronDown, ChevronRight } from 'react-bootstrap-icons';
 import { navigations, Navigation } from '../../model/navigation';
+import { NavLink } from 'react-router-dom';
 
 import './sidenav.scss';
 
@@ -46,7 +47,9 @@ const SidebarNavigation: React.FC<SideNavigationProps> = React.memo(({ isOpen, s
                             <span className='text-left'>
                                 {navItem.icon}
                             </span>
-                            <span className="px-3">{navItem.title}</span>
+                            {
+                                navItem.path? <NavLink className="px-3" to={navItem.path}>{navItem.title}</NavLink>: <span className="px-3">{navItem.title}</span>
+                            }
                        </div>
 
                         {
@@ -63,7 +66,7 @@ const SidebarNavigation: React.FC<SideNavigationProps> = React.memo(({ isOpen, s
                                     navItem.subItems.map(item => (
                                         <Fade in={isOpen} key={item.id}>
                                             <li>
-                                                <a href="!#">{item.title}</a>
+                                                <NavLink to={item.path}>{item.title}</NavLink>
                                             </li>
                                         </Fade>
                                     ))

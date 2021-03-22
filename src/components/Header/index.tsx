@@ -3,11 +3,13 @@ import { Container } from 'react-bootstrap'
 import { House, PieChart, List, Puzzle, Bell } from 'react-bootstrap-icons';
 import { SidenavContainer, useSidenavContainer } from '../sidenavContainer';
 import { StatusBar } from '../StatusBar';
+import { NavLink } from 'react-router-dom';
 
 export const Header: React.FC = () => {
     const { isOpen, toggle } = useSidenavContainer();
+    
     function toggleSidenav(){
-        toggle()
+        toggle();
     };
 
     return (
@@ -17,28 +19,28 @@ export const Header: React.FC = () => {
             <header className="header shadow-sm bg-white">
                 <Container className="h-100">
                     <div className="h-100 d-flex flex-row justify-content-between align-items-center">
-                        <button className="d-flex flex-column align-items-center btn-icon active">
+                        <NavLink to="/home" className="d-flex flex-column align-items-center btn-icon">
                             <House size="18" />
                             <span className="fs-14">Home</span>
-                        </button>
-                        <button className="d-flex flex-column align-items-center btn-icon">
+                        </NavLink>
+                        <NavLink to="/home" className="d-flex flex-column align-items-center btn-icon">
                             <PieChart size="18" />
                             <span className="fs-14">Progress</span>
-                        </button>
-                        <button className="d-flex flex-column align-items-center btn-icon">
+                        </NavLink>
+                        <NavLink to="/home/games" className="d-flex flex-column align-items-center btn-icon">
                             <Puzzle size="18" />
                             <span className="fs-14">Games</span>
-                        </button>
-                        <button className="d-flex flex-column align-items-center btn-icon">
+                        </NavLink>
+                        <NavLink to="/home/something" className="d-flex flex-column align-items-center btn-icon">
                             <Bell size="18" />
                             <span className="fs-14">Notifications</span>
-                        </button>
+                        </NavLink>
 
-                        <button className="d-flex flex-column align-items-center d-md-none btn-icon"
-                        onClick={toggleSidenav}>
+                        <a className="d-flex flex-column align-items-center d-md-none btn-icon"
+                          onClick={toggleSidenav}>
                             <List size="18" />
                             <span className="fs-14">Menu</span>
-                        </button>
+                        </a>
                         
                     </div>
                 </Container>
