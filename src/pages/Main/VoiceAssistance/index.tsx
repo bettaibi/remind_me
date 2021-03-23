@@ -9,13 +9,14 @@ export const VoiceAssistance: React.FC = () => {
     const [text, setText] = useState<string>('Hello, How it is going?');
 
     useEffect(()=>{
+      setTimeout(()=>{
         const EnVoices = synthRef.current
         .getVoices()
         .filter((voice) => voice.lang.includes("en"));
 
-        console.log(EnVoices);
         setVoices(EnVoices);
-    }, [])
+      }, 2000);
+    }, []);
 
     const voiceChangeHandler = (e: any) =>{
         try{

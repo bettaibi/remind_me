@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { v4 } from 'uuid';
 
 const linguaApi = "https://lt-nlgservice.herokuapp.com/rest/english/conjugate";
 
@@ -56,8 +55,8 @@ export const GrammarSearch: React.FC = () => {
          { data && <>
             <div className="d-flex flex-row align-items-center justify-content-center flex-wrap border rounded mt-3 p-3">
                     {
-                        data.conjugated_forms.map((item: any[]) => (
-                            <div key={v4()} className="mx-2">
+                        data.conjugated_forms.map((item: any[], index: number) => (
+                            <div key={'form'+index} className="mx-2">
                                 <span className="text-secondary">{item[0]}: </span>
                                 <span className="text-secondary fw-600">{item[1]}</span>
                             </div>
@@ -67,13 +66,13 @@ export const GrammarSearch: React.FC = () => {
             <div className="bg-secondary rounded p-1 my-3 text-light fw-600"> Indicative </div>
             <div className="d-grid-2">
                 {
-                    data.conjugation_tables.indicative.map((tense: any)=> (
+                    data.conjugation_tables.indicative.map((tense: any, i: number)=> (
                         
                         <div className="shadow-sm rounded">
                             <div className="p-2">
-                            <div key={v4()} className="text-success text-capitalize fw-600"> {tense.heading}</div>
-                            { tense.forms.map((form: string)=>(
-                                    <div key={v4()}>
+                            <div key={'con_table'+i} className="text-success text-capitalize fw-600"> {tense.heading}</div>
+                            { tense.forms.map((form: string, j: number)=>(
+                                    <div key={'ver'+j}>
                                         <span className="text-secondary text-capitalize fw-600">{form[0]}: </span>
                                         <span className="ml-1">{form[1]}</span>
                                     </div>
@@ -87,13 +86,13 @@ export const GrammarSearch: React.FC = () => {
             <div className="bg-secondary rounded p-1 my-3 text-light fw-600"> Conditional </div>
             <div className="d-grid-2">
                 {
-                    data.conjugation_tables.conditional.map((tense: any)=> (
+                    data.conjugation_tables.conditional.map((tense: any, counter: number)=> (
                         
                         <div className="shadow-sm rounded">
                             <div className="p-2">
-                            <div key={v4()} className="text-danger text-capitalize fw-600"> {tense.heading}</div>
-                            { tense.forms.map((form: string)=>(
-                                    <div key={v4()}>
+                            <div key={'count'+counter} className="text-danger text-capitalize fw-600"> {tense.heading}</div>
+                            { tense.forms.map((form: string, c: number)=>(
+                                    <div key={'tex'+cancelAnimationFrame}>
                                         <span className="text-secondary text-capitalize fw-600">{form[0]}: </span>
                                         <span className="ml-1">{form[1]}</span>
                                     </div>
@@ -108,13 +107,13 @@ export const GrammarSearch: React.FC = () => {
             <div className="bg-secondary rounded p-1 my-3 text-light fw-600"> Passive Form </div>
             <div className="d-grid-2">
                 {
-                    data.conjugation_tables.passive.map((tense: any)=> (
+                    data.conjugation_tables.passive.map((tense: any, index: number)=> (
                         
                         <div className="shadow-sm rounded">
                             <div className="p-2">
-                            <div key={v4()} className="text-info text-capitalize fw-600"> {tense.heading}</div>
-                            { tense.forms.map((form: string)=>(
-                                    <div key={v4()}>
+                            <div key={'passive'+index} className="text-info text-capitalize fw-600"> {tense.heading}</div>
+                            { tense.forms.map((form: string, k: number)=>(
+                                    <div key={'passForm'+k}>
                                         <span className="text-secondary text-capitalize fw-600">{form[0]}: </span>
                                         <span className="ml-1">{form[1]}</span>
                                     </div>
