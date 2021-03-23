@@ -44,8 +44,8 @@ html, body{
 
 .d-grid-2{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: 1fr 1.2fr;
+    column-gap: 1rem;
     
     @media (max-width: 576px){
         grid-template-columns: repeat(1, 1fr);
