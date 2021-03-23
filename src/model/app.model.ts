@@ -1,5 +1,4 @@
 export interface AppState{
-    assistanceVoice?: any;
     conjugations: any;
     definitions: WordDefinitionForm; 
 }

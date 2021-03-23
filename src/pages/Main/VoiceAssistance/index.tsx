@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { Form } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
+import UseAssistant from '../../../components/useAssistant';
 
 export const VoiceAssistance: React.FC = () => {
-    const synthRef  = useRef(window.speechSynthesis);
-    const [currentVoice, setCurrentVoice] = useState<SpeechSynthesisVoice | null>(null);
+    const { setAssistantVoice, voiceHandler, changeAssistantVoice, synthRef, currentVoice} = UseAssistant();
     const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
     const [text, setText] = useState<string>('Hello, How it is going?');
 
@@ -22,7 +22,7 @@ export const VoiceAssistance: React.FC = () => {
         try{
             e.preventDefault();
             const index = e.target.value;
-            setCurrentVoice(voices[index]);
+            changeAssistantVoice(voices[index]);
         }
         catch(err){
             throw err;
@@ -42,9 +42,10 @@ export const VoiceAssistance: React.FC = () => {
     const testHandler = (e: any) =>{
         try{
             e.preventDefault();
-            let utterThis: SpeechSynthesisUtterance = new SpeechSynthesisUtterance(text);
-            utterThis.voice = currentVoice;
-            synthRef.current.speak(utterThis);
+            if(currentVoice === null){
+                changeAssistantVoice(voices[0]);
+            }
+            voiceHandler(text);
         }
         catch(err){
             throw err;
@@ -54,6 +55,8 @@ export const VoiceAssistance: React.FC = () => {
     const saveHandler = (e: any) =>{
         try{
             e.preventDefault();
+            if(currentVoice)
+            setAssistantVoice();
         }
         catch(err){
             throw err;
