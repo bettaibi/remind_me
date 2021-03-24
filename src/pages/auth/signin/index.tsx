@@ -8,6 +8,7 @@ import { RecoverPassword } from '../RecoverPassowrd';
 import * as yup from 'yup';
 
 import logo from '../../../assets/img/logo90.png';
+import { useSnackbar } from '../../../components/Snackbar';
 
 interface LoginForm{
     email: string;
@@ -25,6 +26,7 @@ const schema = yup.object().shape({
 export const Signin: React.FC = () => {
     const history = useHistory();
     const { show, handleClose, handleShow } = useDialog();
+    const { Snackbar, showMsg } = useSnackbar();
 
     const navigateTo = (e: any) =>{
         e.preventDefault();
@@ -35,6 +37,11 @@ export const Signin: React.FC = () => {
         e.preventDefault();
         handleShow();
     };
+
+    const login = (e: any) =>{
+        e.preventDefault();
+        showMsg("A New Product has been created", "Product Created", "danger");
+    }
 
     return (
         <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
@@ -93,13 +100,14 @@ export const Signin: React.FC = () => {
                     </div>
 
                     <div className="text-center">
-                        <Button variant="danger">Login with Google</Button>
+                        <Button variant="danger" onClick={login}>Login with Google</Button>
                     </div>
                 </Card.Body>
             </Card>
             <Dialog size="sm" show={show} centered={true} handleClose= {handleClose}>
                 <RecoverPassword handleClose= {handleClose} />
             </Dialog>
+            <Snackbar />
         </Container>
     )
 }
