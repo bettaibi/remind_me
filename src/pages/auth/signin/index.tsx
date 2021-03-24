@@ -2,6 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, Form, Container, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
+import { Dialog, useDialog } from '../../../components/Dialog';
+import { RecoverPassword } from '../RecoverPassowrd';
+
 import * as yup from 'yup';
 
 import logo from '../../../assets/img/logo90.png';
@@ -21,11 +24,17 @@ const schema = yup.object().shape({
 
 export const Signin: React.FC = () => {
     const history = useHistory();
+    const { show, handleClose, handleShow } = useDialog();
 
     const navigateTo = (e: any) =>{
         e.preventDefault();
         history.push('/signup')
-    }
+    };
+
+    const recoverPassword = (e: any) =>{
+        e.preventDefault();
+        handleShow();
+    };
 
     return (
         <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
@@ -60,9 +69,9 @@ export const Signin: React.FC = () => {
                                      onChange={handleChange} onBlur={handleBlur} value={values.password}
                                      isValid={touched.password && !errors.password}
                                      isInvalid={touched.password && !!errors.password}></Form.Control>
-                                    <a href="!#">
+                                    <span className="link" onClick={recoverPassword}>
                                         <small>Recover password</small>
-                                    </a>
+                                    </span>
                                     <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid">
                                         {errors.password}
@@ -88,6 +97,9 @@ export const Signin: React.FC = () => {
                     </div>
                 </Card.Body>
             </Card>
+            <Dialog size="sm" show={show} centered={true} handleClose= {handleClose}>
+                <RecoverPassword handleClose= {handleClose} />
+            </Dialog>
         </Container>
     )
 }

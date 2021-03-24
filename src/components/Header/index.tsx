@@ -36,11 +36,11 @@ export const Header: React.FC = () => {
                             <span className="fs-14">Notifications</span>
                         </NavLink>
 
-                        <a className="d-flex flex-column align-items-center d-md-none btn-icon"
+                        <button className="d-flex flex-column align-items-center d-md-none btn-icon"
                           onClick={toggleSidenav}>
                             <List size="18" />
                             <span className="fs-14">Menu</span>
-                        </a>
+                        </button>
                         
                     </div>
                 </Container>
