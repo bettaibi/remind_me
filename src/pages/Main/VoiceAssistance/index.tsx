@@ -1,35 +1,23 @@
-import React, {useState, useEffect, useRef} from 'react';
-import { Form } from 'react-bootstrap';
+import React, {useState} from 'react';
+import { Form, Alert } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
 import UseAssistant from '../../../components/useAssistant';
 
 export const VoiceAssistance: React.FC = () => {
-    const { setAssistantVoice, voiceHandler, changeAssistantVoice, synthRef, currentVoice} = UseAssistant();
-    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+    const { setAssistantVoice, voiceHandler, changeAssistantVoice, currentVoice, voices} = UseAssistant();
     const [text, setText] = useState<string>('Hello, How it is going?');
-
-    useEffect(()=>{
-      setTimeout(()=>{
-        const EnVoices = synthRef.current
-        .getVoices()
-        .filter((voice) => voice.lang.includes("en"));
-
-        setVoices(EnVoices);
-      }, 2000);
-    }, []);
 
     const voiceChangeHandler = (e: any) =>{
         try{
             e.preventDefault();
-            const index = e.target.value;
-            changeAssistantVoice(voices[index]);
+            changeAssistantVoice(e.target.value);
         }
         catch(err){
             throw err;
         }
     }
 
-    const textChangeHandler = (e: any) =>{
+    const textChangeHandler = (e: any) => {
         try{
             e.preventDefault();
             setText(e.target.value);
@@ -42,9 +30,6 @@ export const VoiceAssistance: React.FC = () => {
     const testHandler = (e: any) =>{
         try{
             e.preventDefault();
-            if(currentVoice === null){
-                changeAssistantVoice(voices[0]);
-            }
             voiceHandler(text);
         }
         catch(err){
@@ -55,7 +40,6 @@ export const VoiceAssistance: React.FC = () => {
     const saveHandler = (e: any) =>{
         try{
             e.preventDefault();
-            if(currentVoice)
             setAssistantVoice();
         }
         catch(err){
@@ -66,9 +50,9 @@ export const VoiceAssistance: React.FC = () => {
 
     return (
         <Form>
-            <div className="bg-secondary p-1 text-light rounded mb-3">
-               Your Assistant's voice configuration
-            </div>
+            <Alert className=" p-2 mb-3" variant="info">
+                Set up your assistance voice configuration
+            </Alert>
              <Form.Group controlId="exampleForm.ControlTextarea1">
                 <Form.Label>Voice Text</Form.Label>
                 <Form.Control as="textarea" rows={3} placeholder="Write Something to test" value={text}
@@ -77,7 +61,7 @@ export const VoiceAssistance: React.FC = () => {
 
             <Form.Group controlId="exampleForm.ControlSelect1">
                 <Form.Label>Select A Voice</Form.Label>
-                <Form.Control as="select" onChange={voiceChangeHandler}>
+                <Form.Control as="select" onChange={voiceChangeHandler} value={currentVoice}>
                     {
                         voices.map((item:SpeechSynthesisVoice, index: number)=>(
                             <option key={'assistance'+index} value={index}>{item.name}</option>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Table  } from 'react-bootstrap';
+import { Form, Table, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AppState } from '../../../model/app.model';
 import { setLatestConjugatedVerb } from '../../../store/actions/conjugation.actions';
@@ -69,7 +69,7 @@ export const GrammarSearch: React.FC = () => {
                 isLoading && <LoadingPage />
             }
             { data && !isLoading && <>
-                <div className="d-flex flex-row align-items-center justify-content-center flex-wrap border rounded mt-3 p-3">
+                <div className="d-flex flex-row align-items-center justify-content-center flex-wrap border rounded my-3 p-3">
                         {
                             data.conjugated_forms.map((item: any[], index: number) => (
                                 <div key={'form'+index} className="mx-2">
@@ -80,9 +80,9 @@ export const GrammarSearch: React.FC = () => {
                         }
                 </div>
 
-                <TenseDisplay payload={data.conjugation_tables.indicative} str='Indicative' color='text-success' />
-                <TenseDisplay payload={data.conjugation_tables.conditional} str='Conditional' color='text-info' />
-                <TenseDisplay payload={data.conjugation_tables.passive} str='Passive' color='text-danger' />
+                <TenseDisplay payload={data.conjugation_tables.indicative} str='Indicative' color='text-success' variant="success" />
+                <TenseDisplay payload={data.conjugation_tables.conditional} str='Conditional' color='text-info' variant="info" />
+                <TenseDisplay payload={data.conjugation_tables.passive} str='Passive' color='text-danger' variant="danger" />
 
             </>
             }
@@ -94,13 +94,14 @@ interface TenseDisplayProps{
     payload: any[];
     str: string;
     color: string;
+    variant: string;
 }
 
-const TenseDisplay: React.FC<TenseDisplayProps> = ({payload, str, color}) =>{
+const TenseDisplay: React.FC<TenseDisplayProps> = ({payload, str, color, variant}) =>{
 
     return (
         <React.Fragment>
-            <div className="bg-secondary rounded p-1 my-3 text-light fw-600"> {str} </div>
+            <Alert className="p-2 mb-3 mt-0 fw-600" variant={variant}> {str} </Alert>
             <div className="d-grid-2">
                 {
                     payload.map((tense: any, i: number)=> (

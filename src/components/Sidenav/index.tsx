@@ -34,7 +34,7 @@ export const Sidenav: React.FC = () => {
 interface SideNavigationProps {
     isOpen: boolean;
     setIsOpen: () => void;
-    navItem: Navigation
+    navItem: Navigation;
 };
 
 const SidebarNavigation: React.FC<SideNavigationProps> = React.memo(({ isOpen, setIsOpen, navItem }) => {
