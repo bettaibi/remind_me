@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
-import { Alert, Button } from 'react-bootstrap';
-import { title } from 'node:process';
+import { Alert } from 'react-bootstrap';
 
 type snackbarType = "info" | "danger" | "warning" | "success";
 
@@ -14,8 +13,6 @@ interface SnackbarState {
 
 const SnackbarContainer: React.FC<SnackbarState> = ({ isShown, message, type, title }) => {
     const Portal: any = document.getElementById('portal');
-
-    // if (!isShown) return null;
 
     return (
         ReactDOM.createPortal(
@@ -33,7 +30,7 @@ const SnackbarContainer: React.FC<SnackbarState> = ({ isShown, message, type, ti
 export const useSnackbar = () => {
     const [snackbar, setSnackbar] = useState<SnackbarState>({title: '', isShown: false, message: '', type: 'success' });
 
-    const showMsg = (msg: string, title: string, type?: snackbarType) => {
+    const showMsg = (title: string, msg: string, type?: snackbarType) => {
         setSnackbar({ isShown: true, message: msg, title, type: type || 'success' });
 
         setTimeout(()=>{

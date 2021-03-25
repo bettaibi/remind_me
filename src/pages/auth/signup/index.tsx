@@ -5,14 +5,16 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 
 import logo from '../../../assets/img/logo90.png';
+import useAuth from '../../../firebase/useAuth';
+import { useSnackbar } from '../../../components/Snackbar';
 
-interface LoginForm{
+interface RegisterForm{
     email: string;
     password: string;
     confirmPassword: string;
 }
 
-const defaultState: LoginForm = {email: '', password: '', confirmPassword: ''};
+const defaultState: RegisterForm = {email: '', password: '', confirmPassword: ''};
     
 const schema = yup.object().shape({
     email: yup.string().required('Email Is required').email('Invalid Email'),
@@ -24,11 +26,31 @@ const schema = yup.object().shape({
 
 export const Singup: React.FC = () => {
     const history = useHistory();
+    const { createUserWithEmailAndPassword } = useAuth();
+    const { Snackbar, showMsg } = useSnackbar();
 
     const navigateTo = (e: any) =>{
         e.preventDefault();
         history.push('/signin')
     }
+
+    const createUser = async (values: RegisterForm): Promise<void> =>{
+        try{
+            const res = await createUserWithEmailAndPassword(values.email, values.password);
+            if(res.success){
+                showMsg('Account Created', res.message, 'success');
+                // Update Cache
+
+                // Update Redux App State
+            }
+            else{
+                showMsg('Failure', res.message, 'danger');
+            }
+        }
+        catch(err){
+            throw err;
+        }
+    }   
 
     return (
         <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
@@ -39,7 +61,7 @@ export const Singup: React.FC = () => {
                     <h6 className="fw-400">SIGN IN TO YOUR ACCOUNT</h6>
                 </Card.Header>
                 <Card.Body>
-                    <Formik initialValues={defaultState} validationSchema={schema} onSubmit={(values)=>console.log(values)}>
+                    <Formik initialValues={defaultState} validationSchema={schema} onSubmit={(values)=> createUser(values)}>
                         {
                             ({handleSubmit, handleChange, handleBlur, values, touched, errors, isValid}) => (
                                 <Form onSubmit = {handleSubmit}>
@@ -89,6 +111,7 @@ export const Singup: React.FC = () => {
                     </Formik>
                 </Card.Body>
             </Card>
+            <Snackbar />
         </Container>
     )
   

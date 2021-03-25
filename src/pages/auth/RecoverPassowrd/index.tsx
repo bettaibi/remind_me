@@ -3,22 +3,44 @@ import { Form, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 
 import * as yup from 'yup';
+import { useSnackbar } from '../../../components/Snackbar';
+import useAuth from '../../../firebase/useAuth';
 
 const schema = yup.object().shape({
     email: yup.string().required('This Field is required').email('Ivalid Email')
 });
 
-const initialValue = { email: ''};
+type RecoverObject = {email: string};
+
+const initialValue: RecoverObject = { email: ''};
 
 interface RecoverPasswordProps{
     handleClose: () => void;
 }
 
 export const RecoverPassword: React.FC<RecoverPasswordProps> = ({handleClose}) => {
+    const { Snackbar, showMsg } = useSnackbar();
+    const { sendPasswordResetEmail } = useAuth();
+
+    const resetPassword = async (values: RecoverObject) =>{
+        try{
+            const res = await sendPasswordResetEmail(values.email);
+            if(res.success){
+                showMsg('Check your email', res.message);
+            }
+            else{
+                showMsg("Operation Failed","We Couldn't send you a reset link, please verify your email and try again!", 'danger');
+            }
+        }
+        catch(err){
+            throw err;
+        }
+    }
+
     return (
         <React.Fragment>
             <h6>Send Recover link</h6>
-            <Formik initialValues={initialValue} validationSchema={schema} onSubmit={(values)=>console.log(values)}>
+            <Formik initialValues={initialValue} validationSchema={schema} onSubmit={(values)=> resetPassword(values)}>
                 {
                     ({handleChange, handleBlur, handleSubmit, touched, errors, values, isValid}) => (
                         <Form onSubmit={handleSubmit}>
@@ -48,6 +70,7 @@ export const RecoverPassword: React.FC<RecoverPasswordProps> = ({handleClose}) =
                     )
                 }
             </Formik>
+            <Snackbar />
         </React.Fragment>
     )
 }

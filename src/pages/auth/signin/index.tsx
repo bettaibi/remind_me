@@ -5,15 +5,13 @@ import { Formik } from 'formik';
 import { Dialog, useDialog } from '../../../components/Dialog';
 import { RecoverPassword } from '../RecoverPassowrd';
 
+import { useSnackbar } from '../../../components/Snackbar';
+import { LoginForm } from '../../../model/app.model';
+import useAuth from '../../../firebase/useAuth';
+
 import * as yup from 'yup';
 
 import logo from '../../../assets/img/logo90.png';
-import { useSnackbar } from '../../../components/Snackbar';
-
-interface LoginForm{
-    email: string;
-    password: string;
-}
 
 const defaultState: LoginForm = {email: '', password: ''};
 
@@ -27,6 +25,7 @@ export const Signin: React.FC = () => {
     const history = useHistory();
     const { show, handleClose, handleShow } = useDialog();
     const { Snackbar, showMsg } = useSnackbar();
+    const { signInWithEmailAndPassword } = useAuth()
 
     const navigateTo = (e: any) =>{
         e.preventDefault();
@@ -38,9 +37,19 @@ export const Signin: React.FC = () => {
         handleShow();
     };
 
-    const login = (e: any) =>{
-        e.preventDefault();
-        showMsg("A New Product has been created", "Product Created", "danger");
+    const login = async (values: LoginForm) => {
+       try{
+         const res = await signInWithEmailAndPassword(values.email, values.password);
+         if(res.success){
+            showMsg("User logged In", res.message, "success");
+         }
+         else{
+             showMsg('Failure', 'Failed to logged in', 'danger');
+         }
+       }
+       catch(error){
+        throw error;
+       }
     }
 
     return (
@@ -52,7 +61,7 @@ export const Signin: React.FC = () => {
                     <h6 className="fw-400">SIGN IN TO YOUR ACCOUNT</h6>
                 </Card.Header>
                 <Card.Body>
-                    <Formik initialValues={defaultState} validationSchema={schema} onSubmit={(values)=>console.log(values)}>
+                    <Formik initialValues={defaultState} validationSchema={schema} onSubmit={(values)=> login(values)}>
                         {
                             ({handleSubmit, handleChange, handleBlur, values, touched, errors, isValid}) => (
                                 <Form onSubmit = {handleSubmit}>
@@ -100,7 +109,7 @@ export const Signin: React.FC = () => {
                     </div>
 
                     <div className="text-center">
-                        <Button variant="danger" onClick={login}>Login with Google</Button>
+                        <Button variant="danger">Login with Google</Button>
                     </div>
                 </Card.Body>
             </Card>

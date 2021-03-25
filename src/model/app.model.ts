@@ -1,6 +1,7 @@
 export interface AppState{
     conjugations: any;
     definitions: WordDefinitionForm; 
+    user: Profile;
 }
 
 export interface WordDefinitionForm{
@@ -18,4 +19,22 @@ export interface DefinitionForm{
 export interface MeaningsForm{
     partOfSpeech?: string;
     definitions: DefinitionForm[];
+}
+
+export interface CustomResponse{
+    success: boolean;
+    message: string;
+    data?: any;
+}
+
+export interface LoginForm{
+    email: string;
+    password: string;
+}
+
+export interface Profile{
+    displayName?: string;
+    photoURL?: string;
+    email: string;
+    uid: string;
 }
