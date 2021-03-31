@@ -7,6 +7,7 @@
 html, body{
     width: 100%;
     scroll-behavior: smooth;
+    background-color: $bg-light !important;
 }
 
 .icons{
@@ -15,6 +16,11 @@ html, body{
 
 .status-bar{
     height: 30px;
+}
+
+.bg-light{
+    background-color: $bg-light !important;
+    color: rgba(0,0,0,.87) !important;
 }
 
 .header{

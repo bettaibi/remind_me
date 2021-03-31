@@ -69,7 +69,7 @@ export const GrammarSearch: React.FC = () => {
                 isLoading && <LoadingPage />
             }
             { data && !isLoading && <>
-                <div className="d-flex flex-row align-items-center justify-content-center flex-wrap border rounded my-3 p-3">
+                <div className="d-flex flex-row bg-light align-items-center justify-content-center flex-wrap border rounded my-3 p-3">
                         {
                             data.conjugated_forms.map((item: any[], index: number) => (
                                 <div key={'form'+index} className="mx-2">
@@ -80,9 +80,11 @@ export const GrammarSearch: React.FC = () => {
                         }
                 </div>
 
-                <TenseDisplay payload={data.conjugation_tables.indicative} str='Indicative' color='text-success' variant="success" />
+               <div className="bg-light pt-3 px-3 border rounded">
+               <TenseDisplay payload={data.conjugation_tables.indicative} str='Indicative' color='text-success' variant="success" />
                 <TenseDisplay payload={data.conjugation_tables.conditional} str='Conditional' color='text-info' variant="info" />
                 <TenseDisplay payload={data.conjugation_tables.passive} str='Passive' color='text-danger' variant="danger" />
+               </div>
 
             </>
             }
@@ -111,7 +113,7 @@ const TenseDisplay: React.FC<TenseDisplayProps> = ({payload, str, color, variant
                                     <th>
                                         <span>#</span>
                                     </th>
-                                    <th className={color}>
+                                    <th className={'fw-500 pl-2 '+color}>
                                         <span>
                                         {tense.heading}
                                         </span>
@@ -121,8 +123,9 @@ const TenseDisplay: React.FC<TenseDisplayProps> = ({payload, str, color, variant
                             <tbody>
                             { tense.forms.map((form: string, j: number)=>(
                                         <tr key={str+j}>
-                                            <td  className="text-secondary text-capitalize fw-600">{form[0]}</td>
-                                            <td className="ml-1">{form[1]}</td>
+                                            <td  className="text-secondary text-capitalize fw-600"
+                                            style={{width: '60px'}}>{form[0]}</td>
+                                            <td className="pl-2">{form[1]}</td>
                                         </tr>
                                 ))}
                             </tbody>
@@ -139,41 +142,44 @@ const LoadingPage: React.FC = () =>{
 
     return(
         <React.Fragment>
-            <div className="text-center border rounded mb-3 mt-3 p-3">
+            <div className="text-center border rounded mb-3 mt-3 p-3 bg-light">
                 <span style={{marginRight: '1rem'}}> <Skeleton /></span>
                 <span> <Skeleton /> </span>
             </div>
-            <Skeleton />
-            <div className="d-grid-2 mt-3">
-            {
-                    arr.map((item: any)=> (
-                        <Table key={'con_table'+item} striped bordered hover size="sm">
-                            <thead>
-                                <tr>
-                                    <th>
+            <div className="bg-light rounded border px-3 pt-3">
+                <Skeleton />
+                <div className="d-grid-2 mt-3">
+                {
+                        arr.map((item: any)=> (
+                            <Table key={'con_table'+item} striped bordered hover size="sm">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <Skeleton />
+                                        </th>
+                                        <th>
                                         <Skeleton />
-                                    </th>
-                                    <th>
-                                      <Skeleton />
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            { arr.map((n: number, j: number)=>(
-                                        <tr key={n+j}>
-                                            <td>
-                                             <Skeleton />
-                                            </td>
-                                            <td className="ml-1">
-                                                 <Skeleton />
-                                            </td>
-                                        </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                    ))
-                }
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                { arr.map((n: number, j: number)=>(
+                                            <tr key={n+j}>
+                                                <td>
+                                                <Skeleton />
+                                                </td>
+                                                <td className="ml-1">
+                                                    <Skeleton />
+                                                </td>
+                                            </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        ))
+                    }
+                </div>
             </div>
+
         </React.Fragment>
     )
 };

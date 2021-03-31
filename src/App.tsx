@@ -26,7 +26,7 @@ function App() {
           <Header />
           <Container>
               <Row>
-                <Col className="display-xs-none bg-primary rounded text-white mt-3 mb-3" 
+                <Col className="display-xs-none rounded mt-3 mb-3 border rounded bg-light" 
                   sm={4} style={sideNavStyle}>
                   <Sidenav />
                 </Col>

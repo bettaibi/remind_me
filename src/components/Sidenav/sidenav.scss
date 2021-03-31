@@ -10,8 +10,9 @@
     .nav-item{
         cursor: pointer;
         margin-bottom: 0.5rem;
+        color: rgba(0,0,0,.87);
         &:hover{
-            color: #ccc;
+            color: #000;
         }
     }
 
@@ -19,7 +20,7 @@
         color: inherit;
         text-decoration: none;
         &.active{
-            color: palegreen;
+            color: #4e6e91;
             text-decoration: underline;
         }
     }
@@ -30,7 +31,7 @@
             margin: .25rem 0;
             &:hover{
                 a{
-                    color: #fff;
+                    color: #000;
                 }
             }
         }

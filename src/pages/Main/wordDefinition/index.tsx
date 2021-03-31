@@ -121,7 +121,7 @@ const DefinitionResult: React.FC<DefinitionResultProps> = ({ data }) => {
     };
 
     return (
-        <div className="border rounded p-3 my-3">
+        <div className="border rounded p-3 my-3 bg-light">
             <h5>Definitions of {data.word}</h5>
             {data.phonetics && (
                 <>
@@ -178,7 +178,7 @@ const DefinitionResult: React.FC<DefinitionResultProps> = ({ data }) => {
 const DefinitionSkeleton: React.FC = () => {
 
     return (
-        <div className="border rounded p-3 my-3">
+        <div className="border rounded p-3 my-3 bg-light">
             <h5> <Skeleton /></h5>
             <span> <Skeleton /> </span>
             <h6> <Skeleton /></h6>
