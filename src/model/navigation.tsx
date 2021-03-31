@@ -1,4 +1,4 @@
-import { Book, Gear, ClipboardCheck, CardChecklist } from 'react-bootstrap-icons';
+import { Book, Gear, ClipboardCheck, CardChecklist, Image, JournalBookmark, Stickies } from 'react-bootstrap-icons';
 import { v4 } from 'uuid';
 
 interface SubItemsNavigation{
@@ -16,11 +16,19 @@ export interface Navigation{
 }
 
 export const navigations: Navigation[] = [
-    {id: v4(), title: 'Database Managment', icon: <Book />, subItems: [
-        {id: v4(), title: 'My Words', path: '/word'},
-        {id: v4(),title: 'New Vacab', path: '/word'},
-        {id: v4(),title: 'New Game', path: '/word'}
+    {id: v4(), title: 'Words Managment', icon: <Book />, subItems: [
+        {id: v4(), title: 'Verbs', path: '/home/words/verbs'},
+        {id: v4(),title: 'Nouns', path: '/home/words/nouns'},
+        {id: v4(),title: 'Adjectives', path: '/home/words/adjectives'},
+        {id: v4(),title: 'Adverbs', path: '/home/words/adverbs'},
+        {id: v4(),title: 'English Linkers', path: '/home/words/linkers'},
+        {id: v4(),title: 'Phrasal Verbs', path: '/home/words/phrasal-verbs'},
     ]},
+
+    {id: v4(), title: 'Describe The Pic', icon: <Image />, path: '/home/pic'},
+    {id: v4(), title: 'Phrases & Idioms', icon: <Stickies />, path: '/home/idioms'},
+    {id: v4(), title: 'English Topics', icon: <JournalBookmark />, path: '/home/topics'},
+
     {id: v4(), title: 'Definition & Synonyms', icon: <ClipboardCheck />, path: '/home/word-definition'},
     {id: v4(), title: 'Conjugation & Grammar', icon: <CardChecklist />, path: '/home/grammar-search'},
 

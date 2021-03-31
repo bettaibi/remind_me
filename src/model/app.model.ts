@@ -2,6 +2,7 @@ export interface AppState{
     conjugations: any;
     definitions: WordDefinitionForm; 
     user: Profile;
+    verbs: any[];
 }
 
 export interface WordDefinitionForm{

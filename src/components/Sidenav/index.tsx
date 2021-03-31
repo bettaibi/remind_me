@@ -66,7 +66,7 @@ const SidebarNavigation: React.FC<SideNavigationProps> = React.memo(({ isOpen, s
                                     navItem.subItems.map(item => (
                                         <Fade in={isOpen} key={item.id}>
                                             <li>
-                                                <NavLink to={item.path}>{item.title}</NavLink>
+                                                <NavLink to={item.path} onClick={(e)=> e.stopPropagation()}>{item.title}</NavLink>
                                             </li>
                                         </Fade>
                                     ))
