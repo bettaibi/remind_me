@@ -39,3 +39,30 @@ export interface Profile{
     email: string;
     uid: string;
 }
+
+
+export interface FullPageContentProps{
+    handleToggle?: () => void;
+
+}
+
+// VERB FORM
+export interface Verb{
+    infinitive: string;
+    past: string;
+    pastParticipal: string;
+    definition: string;
+    examples: string[];
+    conjugation: Conjugation[];
+}
+
+interface Conjugation{
+    tense: string;
+    content: Tense[];
+}
+
+interface Tense{
+    subject: string;
+    value: string;
+}
+

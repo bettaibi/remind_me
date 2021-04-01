@@ -21,6 +21,17 @@ html, body{
     color: rgba(0,0,0,.87) !important;
 }
 
+.full-page-container{
+   position: fixed;
+   top: 0;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
+}
+
 .header{
     height: 50px;
     position: -webkit-sticky;
@@ -47,7 +58,26 @@ html, body{
         color: $primary;
     }
 }
+.grammar-card{
+    display: grid;
+    gap: 0.5rem;
 
+    @include mediaXlg{
+        grid-template-columns: repeat(4, 1fr);
+    }
+    @include mediaLg{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    @include mediaSm{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @include mediaMd{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @include mediaXs{
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
 .d-grid-2{
     display: grid;
     grid-template-columns: 1fr 1.2fr;

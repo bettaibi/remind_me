@@ -10,6 +10,7 @@ $theme-colors: (
   "secondary": $secondary
 );
 
+@import './assets/scss/breakpoint';
 @import './assets/scss/utility';
 @import './assets/scss/base';
 @import "~bootstrap/scss/bootstrap";

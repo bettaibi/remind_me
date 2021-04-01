@@ -12,7 +12,13 @@ interface DialogProps{
 export const Dialog: React.FC<DialogProps> = ({show, handleClose, centered, size, children, headerText}) => {
 
     return (
-        <Modal show={show} onHide={handleClose} centered={centered} size={size}>
+        <Modal 
+        show={show} 
+        onHide={handleClose}
+        centered={centered}
+        size={size}
+        >
+
        { headerText && <Modal.Header closeButton>
           <Modal.Title>{headerText}</Modal.Title>
         </Modal.Header>}

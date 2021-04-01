@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Accordion, Card, useAccordionToggle, Button, Pagination } from 'react-bootstrap';
 import { ChevronDown, ChevronRight } from 'react-bootstrap-icons';
+import { FullPageContainer, useFullPageContainer } from '../../../../components/FullPageContainer';
+import { NewVerb } from './NewVerb';
 
 export const Verbs: React.FC = () => {
+    const {show, handleToggle} = useFullPageContainer();
     let [currentEventKey, setCurrentEventKey] = useState<string>('');
 
     const verbs = [1, 2, 3, 4, 5, 6, 7];
@@ -22,7 +25,7 @@ export const Verbs: React.FC = () => {
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit dicta aperiam ullam natus ex numquam facere iste quos at tenetur.
                 </p>
                 <div className="text-right">
-                    <button className="btn btn-primary btn-sm">New verb</button>
+                    <button className="btn btn-primary btn-sm" onClick={handleToggle}>New verb</button>
                 </div>
             </div>
 
@@ -42,6 +45,28 @@ export const Verbs: React.FC = () => {
             <div className="d-flex justify-content-end mt-3">
                 <CustomPagination />
             </div>
+            
+            <FullPageContainer 
+                show={show} 
+                header={
+                    (
+                        <React.Fragment>
+                            <h5 className="m-0 display-xs-none w-25">New Verb</h5>
+                            <div className="text-right w-100">
+                                <Button variant="secondary" className="mr-2" size="sm"
+                                onClick={handleToggle}>Close</Button>
+                                <Button variant="primary" size="sm" type="submit"
+                                >Save</Button>
+                            </div>
+                        </React.Fragment>
+                    )
+                }
+                content = {
+                    (
+                        <NewVerb />
+                    )
+                }
+            />
 
         </React.Fragment>
     )
