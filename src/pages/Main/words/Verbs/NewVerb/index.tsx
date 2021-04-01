@@ -1,13 +1,13 @@
 import React from 'react';
 import { Formik, FieldArray } from 'formik';
 import { Form, Col, Card } from 'react-bootstrap';
-import { Verb } from '../../../../../model/app.model';
+import { VerbModal } from '../../../../../model/app.model';
 
 import * as yup from 'yup';
 import conjugationTable from '../../../../../model/conjugationTable.model';
 
 
-const INITIAL_VALUE: Verb = {
+const INITIAL_VALUE: VerbModal = {
     past: '',
     infinitive: '',
     pastParticipal: '',
@@ -24,11 +24,15 @@ const schema = yup.object().shape({
     examples: yup.array().of(
         yup.string().required()
     ),
-    // conjugation: yup.array().of(
-    //     yup.object().shape({
-            
-    //     })
-    // )
+    conjugation: yup.array().of(
+        yup.object().shape({
+            content: yup.array().of(
+                yup.object().shape({
+                    value: yup.string().required()
+                })
+            )
+        })
+    )
 })
 
 export const NewVerb: React.FC = () => {
@@ -131,7 +135,7 @@ export const NewVerb: React.FC = () => {
 
                         <div className="mb-3">
                           <h6>Grammar Table</h6>
-                          <small className="text-secondary">Fill The verb's grammar table</small>
+                          <small className="text-secondary">Fill in The Grammar table</small>
                         </div>
 
                         <FieldArray name="conjugation">
@@ -150,9 +154,13 @@ export const NewVerb: React.FC = () => {
                                                                 
                                                             <Form.Group key={'sub'+c}>
                                                                 <Form.Row>
-                                                                    <Form.Label column="sm" lg={4}>{sub.subject}</Form.Label>
+                                                                    <Form.Label column="sm" >{sub.subject}</Form.Label>
                                                                     <Col>
-                                                                    <Form.Control placeholder="Convenient Form" size="sm" autoComplete="off"/>
+                                                                    <Form.Control placeholder="Convenient Form" size="sm" autoComplete="off"
+                                                                    name={`conjugation[${index}].content[${c}].value`} onBlur={handleBlur} onChange={handleChange}
+                                                                    value={values.conjugation[index].content[c].value}
+                                                                    isInvalid={touched.conjugation && !!errors.conjugation}
+                                                                   />
                                                                     </Col>
                                                                 </Form.Row>
                                                             </Form.Group>

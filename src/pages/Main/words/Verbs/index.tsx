@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Accordion, Card, useAccordionToggle, Button, Pagination } from 'react-bootstrap';
 import { ChevronDown, ChevronRight } from 'react-bootstrap-icons';
+import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { FullPageContainer, useFullPageContainer } from '../../../../components/FullPageContainer';
+import { WordsLoadingPage } from '../WordsLoadingPage';
 import { NewVerb } from './NewVerb';
 
 export const Verbs: React.FC = () => {
@@ -20,6 +22,7 @@ export const Verbs: React.FC = () => {
 
     return (
         <React.Fragment>
+            {/* <WordsLoadingPage /> */}
             <div className="border rounded p-3 bg-light mb-3">
                 <p className="m-0">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit dicta aperiam ullam natus ex numquam facere iste quos at tenetur.
@@ -51,8 +54,8 @@ export const Verbs: React.FC = () => {
                 header={
                     (
                         <React.Fragment>
-                            <h5 className="m-0 display-xs-none w-25">New Verb</h5>
-                            <div className="text-right w-100">
+                            <h6 className="m-0">New Verb</h6>
+                            <div className="text-right">
                                 <Button variant="secondary" className="mr-2" size="sm"
                                 onClick={handleToggle}>Close</Button>
                                 <Button variant="primary" size="sm" type="submit"
@@ -80,6 +83,10 @@ interface VerbProps {
 }
 
 const Verb: React.FC<VerbProps> = ({ verb, eventKey, currentEventKey, updateEventKey }) => {
+    const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
+        message: 'Are you sure you want to remove this verb? This cannot be undone.',
+        onConfirmClick: onConfirm
+    });
 
     const decoratedOnClick = useAccordionToggle(
         eventKey,
@@ -87,6 +94,15 @@ const Verb: React.FC<VerbProps> = ({ verb, eventKey, currentEventKey, updateEven
             updateEventKey(eventKey)
         }
     );
+
+   function onConfirm(){
+       console.log("Confirm Clicked");
+       toggleConfirmMessage();
+   }
+        
+    const removeVerb = () =>{
+        toggleConfirmMessage();
+    }
 
     return (
         <Card>
@@ -101,10 +117,12 @@ const Verb: React.FC<VerbProps> = ({ verb, eventKey, currentEventKey, updateEven
 
                     <div className="text-right">
                         <Button className="mr-2" variant="primary" size="sm">Update</Button>
-                        <Button variant="danger" size="sm">Remove</Button>
+                        <Button variant="danger" size="sm" onClick={removeVerb}>Remove</Button>
                     </div>
                 </Card.Body>
             </Accordion.Collapse>
+
+            <ConfirmDialog />
         </Card>
     )
 }

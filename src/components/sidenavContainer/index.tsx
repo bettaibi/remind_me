@@ -44,6 +44,7 @@ export const SidenavContainer: React.FC<SidenavContainerProps> = ({isOpen, onClo
 
 export const useSidenavContainer = (initial_value = false) =>{
     const [isOpen, setIsOpen] = useState<boolean>(initial_value);
+    
     const toggle = (): void => {
         try{
             setIsOpen((previous) => !previous);

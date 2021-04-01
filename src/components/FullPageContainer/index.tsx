@@ -19,7 +19,7 @@ export const FullPageContainer : React.FC<FullPageProps> = ({ show, header, cont
 
     return (
         ReactDOM.createPortal(
-            <div className="z-9999 full-page-container bg-light show" onClick={handleClick}>
+            <div className="z-9999 full-page-container bg-light" onClick={handleClick}>
                 <div className="border-bottom p-3 d-flex flex-row justify-content-between align-items-center">
                     {header}
                 </div>

@@ -30,6 +30,18 @@ html, body{
    overflow: hidden;
    display: flex;
    flex-direction: column;
+   animation: fadeIn 400ms ease-out forwards;
+}
+
+@keyframes fadeIn{
+    from{
+        transform: translateY(300px);
+        opacity: 0.5;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .header{
