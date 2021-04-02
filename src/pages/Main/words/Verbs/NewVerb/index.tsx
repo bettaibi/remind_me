@@ -9,7 +9,7 @@ import conjugationTable from '../../../../../model/conjugationTable.model';
 
 const INITIAL_VALUE: VerbModal = {
     past: '',
-    infinitive: '',
+    label: '',
     pastParticipal: '',
     definition: '',
     examples: ['', '', ''],
@@ -18,7 +18,7 @@ const INITIAL_VALUE: VerbModal = {
 
 const schema = yup.object().shape({
     past: yup.string().required('This field is required').min(2, 'too short').max(50, 'too much'),
-    infinitive: yup.string().required('This field is required').min(2, 'too short').max(40, 'too much'),
+    label: yup.string().required('This field is required').min(2, 'too short').max(40, 'too much'),
     pastParticipal: yup.string().required('This field is required').min(2, 'too short').max(50, 'too much'),
     definition: yup.string().required('This field is required'),
     examples: yup.array().of(
@@ -46,16 +46,16 @@ export const NewVerb: React.FC = () => {
                             <Form.Group as={Col} xs="12">
                                 <Form.Label>Infinitive</Form.Label>
                                 <Form.Control placeholder="Infinitive Form" autoComplete="off" name="infinitive" size="sm"
-                                    onChange={handleChange} onBlur={handleBlur} value={values.infinitive}
-                                    isInvalid={touched.infinitive && !!errors.infinitive}
+                                    onChange={handleChange} onBlur={handleBlur} value={values.label}
+                                    isInvalid={touched.label && !!errors.label}
                                 ></Form.Control>
 
-                                {!errors.infinitive && <Form.Text className="text-muted">
+                                {!errors.label && <Form.Text className="text-muted">
                                     The infinitive form of verb that you would create.
                                     </Form.Text>}
 
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.infinitive}
+                                    {errors.label}
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col}>

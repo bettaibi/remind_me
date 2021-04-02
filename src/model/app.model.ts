@@ -48,7 +48,7 @@ export interface FullPageContentProps{
 
 // VERB FORM
 export interface VerbModal{
-    infinitive: string;
+    label: string;
     past: string;
     pastParticipal: string;
     definition: string;

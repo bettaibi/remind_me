@@ -45,7 +45,6 @@ export const useCustomPagination = (array: any[], itemsPerPage: number) => {
                         <Pagination.Item key={'slice'+index} 
                         active={currentPage === index} onClick = {() => newSlice(index)} >
                             {index+1}
-                            {console.log('render1')}
                         </Pagination.Item>
                     ))
                 }
