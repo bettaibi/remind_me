@@ -54,6 +54,8 @@ export interface VerbModal{
     definition: string;
     examples: string[];
     conjugation: Conjugation[];
+    synonyms: string[];
+    category: string;
 }
 
 interface Conjugation{

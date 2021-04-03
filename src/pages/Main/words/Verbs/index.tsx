@@ -50,6 +50,7 @@ interface VerbProps {
 }
 
 const Verb: React.FC<VerbProps> = ({verb}) => {
+    // const {show, handleToggle} = useFullPageContainer();
 
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this verb? This cannot be undone.',
@@ -65,17 +66,28 @@ const Verb: React.FC<VerbProps> = ({verb}) => {
         toggleConfirmMessage();
     }
 
+    const editVerb = () =>{
+
+    };
+
     return (
         <React.Fragment>
-            <div>
-                content
-            </div>
+            <VerbContent />
 
             <div className="text-right">
-                <Button className="mr-2" variant="primary" size="sm">Update</Button>
+                <Button className="mr-2" variant="primary" size="sm" onClick={editVerb}>Update</Button>
                 <Button variant="danger" size="sm" onClick={removeVerb}>Remove</Button>
             </div>
             <ConfirmDialog />
         </React.Fragment>
     )
 }
+
+const VerbContent: React.FC = () =>{
+
+    return (
+        <div>
+            content
+        </div>
+    )
+};

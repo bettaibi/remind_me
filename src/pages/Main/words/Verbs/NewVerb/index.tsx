@@ -5,6 +5,7 @@ import { VerbModal } from '../../../../../model/app.model';
 
 import * as yup from 'yup';
 import conjugationTable from '../../../../../model/conjugationTable.model';
+import { FullPageHeader } from '../../../../../components/FullPageContainer';
 
 
 const INITIAL_VALUE: VerbModal = {
@@ -13,7 +14,9 @@ const INITIAL_VALUE: VerbModal = {
     pastParticipal: '',
     definition: '',
     examples: ['', '', ''],
-    conjugation: conjugationTable
+    conjugation: conjugationTable,
+    category: '',
+    synonyms: ['', '']
 }
 
 const schema = yup.object().shape({
@@ -24,28 +27,25 @@ const schema = yup.object().shape({
     examples: yup.array().of(
         yup.string().required()
     ),
-    conjugation: yup.array().of(
-        yup.object().shape({
-            content: yup.array().of(
-                yup.object().shape({
-                    value: yup.string().required()
-                })
-            )
-        })
-    )
+    synonyms: yup.array().of(
+        yup.string()
+    ),
+    category: yup.string().required('This field is required!')
 })
 
-export const NewVerb: React.FC = () => {
+export const NewVerb: React.FC = ({}) => {
 
     return (
         <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => console.log(value)} validationSchema={schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, isValid, values }) => (
                     <Form onSubmit={handleSubmit} className="pt-3">
+                        <FullPageHeader title = "New Verb" />
+
                         <Form.Row>
-                            <Form.Group as={Col} xs="12">
+                            <Form.Group as={Col} xs="6">
                                 <Form.Label>Infinitive</Form.Label>
-                                <Form.Control placeholder="Infinitive Form" autoComplete="off" name="infinitive" size="sm"
+                                <Form.Control placeholder="Infinitive Form" autoComplete="off" name="label" size="sm"
                                     onChange={handleChange} onBlur={handleBlur} value={values.label}
                                     isInvalid={touched.label && !!errors.label}
                                 ></Form.Control>
@@ -58,6 +58,22 @@ export const NewVerb: React.FC = () => {
                                     {errors.label}
                                 </Form.Control.Feedback>
                             </Form.Group>
+
+                            <Form.Group as={Col} xs="6">
+                                <Form.Label>Verb Category</Form.Label>
+                                <Form.Control size="sm" as="select" name="category"
+                                    onChange={handleChange} onBlur={handleBlur} value={values.category}
+                                    isInvalid={touched.category && !!errors.category}
+                                    placeholder="In which category this verb is belong?">
+                                    <option value="regular">Regular</option>
+                                    <option value="irregular">Irregular</option>
+                                </Form.Control>
+
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.category}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+
                             <Form.Group as={Col}>
                                 <Form.Label>Simple Past</Form.Label>
                                 <Form.Control placeholder="Past Form" autoComplete="off" name="past" size="sm"
@@ -92,6 +108,38 @@ export const NewVerb: React.FC = () => {
 
                         </Form.Row>
 
+                        <FieldArray name="synonyms">
+                            {
+                                () => (
+                                    <React.Fragment>
+                                        {
+                                            values.synonyms.length > 0 && (
+                                                <React.Fragment>
+                                                    <div className="mb-2">
+                                                        <h6>Synonyms</h6>
+                                                        <small className="text-secondary">Enter two synonyms related to that verb (this section is optional). </small>
+                                                    </div>
+
+                                                    <Form.Row>
+                                                        {
+                                                            values.synonyms.map((item: string, index: number) => (
+                                                                    <Form.Group as={Col} xs="6" key={'syno' + index}>
+                                                                        <Form.Label>Synonym {index + 1}: </Form.Label>
+                                                                        <Form.Control placeholder="synonym" size="sm" autoComplete="off" name={`synonyms.${index}`}
+                                                                            onChange={handleChange} onBlur={handleBlur} value={values.synonyms[index]}
+                                                                        ></Form.Control>
+                                                                    </Form.Group>
+                                                            ))
+                                                        }
+                                                    </Form.Row>
+                                                </React.Fragment>
+                                            )
+                                        }
+                                    </React.Fragment>
+                                )
+                            }
+                        </FieldArray>
+
                         <Form.Group>
                             <Form.Label>Definition / Meaning</Form.Label>
                             <Form.Control as="textarea" placeholder="Verb definition" size="sm" autoComplete="off" name="definition"
@@ -108,12 +156,16 @@ export const NewVerb: React.FC = () => {
                             </Form.Control.Feedback>
                         </Form.Group>
 
+                        <div className="mb-2">
+                            <h6>Examples</h6>
+                            <small className="text-secondary">Enter three sentences using the verb that you would learn</small>
+                        </div>
+
                         <FieldArray name="examples">
                             {
                                 () => (
                                     <div>
-                                        <h6>Examples</h6>
-                                        <small className="text-secondary">Enter three sentences using the verb that you would learn</small>
+            
                                         {
                                             values.examples && values.examples.length > 0 &&
                                             values.examples.map((exmp: string, index: number) => (
@@ -123,7 +175,7 @@ export const NewVerb: React.FC = () => {
                                                         onChange={handleChange} onBlur={handleBlur} value={values.examples[index]}
                                                         isInvalid={touched.examples && !!errors.examples} />
                                                     <Form.Control.Feedback type="invalid">
-                                                       {`Sentence N° ${index+1} is required`}
+                                                        {`Sentence N° ${index + 1} is required`}
                                                     </Form.Control.Feedback>
                                                 </Form.Group>
                                             ))
@@ -133,9 +185,9 @@ export const NewVerb: React.FC = () => {
                             }
                         </FieldArray>
 
-                        <div className="mb-3">
-                          <h6>Grammar Table</h6>
-                          <small className="text-secondary">Fill in The Grammar table</small>
+                        <div className="mb-2">
+                            <h6>Grammar Table</h6>
+                            <small className="text-secondary">Fill in The Grammar table</small>
                         </div>
 
                         <FieldArray name="conjugation">
@@ -144,27 +196,26 @@ export const NewVerb: React.FC = () => {
                                     <div className="grammar-card">
                                         {
                                             values.conjugation && values.conjugation.length > 0 &&
-                                            values.conjugation.map((item: any, index: number)=>(
-                                                <Card key={'tense'+index}>
+                                            values.conjugation.map((item: any, index: number) => (
+                                                <Card key={'tense' + index}>
                                                     <Card.Header>{item.tense}</Card.Header>
 
                                                     <Card.Body>
                                                         {
-                                                            item.content.map((sub: any, c: number)=>(
-                                                                
-                                                            <Form.Group key={'sub'+c}>
-                                                                <Form.Row>
-                                                                    <Form.Label column="sm" >{sub.subject}</Form.Label>
-                                                                    <Col>
-                                                                    <Form.Control placeholder="Convenient Form" size="sm" autoComplete="off"
-                                                                    name={`conjugation[${index}].content[${c}].value`} onBlur={handleBlur} onChange={handleChange}
-                                                                    value={values.conjugation[index].content[c].value}
-                                                                    isInvalid={touched.conjugation && !!errors.conjugation}
-                                                                   />
-                                                                    </Col>
-                                                                </Form.Row>
-                                                            </Form.Group>
-                                                               
+                                                            item.content.map((sub: any, c: number) => (
+
+                                                                <Form.Group key={'sub' + c}>
+                                                                    <Form.Row>
+                                                                        <Form.Label column="sm" >{sub.subject}</Form.Label>
+                                                                        <Col>
+                                                                            <Form.Control placeholder="Convenient Form" size="sm" autoComplete="off"
+                                                                                name={`conjugation[${index}].content[${c}].value`} onBlur={handleBlur} onChange={handleChange}
+                                                                                value={values.conjugation[index].content[c].value}
+                                                                            />
+                                                                        </Col>
+                                                                    </Form.Row>
+                                                                </Form.Group>
+
                                                             ))
                                                         }
                                                     </Card.Body>
