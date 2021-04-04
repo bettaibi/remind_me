@@ -56,6 +56,7 @@ export interface VerbModal{
     conjugation: Conjugation[];
     synonyms: string[];
     category: string;
+    translation: string;
 }
 
 interface Conjugation{

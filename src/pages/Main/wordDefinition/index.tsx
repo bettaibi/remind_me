@@ -20,10 +20,6 @@ export const WordDefinition: React.FC = () => {
     const { data, getDefinition, isLoading, isError } = useDefinition();
     let initilalValue = data ? { query: data.word } : { query: '' };
 
-    console.log(data);
-    console.log(isLoading)
-    console.log(isError)
-
     const submit = (values: any) => {
         getDefinition(values.query);
     }

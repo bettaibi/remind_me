@@ -15,13 +15,10 @@ const schema = Yup.object().shape({
 });
 
 export const GrammarSearch: React.FC = () => {
-    const data = useSelector((state: AppState)=> state.conjugations);
+    const data = useSelector((state: AppState) => state.conjugations);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const dispatch = useDispatch();
     const initialValue = data? {query: data.conjugated_forms[0]['1']}: {query: ''};
-
-
-    console.log(data)
 
     const conjugate = async (verb: string) => {
         try {

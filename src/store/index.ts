@@ -9,7 +9,7 @@ const appReducer = combineReducers({
     definitions: DefinitionReducer,
     conjugations: ConjugationReducer,
     user: UserReducer,
-    verbs: VerbReducer
+    verbs: VerbReducer,
 });
 
 export default appReducer;

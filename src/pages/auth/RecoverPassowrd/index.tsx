@@ -63,8 +63,8 @@ export const RecoverPassword: React.FC<RecoverPasswordProps> = ({handleClose}) =
                             </Form.Group>
 
                             <div className="text-right">
-                                <Button variant="secondary mr-2" onClick={handleClose}>Close</Button>
-                                <Button type="submit" variant="primary" disabled={!isValid}>Send Reset Link</Button>
+                                <Button variant="secondary mr-2" onClick={handleClose} size="sm">Close</Button>
+                                <Button type="submit" variant="primary" disabled={!isValid} size="sm">Send Reset Link</Button>
                             </div>
                         </Form>
                     )

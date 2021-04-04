@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, FieldArray } from 'formik';
-import { Form, Col, Card } from 'react-bootstrap';
+import { Form, Col, Card, Container } from 'react-bootstrap';
 import { VerbModal } from '../../../../../model/app.model';
 
 import * as yup from 'yup';
@@ -16,7 +16,8 @@ const INITIAL_VALUE: VerbModal = {
     examples: ['', '', ''],
     conjugation: conjugationTable,
     category: '',
-    synonyms: ['', '']
+    synonyms: ['', ''],
+    translation: ''
 }
 
 const schema = yup.object().shape({
@@ -24,6 +25,7 @@ const schema = yup.object().shape({
     label: yup.string().required('This field is required').min(2, 'too short').max(40, 'too much'),
     pastParticipal: yup.string().required('This field is required').min(2, 'too short').max(50, 'too much'),
     definition: yup.string().required('This field is required'),
+    translation: yup.string().required('This field is required'),
     examples: yup.array().of(
         yup.string().required()
     ),
@@ -33,15 +35,19 @@ const schema = yup.object().shape({
     category: yup.string().required('This field is required!')
 })
 
-export const NewVerb: React.FC = ({}) => {
+interface commonProps{
+    handleToogle: () => void;
+}
+
+export const NewVerb: React.FC<commonProps> = ({handleToogle}) => {
 
     return (
         <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => console.log(value)} validationSchema={schema}>
             {
-                ({ handleBlur, handleChange, handleSubmit, errors, touched, isValid, values }) => (
-                    <Form onSubmit={handleSubmit} className="pt-3">
-                        <FullPageHeader title = "New Verb" />
-
+                ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
+                    <Form onSubmit={handleSubmit}>
+                        <FullPageHeader handleToggle= {handleToogle} title = "New Verb" />
+                        <Container className="py-3">
                         <Form.Row>
                             <Form.Group as={Col} xs="6">
                                 <Form.Label>Infinitive</Form.Label>
@@ -107,6 +113,22 @@ export const NewVerb: React.FC = ({}) => {
                             </Form.Group>
 
                         </Form.Row>
+
+                        <Form.Group>
+                            <Form.Label>Arabic Translation</Form.Label>
+                            <Form.Control placeholder="translate to arabic" autoComplete="off" name="translation" size="sm"
+                                    onChange={handleChange} onBlur={handleBlur} value={values.translation}
+                                    isInvalid={touched.translation && !!errors.translation}
+                                ></Form.Control>
+
+                                {!errors.translation && <Form.Text className="text-muted">
+                                    The arabic translation of verb that you would create.
+                                    </Form.Text>}
+
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.translation}
+                                </Form.Control.Feedback>
+                        </Form.Group>
 
                         <FieldArray name="synonyms">
                             {
@@ -226,8 +248,7 @@ export const NewVerb: React.FC = ({}) => {
                                 )
                             }
                         </FieldArray>
-
-                        <button type="submit">Submit</button>
+                        </Container>
                     </Form>
                 )
             }

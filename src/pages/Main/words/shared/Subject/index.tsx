@@ -1,20 +1,16 @@
 import React from 'react';
-import { OverlayContext, useFulPageContext } from '../../../../../components/FullPageContainer';
+import { FullPageContainer } from '../../../../../components/FullPageContainer';
 import { Button } from 'react-bootstrap';
+import { useToggleState } from '../../../../../components/useToggleState';
 
 interface SubjectProps {
     definition: string;
     title: string;
+    children: ( handleToggle: () => void ) => JSX.Element;
 }
 
 export const Subject: React.FC<SubjectProps> = ({title, definition, children}) => {
-    const {show, handleToggle} = useFulPageContext();
-
-    console.log(handleToggle, show);
-
-    const toogleOverlay = () =>{
-        handleToggle();
-    }
+    const { handleToggle, show } = useToggleState();
 
     return (
         <React.Fragment>
@@ -23,13 +19,14 @@ export const Subject: React.FC<SubjectProps> = ({title, definition, children}) =
                         {definition}
                     </p>
                     <div className="text-right">
-                        <Button variant="primary" size="sm" onClick={toogleOverlay}>{title}</Button>
+                        <Button variant="primary" size="sm" onClick={handleToggle}>{title}</Button>
                     </div>
             </div>
 
-            <OverlayContext>
-                { children}
-            </OverlayContext>
+        <FullPageContainer show={show}>
+            {children(handleToggle)}
+        </FullPageContainer>
+
         </React.Fragment>
     )
 }

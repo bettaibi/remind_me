@@ -1,9 +1,16 @@
 import React from 'react';
+import { FullPageHeader } from '../../../../../components/FullPageContainer';
 
-export const EditVerb: React.FC = () => {
+interface VerbProps {
+    verb: any;
+    handleToggle: () => void;
+}
+
+
+export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle}) => {
     return (
         <div>
-            bala bla bla
+           <FullPageHeader title = "Edit Verb" handleToggle={handleToggle} />
         </div>
     )
 }

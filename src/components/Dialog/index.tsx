@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Modal } from 'react-bootstrap';
 
 interface DialogProps{
@@ -29,17 +29,4 @@ export const Dialog: React.FC<DialogProps> = ({show, handleClose, centered, size
 
       </Modal>
     )
-}
-
-export const useDialog = () =>{
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    return{
-        show,
-        handleClose,
-        handleShow
-    }
 }

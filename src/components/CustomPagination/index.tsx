@@ -6,7 +6,7 @@ export const useCustomPagination = (array: any[], itemsPerPage: number) => {
     
     const [currentPage, setCurrentPage] = useState<number>(0);
 
-    const visitedPages = (currentPage * itemsPerPage);
+    const visitedPages = currentPage * itemsPerPage;
     let list = array.slice(visitedPages, visitedPages + itemsPerPage);
 
     const leng = array.length;
