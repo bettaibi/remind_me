@@ -69,3 +69,70 @@ interface Tense{
     value: string;
 }
 
+// Noun Form
+export interface NounModel{
+    label: string;
+    translation: string;
+    definition: string;
+    examples: string[];
+    synonyms: string[];
+}
+
+// Adjectve From
+export interface AdjectiveModel{
+    label: string;
+    comparative: string;
+    superlative: string;
+    translation: string;
+    definition: string;
+    examples: string[];
+    synonyms: string[];
+}
+
+// Adverb From
+export interface AdverbeModel{
+    label: string;
+    definition: string;
+    examples: string[];
+    synonyms: string[];
+    translation: string;
+}
+
+// Pharsal Verb
+export interface PhrasalModel{
+    label: string;
+    definition: string;
+    examples: string[];
+    translation: string;
+}
+
+// English linkers
+export interface LinkersModel{
+    label: string;
+    definition: string;
+    examples: string[];
+    translation: string;
+    synonyms: string[];
+}
+
+export interface ThingsInThePicModel{
+    picture: string;
+    things: string[];
+}
+
+export interface IdiomsModel{
+    label: string;
+    explication: string;
+}
+
+export interface TopicLodel{
+    object: string;
+}
+
+export interface GrammarNotesModel{
+    object: string;
+}
+
+export interface GrammarPracticeModel{
+    
+}

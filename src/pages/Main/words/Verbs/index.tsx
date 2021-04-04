@@ -31,7 +31,7 @@ export const Verbs: React.FC = () => {
             <Subject
                 title="New Verb"
                 definition="
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit dicta aperiam ullam natus ex numquam facere iste quos at tenetur.
+                    A verb is a word to describe an action, state or occurrence, and forming the main part of a sentence.
                 ">
                 {
                     (handleToggle) => (

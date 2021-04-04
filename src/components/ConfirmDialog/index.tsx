@@ -28,7 +28,7 @@ export const useConfirmDialog = (obj: ConfirmDialogProps) =>{
                 </div>
             </Dialog>
         ),
-        [show, message, onConfirmClick]
+        [show, message, onConfirmClick, handleHide]
     )
 
     return {

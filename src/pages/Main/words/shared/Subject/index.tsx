@@ -15,7 +15,7 @@ export const Subject: React.FC<SubjectProps> = ({title, definition, children}) =
     return (
         <React.Fragment>
             <div className="border rounded p-3 bg-light mb-3">
-                    <p className="m-0">
+                    <p >
                         {definition}
                     </p>
                     <div className="text-right">

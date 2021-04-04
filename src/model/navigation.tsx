@@ -25,10 +25,10 @@ export const navigations: Navigation[] = [
         {id: v4(),title: 'Phrasal Verbs', path: '/home/words/phrasal-verbs'},
     ]},
 
-    {id: v4(), title: 'Describe The Pic', icon: <Image />, path: '/home/pic'},
+    {id: v4(), title: 'Things In The Pic', icon: <Image />, path: '/home/pic'},
     {id: v4(), title: 'Phrases & Idioms', icon: <Stickies />, path: '/home/idioms'},
     {id: v4(), title: 'English Topics', icon: <JournalBookmark />, path: '/home/topics'},
-    {id: v4(), title: 'English Notes', icon: <JournalBookmark />, path: '/home/notes'},
+    {id: v4(), title: 'English Grammar Notes', icon: <JournalBookmark />, path: '/home/notes'},
     {id: v4(), title: 'Grammar Practise', icon: <JournalBookmark />, path: '/home/grammar-examples'},
     
     {id: v4(), title: 'Definition & Synonyms', icon: <ClipboardCheck />, path: '/home/word-definition'},
