@@ -42,8 +42,7 @@ export const navigations: Navigation[] = [
     {id: v4(), title: 'Settings', icon: <Gear />, subItems: [
         {id: v4(), title: 'Voice Assistance', path: '/home/voice-assistance'},
         {id: v4(), title: 'Notification', path: '/word'},
-        {id: v4(), title: 'Account', path: '/word'},
-        {id: v4(), title: 'App Theme', path: '/word'}
+        {id: v4(), title: 'Account Setting', path: '/word'}
     ]},
 ];
 

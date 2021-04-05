@@ -117,7 +117,7 @@ export interface LinkersModel{
 
 export interface PicThingsModel{
     picture: string;
-    subject: string;
+    label: string;
     things: Thing[];
 }
 

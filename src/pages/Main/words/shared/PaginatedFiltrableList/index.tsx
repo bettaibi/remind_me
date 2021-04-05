@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form } from 'react-bootstrap';
 import { useCustomPagination } from '../../../../../components/CustomPagination';
 import { AccordionItems, ReusableAccordion } from '../../../../../components/ReusableAccordion';
+import { useFilter } from '../../../../../components/useFilter';
 
 interface PaginatedFiltrableListProps {
     dataSource: any[];
@@ -46,24 +47,4 @@ export const PaginatedFiltrableList: React.FC<PaginatedFiltrableListProps> = ({d
             </div>}
         </React.Fragment>
     )
-}
-
-const useFilter = (dataSource: any[]) => {
-    const [filtredArr, setFiltredArr] = useState<any[]>(dataSource);
-
-    const newFilter = (term: string) =>{
-        if(term === ''){
-            setFiltredArr(dataSource);
-        }
-        else{
-            let newArr = [...dataSource.filter((item: any)=> item.label.toLowerCase().includes(term.toLowerCase()))]
-            setFiltredArr(newArr);
-        }
-    }
-
-
-    return{
-        filtredArr,
-        newFilter
-    };
 }
