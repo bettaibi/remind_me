@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Accordion } from 'react-bootstrap';
+import { ChevronRight } from 'react-bootstrap-icons';
 
 export const ReusableAccordion: React.FC = ({children}) =>{
 
@@ -22,8 +23,8 @@ export const AccordionItems: React.FC<AccordionItemsProps> = ({children, eventKe
     return (
         <Card>
             <Accordion.Toggle className="bg-light d-flex flex-row justify-content-between" as={Card.Header} eventKey={eventKey}>
-                <span>{headerText}</span>
-                <span className="link">More Details</span>
+                <p className="m-0">{headerText}</p>
+                <ChevronRight />
             </Accordion.Toggle>
 
             <Accordion.Collapse eventKey={eventKey}>

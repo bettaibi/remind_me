@@ -1,17 +1,16 @@
 import React from 'react';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
-import { NounModel } from '../../../../../model/app.model';
+import { PhrasalModel } from '../../../../../model/app.model';
 import { FieldArray, Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Col, Container } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
 import UseAssistant from '../../../../../components/useAssistant';
 
-const INITIAL_VALUE: NounModel = {
+const INITIAL_VALUE: PhrasalModel = {
     label: '',
     definition: '',
     examples: ['', '', ''],
-    synonyms: ['', ''],
     translation: '',
     spelling: ''
 }
@@ -23,17 +22,13 @@ const schema = yup.object().shape({
     examples: yup.array().of(
         yup.string().required()
     ),
-    synonyms: yup.array().of(
-        yup.string()
-    ),
     spelling: yup.string().required('This is a required field')
 })
 
-interface commonProps {
+interface commonProps{
     handleToogle: () => void;
 }
-export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
-
+export const NewPhrasalVerb: React.FC<commonProps> = ({handleToogle}) => {
     const { voiceHandler } = UseAssistant();
 
     const spellWord = (word: string) => {
@@ -48,7 +43,7 @@ export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>
-                        <FullPageHeader handleToggle={handleToogle} title="New Noun" />
+                        <FullPageHeader handleToggle={handleToogle} title="New Phrasal Verb" />
                         <Container className="py-3">
 
                             <Form.Group>
@@ -102,38 +97,6 @@ export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
 
 
                             </Form.Row>
-
-                            <FieldArray name="synonyms">
-                                {
-                                    () => (
-                                        <React.Fragment>
-                                            {
-                                                values.synonyms.length > 0 && (
-                                                    <React.Fragment>
-                                                        <div className="mb-2">
-                                                            <h6>Synonyms</h6>
-                                                            <small className="text-secondary">Enter two synonyms related to inserted word (this section is optional). </small>
-                                                        </div>
-
-                                                        <Form.Row>
-                                                            {
-                                                                values.synonyms.map((item: string, index: number) => (
-                                                                    <Form.Group as={Col} xs="6" key={'syno' + index}>
-                                                                        <Form.Label>Synonym {index + 1}: </Form.Label>
-                                                                        <Form.Control placeholder="synonym" size="sm" autoComplete="off" name={`synonyms.${index}`}
-                                                                            onChange={handleChange} onBlur={handleBlur} value={values.synonyms[index]}
-                                                                        ></Form.Control>
-                                                                    </Form.Group>
-                                                                ))
-                                                            }
-                                                        </Form.Row>
-                                                    </React.Fragment>
-                                                )
-                                            }
-                                        </React.Fragment>
-                                    )
-                                }
-                            </FieldArray>
 
                             <Form.Group>
                                 <Form.Label>Definition / Meaning</Form.Label>

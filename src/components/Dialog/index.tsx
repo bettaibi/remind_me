@@ -20,7 +20,7 @@ export const Dialog: React.FC<DialogProps> = ({show, handleClose, centered, size
         >
 
        { headerText && <Modal.Header closeButton>
-          <Modal.Title>{headerText}</Modal.Title>
+          <h6 className="m-0 align-self-center">{headerText}</h6>
         </Modal.Header>}
 
         <Modal.Body>

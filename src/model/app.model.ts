@@ -40,12 +40,6 @@ export interface Profile{
     uid: string;
 }
 
-
-export interface FullPageContentProps{
-    handleToggle?: () => void;
-
-}
-
 // VERB FORM
 export interface VerbModal{
     label: string;
@@ -57,6 +51,7 @@ export interface VerbModal{
     synonyms: string[];
     category: string;
     translation: string;
+    spelling: string;
 }
 
 interface Conjugation{
@@ -76,6 +71,7 @@ export interface NounModel{
     definition: string;
     examples: string[];
     synonyms: string[];
+    spelling: string;
 }
 
 // Adjectve From
@@ -87,15 +83,17 @@ export interface AdjectiveModel{
     definition: string;
     examples: string[];
     synonyms: string[];
+    spelling: string;
 }
 
 // Adverb From
-export interface AdverbeModel{
+export interface AdverbModel{
     label: string;
     definition: string;
     examples: string[];
     synonyms: string[];
     translation: string;
+    spelling: string;
 }
 
 // Pharsal Verb
@@ -104,6 +102,7 @@ export interface PhrasalModel{
     definition: string;
     examples: string[];
     translation: string;
+    spelling: string;
 }
 
 // English linkers
@@ -113,11 +112,19 @@ export interface LinkersModel{
     examples: string[];
     translation: string;
     synonyms: string[];
+    spelling: string;
 }
 
-export interface ThingsInThePicModel{
+export interface PicThingsModel{
     picture: string;
-    things: string[];
+    subject: string;
+    things: Thing[];
+}
+
+interface Thing{
+    name: string;
+    translation: string;
+    utility: string;
 }
 
 export interface IdiomsModel{

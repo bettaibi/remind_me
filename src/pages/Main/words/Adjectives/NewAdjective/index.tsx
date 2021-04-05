@@ -1,19 +1,22 @@
 import React from 'react';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
-import { NounModel } from '../../../../../model/app.model';
+import { AdjectiveModel } from '../../../../../model/app.model';
 import { FieldArray, Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Col, Container } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
 import UseAssistant from '../../../../../components/useAssistant';
 
-const INITIAL_VALUE: NounModel = {
+
+const INITIAL_VALUE: AdjectiveModel = {
     label: '',
     definition: '',
     examples: ['', '', ''],
     synonyms: ['', ''],
     translation: '',
-    spelling: ''
+    spelling: '',
+    comparative: '',
+    superlative: ''
 }
 
 const schema = yup.object().shape({
@@ -26,13 +29,15 @@ const schema = yup.object().shape({
     synonyms: yup.array().of(
         yup.string()
     ),
-    spelling: yup.string().required('This is a required field')
+    spelling: yup.string().required('This is a required field'),
+    comparative: yup.string().required('This field is required'),
+    superlative: yup.string().required('This field is required')
 })
 
 interface commonProps {
     handleToogle: () => void;
 }
-export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
+export const NewAdjective: React.FC<commonProps> = ({ handleToogle }) => {
 
     const { voiceHandler } = UseAssistant();
 
@@ -48,7 +53,7 @@ export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>
-                        <FullPageHeader handleToggle={handleToogle} title="New Noun" />
+                        <FullPageHeader handleToggle={handleToogle} title="New Adjective" />
                         <Container className="py-3">
 
                             <Form.Group>
@@ -67,6 +72,41 @@ export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
                                     {errors.label}
                                 </Form.Control.Feedback>
                             </Form.Group>
+
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label>
+                                        <span>Comparative Form</span>
+                                        <span className="ml-2 icons" onClick={() => spellWord(values.comparative)} >
+                                            <VolumeUp size="20" />
+                                        </span>
+                                    </Form.Label>
+                                    <Form.Control placeholder="Enter the comparative form" autoComplete="off" name="comparative" size="sm"
+                                        onChange={handleChange} onBlur={handleBlur} value={values.comparative}
+                                        isInvalid={touched.comparative && !!errors.comparative}
+                                    ></Form.Control>
+
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.comparative}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group as={Col}>
+                                    <Form.Label>
+                                        <span>Superlative Form</span>
+                                        <span className="ml-2 icons" onClick={() => spellWord(values.superlative)} >
+                                            <VolumeUp size="20" />
+                                        </span>
+                                    </Form.Label>
+                                    <Form.Control placeholder="Enter the superlative form" autoComplete="off" name="superlative" size="sm"
+                                        onChange={handleChange} onBlur={handleBlur} value={values.superlative}
+                                        isInvalid={touched.superlative && !!errors.superlative}
+                                    ></Form.Control>
+
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.superlative}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Form.Row>
 
                             <Form.Row>
                                 <Form.Group as={Col}>
@@ -182,4 +222,5 @@ export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
             }
         </Formik>
     )
+
 }

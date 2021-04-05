@@ -1,13 +1,13 @@
 import React from 'react';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
-import { NounModel } from '../../../../../model/app.model';
+import { AdverbModel } from '../../../../../model/app.model';
 import { FieldArray, Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Col, Container } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
 import UseAssistant from '../../../../../components/useAssistant';
 
-const INITIAL_VALUE: NounModel = {
+const INITIAL_VALUE: AdverbModel = {
     label: '',
     definition: '',
     examples: ['', '', ''],
@@ -29,11 +29,11 @@ const schema = yup.object().shape({
     spelling: yup.string().required('This is a required field')
 })
 
-interface commonProps {
+interface commonProps{
     handleToogle: () => void;
 }
-export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
-
+export const NewAdverb: React.FC<commonProps> = ({handleToogle}) => {
+  
     const { voiceHandler } = UseAssistant();
 
     const spellWord = (word: string) => {
@@ -48,7 +48,7 @@ export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>
-                        <FullPageHeader handleToggle={handleToogle} title="New Noun" />
+                        <FullPageHeader handleToggle={handleToogle} title="New Adverb" />
                         <Container className="py-3">
 
                             <Form.Group>

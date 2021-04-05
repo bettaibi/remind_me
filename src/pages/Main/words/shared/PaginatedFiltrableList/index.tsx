@@ -20,7 +20,7 @@ export const PaginatedFiltrableList: React.FC<PaginatedFiltrableListProps> = ({d
     return (
         <React.Fragment>
             <Form>
-                <Form.Control type="search" placeholder="Are you looking for a verb? filter here!" 
+                <Form.Control type="search" placeholder="Are you looking for a word? filter here!" 
                 onChange={handleChange} />
             </Form>
 
@@ -56,10 +56,8 @@ const useFilter = (dataSource: any[]) => {
             setFiltredArr(dataSource);
         }
         else{
-            let newArr = [...dataSource];
-            setFiltredArr(
-                [...newArr.filter((item: any)=> item.label.toLowerCase().includes(term.toLowerCase()))]
-            );
+            let newArr = [...dataSource.filter((item: any)=> item.label.toLowerCase().includes(term.toLowerCase()))]
+            setFiltredArr(newArr);
         }
     }
 
