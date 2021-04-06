@@ -132,14 +132,39 @@ export interface IdiomsModel{
     explication: string;
 }
 
-export interface TopicLodel{
-    object: string;
+export interface TopicModel{
+    label: string;
+    vocabs: VocabularyModal[];
+    paragraph: string;
+}
+
+export interface VocabularyModal{
+    name: string;
+    definition: string;
+    example: string;
 }
 
 export interface GrammarNotesModel{
-    object: string;
+    label: string;
+    note: string;
+    examples: NoteExamples[];
 }
 
-export interface GrammarPracticeModel{
-    
+interface NoteExamples{
+    question: string;
+    questionExample: string;
+    answers: string[];
+}
+
+export interface TensePracticeModel{
+    tenses: TenseModal[];
+}
+
+interface TenseModal{
+   sentences: SentenseModal[];
+}
+
+interface SentenseModal{
+    label: string;
+    sentence: string;
 }

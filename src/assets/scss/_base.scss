@@ -21,6 +21,22 @@ html, body{
     color: rgba(0,0,0,.87) !important;
 }
 
+.topic-card{
+    position: relative;
+    height: 100px;
+    &::after{
+        content:'';
+        position: absolute;
+        top: 0;
+        height: 100%;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0,0,0,.4);
+        color: #fff;
+        z-index: 99;
+    }
+}
+
 .full-page-container{
    position: fixed;
    top: 0;

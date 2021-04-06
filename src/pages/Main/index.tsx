@@ -15,6 +15,7 @@ import { PhrasalVerbs } from './words/PhrasalVerbs';
 import { Idioms } from './Idioms';
 import { ListOfThings } from './things/ListOfThings';
 import { NewThings } from './things/NewThings';
+import { Topics } from './Topics';
 
 
 export const Main: React.FC = () => {
@@ -36,6 +37,7 @@ export const Main: React.FC = () => {
                 <Route path="/home/idioms" component = {Idioms} />
                 <Route path="/home/things/list" component = {ListOfThings} />
                 <Route path="/home/things/new" component = {NewThings} />
+                <Route path = "/home/topics" component = {Topics} />
 
             </Switch>
         </main>

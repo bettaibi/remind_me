@@ -1,12 +1,12 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Trash } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
 import { PicThingsModel } from '../../../../model/app.model';
-import { useFilter } from '../../../../components/useFilter';
 
 import pic from '../../../../assets/img/exp.jpg';
-import { useCustomPagination } from '../../../../components/CustomPagination';
+import { FilrableGrid } from '../../words/shared/FilrableGrid';
+import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 
 export const ListOfThings: React.FC = () => {
     const history = useHistory();
@@ -52,34 +52,14 @@ interface ThingsProps {
 
 const Things: React.FC<ThingsProps> = ({ dataSource }) => {
 
-    const { filtredArr, newFilter } = useFilter(dataSource);
-    const { CustomPagination, list } = useCustomPagination(filtredArr, 5);
-
-    const handleChange = (e: any) => {
-        newFilter(e.target.value);
-    }
-
     return (
-        <React.Fragment>
-            <Form className="mt-3">
-                <Form.Control type="search" placeholder="Search for a picture by its subject"
-                    onChange={handleChange} />
-            </Form>
-
-            <div className="bg-light border rounded px-3 pt-3 mt-3">
-                <div className="fit-grid">
-                    {
-                        list.map((item: PicThingsModel, index: number) => (
-                            <Thing key={'pth' + index} thing={item} />
-                        ))
-                    }
-                </div>
-
-                {list.length > 0 && <div className="d-flex justify-content-end mt-3">
-                    <CustomPagination />
-                </div>}
-            </div>
-        </React.Fragment>
+        <FilrableGrid dataSource = {dataSource}>
+            {
+                (item) => (
+                    <Thing thing={item} />
+                )
+            }
+        </FilrableGrid>
     )
 }
 
@@ -94,12 +74,32 @@ const Thing: React.FC<ThingProp> = ({ thing }) => {
             <div className="pic-container rounded overflow-hidden">
                 <img src={thing.picture} alt="thing" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div className="pic-actions">
-                    <Button variant="light" className="rounded-circle d-flex " 
-                    style={{width: '40px', height:'40px'}}>
-                        <Trash className="align-self-center" size="22" />
-                    </Button>
+                   <RemoveContainer thing = {thing} />
                 </div>
             </div>
+        </React.Fragment>
+    )
+}
+
+const RemoveContainer: React.FC<ThingProp> = ({thing}) => {
+
+    const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
+        message: 'Are you sure you want to remove this Pic? This cannot be undone.',
+        onConfirmClick: onConfirm
+    });
+
+    function onConfirm() {
+        console.log("Confirm Clicked");
+        toggleConfirmMessage();
+    }
+
+    return (
+        <React.Fragment>
+             <Button variant="light" className="rounded-circle d-flex "  onClick={toggleConfirmMessage}
+                    style={{width: '40px', height:'40px'}}>
+                        <Trash className="align-self-center" size="22" />
+             </Button>
+            <ConfirmDialog />
         </React.Fragment>
     )
 }
