@@ -118,10 +118,10 @@ export interface LinkersModel{
 export interface PicThingsModel{
     picture: string;
     label: string;
-    things: Thing[];
+    things: ThingModel[];
 }
 
-interface Thing{
+export interface ThingModel{
     name: string;
     translation: string;
     utility: string;
