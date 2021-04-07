@@ -18,28 +18,29 @@ function App() {
 
   return (
    <Router>
-     <Switch>
-        <Route path="/" exact>
-          <Redirect to="/home" />
-        </Route>
-        <Route path='/home'>
-          <Header />
-          <Container>
-              <Row>
-                <Col className="display-xs-none rounded mt-3 mb-3 border rounded bg-light" 
-                  sm={4} style={sideNavStyle}>
-                  <Sidenav />
-                </Col>
-                <Col className="mb-3 mt-3">
-                  <Main />
-                </Col>
-              </Row>
-          </Container>
-        </Route>
-        <Route path="/signin" component={Signin} />
-        <Route path='/signup' component={Singup} />
-     </Switch>
-     
+     <div className="main-container">
+      <Switch>
+          <Route path="/" exact>
+            <Redirect to="/home" />
+          </Route>
+          <Route path='/home'>
+            <Header />
+            <Container>
+                <Row>
+                  <Col className="display-xs-none rounded mt-3 mb-3 border rounded bg-light" 
+                    sm={4} style={sideNavStyle}>
+                    <Sidenav />
+                  </Col>
+                  <Col className="mb-3 mt-3">
+                    <Main />
+                  </Col>
+                </Row>
+            </Container>
+          </Route>
+          <Route path="/signin" component={Signin} />
+          <Route path='/signup' component={Singup} />
+      </Switch>
+     </div>
    </Router>
   );
 }

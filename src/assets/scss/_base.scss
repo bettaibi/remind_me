@@ -4,8 +4,14 @@
 
 html, body{
     width: 100%;
-    scroll-behavior: smooth;
+    overflow: hidden;
     background-color: $bg-light !important;
+}
+
+.main-container{
+    overflow-y: auto;
+    height: 100vh;
+    scroll-behavior: smooth;
 }
 
 .icons{

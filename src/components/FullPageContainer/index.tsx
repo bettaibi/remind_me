@@ -19,7 +19,7 @@ export const FullPageContainer: React.FC<FullPageContainerProps> = ({ children, 
     return (
         ReactDOM.createPortal(
 
-            <div className="z-9999 full-page-container bg-light" onClick={handleClick}>
+            <div className="z-9999 full-page-container" onClick={handleClick} style = {{backgroundColor: '#fafafa'}}>
                 <div className="overflow-auto">
                     {children}
                 </div>

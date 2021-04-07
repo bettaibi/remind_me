@@ -16,6 +16,8 @@ import { Idioms } from './Idioms';
 import { ListOfThings } from './things/ListOfThings';
 import { NewThings } from './things/NewThings';
 import { Topics } from './Topics';
+import { Notes } from './Notes';
+import { TensePractise } from './TensePractise';
 
 
 export const Main: React.FC = () => {
@@ -38,6 +40,8 @@ export const Main: React.FC = () => {
                 <Route path="/home/things/list" component = {ListOfThings} />
                 <Route path="/home/things/new" component = {NewThings} />
                 <Route path = "/home/topics" component = {Topics} />
+                <Route path = "/home/notes" component = {Notes} />
+                <Route path = "/home/tenses" component = {TensePractise} />
 
             </Switch>
         </main>

@@ -147,24 +147,21 @@ export interface VocabularyModal{
 export interface GrammarNotesModel{
     label: string;
     note: string;
+    question: string;
     examples: NoteExamples[];
 }
 
 interface NoteExamples{
-    question: string;
-    questionExample: string;
+    sentence: string;
     answers: string[];
 }
 
 export interface TensePracticeModel{
-    tenses: TenseModal[];
-}
-
-interface TenseModal{
-   sentences: SentenseModal[];
+    sentences: SentenseModal[];
+    label: string;
 }
 
 interface SentenseModal{
-    label: string;
+    tense: string;
     sentence: string;
 }

@@ -48,7 +48,7 @@ const ThingsForm: React.FC = () => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label>Subject</Form.Label>
-                            <Form.Control placeholder="What's the subject of the pic" name="label"
+                            <Form.Control autoComplete="off" placeholder="What's the subject of the pic" name="label"
                                 onChange={handleChange} onBlur={handleBlur} value={values.label} size="sm"
                                 isInvalid={touched.label && !!errors.label} />
 
@@ -78,7 +78,7 @@ const ThingsForm: React.FC = () => {
                                                 <Form.Row>
                                                     <Form.Group as={Col}>
                                                         <Form.Label>Name</Form.Label>
-                                                        <Form.Control size="sm" placeholder={`Things n° ${i + 1}`} name={`things.${i}.name`}
+                                                        <Form.Control autoComplete="off" size="sm" placeholder={`Things n° ${i + 1}`} name={`things.${i}.name`}
                                                             onChange={handleChange} onBlur={handleBlur} value={values.things[i].name}
                                                             isInvalid={touched.things && !!errors.things} />
 
@@ -89,7 +89,7 @@ const ThingsForm: React.FC = () => {
 
                                                     <Form.Group as={Col}>
                                                         <Form.Label>Arabic Translation</Form.Label>
-                                                        <Form.Control size="sm" placeholder="translation" name={`things.${i}.translation`}
+                                                        <Form.Control autoComplete="off" size="sm" placeholder="translation" name={`things.${i}.translation`}
                                                             onChange={handleChange} onBlur={handleBlur} value={values.things[i].translation}
                                                             isInvalid={touched.things && !!errors.things} />
 
@@ -101,7 +101,7 @@ const ThingsForm: React.FC = () => {
 
                                                 <Form.Group>
                                                     <Form.Label>Utility</Form.Label>
-                                                    <Form.Control size="sm" as="textarea" placeholder="Is That thing useful?" name={`things.${i}.utility`}
+                                                    <Form.Control autoComplete="off" size="sm" as="textarea" placeholder="Is That thing useful?" name={`things.${i}.utility`}
                                                         onChange={handleChange} onBlur={handleBlur} value={values.things[i].utility}
                                                         isInvalid={touched.things && !!errors.things} />
                                                     <Form.Control.Feedback type="invalid">

@@ -71,7 +71,7 @@ const Thing: React.FC<ThingProp> = ({ thing }) => {
 
     return (
         <React.Fragment>
-            <div className="pic-container rounded overflow-hidden">
+            <div className="pic-container rounded overflow-hidden" style={{backgroundColor: 'lightgray'}}>
                 <img src={thing.picture} alt="thing" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div className="pic-actions">
                    <RemoveContainer thing = {thing} />
