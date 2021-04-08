@@ -15,32 +15,11 @@ const schema = Yup.object().shape({
 });
 
 export const GrammarSearch: React.FC = () => {
-    const data = useSelector((state: AppState) => state.conjugations);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
-    const dispatch = useDispatch();
+    const { data, isLoading, isError, grammarSearch } = useGrammar();
     const initialValue = data? {query: data.conjugated_forms[0]['1']}: {query: ''};
 
-    const conjugate = async (verb: string) => {
-        try {
-
-            const res = await axios.get(`${linguaApi}?verb=${verb}`);
-            return await res.data;
-        }
-        catch (err) {
-            throw err;
-        }
-    };
-
     const submit = (values: any) => {
-        setIsLoading(true);
-        conjugate(values.query).then((res)=>{
-            if(res.result === 'OK'){
-                dispatch(setLatestConjugatedVerb(res))
-            }
-            setIsLoading(false);
-        }).catch(err=>{
-            setIsLoading(false);
-        });
+        grammarSearch(values.query)
     }
 
     return (
@@ -65,6 +44,9 @@ export const GrammarSearch: React.FC = () => {
             {
                 isLoading && <LoadingPage />
             }
+            {
+                isError && <Alert className="mt-3" variant="danger">Oops, we could not find the verb that you have been looking for, please check your internet connection and try again.</Alert>
+            }
             { data && !isLoading && <>
                 <div className="d-flex flex-row bg-light align-items-center justify-content-center flex-wrap border rounded my-3 p-3">
                         {
@@ -78,7 +60,7 @@ export const GrammarSearch: React.FC = () => {
                 </div>
 
                <div className="bg-light pt-3 px-3 border rounded">
-               <TenseDisplay payload={data.conjugation_tables.indicative} str='Indicative' color='text-success' variant="success" />
+                <TenseDisplay payload={data.conjugation_tables.indicative} str='Indicative' color='text-success' variant="success" />
                 <TenseDisplay payload={data.conjugation_tables.conditional} str='Conditional' color='text-info' variant="info" />
                 <TenseDisplay payload={data.conjugation_tables.passive} str='Passive' color='text-danger' variant="danger" />
                </div>
@@ -180,3 +162,46 @@ const LoadingPage: React.FC = () =>{
         </React.Fragment>
     )
 };
+
+const useGrammar = () => {
+    const data = useSelector((state: AppState) => state.conjugations);
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isError, setIsError ] = useState<boolean>(false);
+    const dispatch = useDispatch();
+
+    const conjugate = async (verb: string) => {
+        try {
+            const res = await axios.get(`${linguaApi}?verb=${verb}`);
+            return await res.data;
+        }
+        catch (err) {
+            throw err;
+        }
+    };
+
+    const grammarSearch = (verb: string) => {
+        setIsLoading(true);
+        conjugate(verb).then((res)=>{
+            if(res.result === 'OK'){
+                dispatch(setLatestConjugatedVerb(res));
+                setIsLoading(false);
+                if (isError) setIsError(false);
+            }
+            else{
+                setIsLoading(false);
+                 setIsError(true);
+            }
+           
+        }).catch(err=>{
+            setIsLoading(false);
+            setIsError(true);
+        });
+    };
+
+    return {
+        data,
+        isLoading,
+        isError,
+        grammarSearch
+    }
+}
