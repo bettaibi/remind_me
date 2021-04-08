@@ -54,13 +54,13 @@ const Topic: React.FC<TopicProp> = ({ topic }) => {
 
     return (
         <React.Fragment>
-        <TopicContent topic={topic} />
+            <TopicContent topic={topic} />
 
-        <div className="text-right">
-            <EditContainer topic = {topic} />
-            <RemoveContainer topic = {topic} />
-        </div>
-    </React.Fragment>
+            <div className="text-right">
+                <EditContainer topic = {topic} />
+                <RemoveContainer topic = {topic} />
+            </div>
+        </React.Fragment>
     )
 }
 
