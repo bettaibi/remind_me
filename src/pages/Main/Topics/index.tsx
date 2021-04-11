@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
 import { useToggleState } from '../../../components/useToggleState';
-import { TopicModel } from '../../../model/app.model';
+import { AppState, TopicModel } from '../../../model/app.model';
+import { getTopics } from '../../../store/actions/topic.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { Subject } from '../words/shared/Subject';
 import { EditTopic } from './EditTopic';
@@ -12,11 +14,20 @@ import { NewTopic } from './NewTopic';
 
 export const Topics: React.FC = () => {
 
-    const topics: TopicModel[] = [
-        {label: 'travel', paragraph: '', vocabs: []},
-        {label: 'Kitchen', paragraph: '', vocabs: []},
-        {label: 'Bank', paragraph: '', vocabs: []}
-    ]
+    const topics = useSelector((appState: AppState) => appState.topics);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: TopicModel[] =  [
+            {id:'ds', label: 'collaboration', vocabs:[] ,paragraph: ""},
+            {id:'ds', label: 'weakness', vocabs:[] ,paragraph: ""},
+        ];
+        dispatch(getTopics(data));
+    }
 
     return (
         <React.Fragment >

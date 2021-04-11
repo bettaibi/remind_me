@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewAdverb } from './NewAdverb';
@@ -7,16 +7,26 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditAdverb } from './EditAdverb';
 import { useToggleState } from '../../../../components/useToggleState';
+import { useDispatch, useSelector } from 'react-redux';
+import { AdverbModel, AppState } from '../../../../model/app.model';
+import { getAdverbs } from '../../../../store/actions/adverb.actions';
 
 export const Adverbs: React.FC = () => {
-    
-    const adverbs = [
-        { label: 'smartly' },
-        { label: 'quickly' },
-        { label: 'fluency' },
-        { label: 'safety' },
-        { label: 'strongly' }
-    ];
+
+    const adverbs = useSelector((appState: AppState) => appState.adverbs);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: AdverbModel[] =  [
+            {id:'ds', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+            {id:'ds', label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+        ];
+        dispatch(getAdverbs(data));
+    }
 
     return (
         <React.Fragment>

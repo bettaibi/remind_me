@@ -1,24 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
 import { useToggleState } from '../../../components/useToggleState';
-import { GrammarNotesModel } from '../../../model/app.model';
+import { AppState, GrammarNotesModel } from '../../../model/app.model';
+import { getNotes } from '../../../store/actions/note.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { Subject } from '../words/shared/Subject';
 import { EditNote } from './EditNote';
 import { NewNote } from './NewNote';
 
-
 export const Notes: React.FC = () => {
 
-    const notes: GrammarNotesModel[] = [
-        {label: 'Casaul have', note: '', examples: [{sentence: '', answers : []}], question: ''},
-        {label: 'How to make a suggession', note: '', examples: [{sentence: '', answers : []}], question: ''},
-        {label: 'have to', note: '', examples: [{sentence: '', answers : []}], question: ''},
-        {label: 'modal verbs', note: '', examples: [{sentence: '', answers : []}], question: ''},
-        {label: 'tags question', note: '', examples: [{sentence: '', answers : []}], question: ''},
-    ];
+    const notes = useSelector((appState: AppState) => appState.notes);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data:  GrammarNotesModel[] = [
+            {id: 'kslsl',label: 'Casaul have', note: '', examples: [{sentence: '', answers : []}], question: ''},
+            {id: 'kslsl',label: 'How to make a suggession', note: '', examples: [{sentence: '', answers : []}], question: ''},
+            {id: 'kslsl',label: 'have to', note: '', examples: [{sentence: '', answers : []}], question: ''}
+        ];
+        dispatch(getNotes(data));
+    }
 
     return (
         <React.Fragment >

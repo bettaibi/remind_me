@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewNoun } from './NewNoun';
@@ -7,20 +7,25 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditNoun } from './EditNoun';
 import { useToggleState } from '../../../../components/useToggleState';
+import { AppState, NounModel } from '../../../../model/app.model';
+import { useDispatch, useSelector } from 'react-redux';
+import { getNouns } from '../../../../store/actions/noun.actions';
 
 export const Nouns: React.FC = () => {
-    
-    const nouns = [
-        { label: 'collaboration' },
-        { label: 'weakness' },
-        { label: 'sickness' },
-        { label: 'performance' },
-        { label: 'creativity' },
-        { label: 'creation' },
-        { label: 'utility' },
-        { label: 'happyness' },
-        { label: 'skill' }
-    ];
+    const nouns = useSelector((appState: AppState) => appState.nouns);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: NounModel[] =  [
+            {id:'ds', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+            {id:'ds', label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+        ];
+        dispatch(getNouns(data));
+    }
 
     return (
         <React.Fragment>

@@ -2,7 +2,17 @@ export interface AppState{
     conjugations: any;
     definitions: WordDefinitionForm; 
     user: Profile;
-    verbs: any[];
+    verbs: VerbModal[];
+    nouns: NounModel[];
+    adjectives: AdjectiveModel[];
+    adverbs: AdverbModel[];
+    linkers: LinkersModel[];
+    phrasalVerbs: PhrasalModel[];
+    topics: TopicModel[];
+    tenses: TensePracticeModel[];
+    notes: GrammarNotesModel[];
+    things: ThingModel[];
+    idioms: IdiomsModel[];
 }
 
 export interface WordDefinitionForm{
@@ -42,6 +52,7 @@ export interface Profile{
 
 // VERB FORM
 export interface VerbModal{
+    id?: string;
     label: string;
     past: string;
     pastParticipal: string;
@@ -66,6 +77,7 @@ interface Tense{
 
 // Noun Form
 export interface NounModel{
+    id?: string;
     label: string;
     translation: string;
     definition: string;
@@ -76,6 +88,7 @@ export interface NounModel{
 
 // Adjectve From
 export interface AdjectiveModel{
+    id?: string;
     label: string;
     comparative: string;
     superlative: string;
@@ -88,6 +101,7 @@ export interface AdjectiveModel{
 
 // Adverb From
 export interface AdverbModel{
+    id?: string;
     label: string;
     definition: string;
     examples: string[];
@@ -98,6 +112,7 @@ export interface AdverbModel{
 
 // Pharsal Verb
 export interface PhrasalModel{
+    id?: string;
     label: string;
     definition: string;
     examples: string[];
@@ -107,6 +122,7 @@ export interface PhrasalModel{
 
 // English linkers
 export interface LinkersModel{
+    id?: string;
     label: string;
     definition: string;
     examples: string[];
@@ -116,6 +132,7 @@ export interface LinkersModel{
 }
 
 export interface PicThingsModel{
+    id?: string;
     picture: string;
     label: string;
     things: ThingModel[];
@@ -128,11 +145,13 @@ export interface ThingModel{
 }
 
 export interface IdiomsModel{
+    id?: string;
     label: string;
     explication: string;
 }
 
 export interface TopicModel{
+    id?: string;
     label: string;
     vocabs: VocabularyModal[];
     paragraph: string;
@@ -145,6 +164,7 @@ export interface VocabularyModal{
 }
 
 export interface GrammarNotesModel{
+    id?: string;
     label: string;
     note: string;
     question: string;
@@ -157,6 +177,7 @@ interface NoteExamples{
 }
 
 export interface TensePracticeModel{
+    id?: string;
     sentences: SentenseModal[];
     label: string;
 }

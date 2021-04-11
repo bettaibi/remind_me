@@ -1,3 +1,4 @@
+import { VerbModal } from '../../model/app.model';
 import { ActionForm } from '../actions/ActionForm';
 import { GET_VERBS, ADD_VERB, DELETE_VERB, UPDATE_VERB } from '../actions/types';
 
@@ -8,9 +9,9 @@ const VerbReducer = (state = [], action: ActionForm) => {
         case ADD_VERB:
             return [action.payload, ...state];
         case DELETE_VERB:
-            return [...state.filter((item: any) => item.id === action.id)];
+            return [...state.filter((item: VerbModal) => item.id === action.id)];
         case UPDATE_VERB:
-            return [...state.map((item: any)=> item.id !== action.id? item: action.payload)];
+            return [...state.map((item: VerbModal)=> item.id !== action.id? item: action.payload)];
         default: return state;
     }
 };

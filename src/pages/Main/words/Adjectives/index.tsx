@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewAdjective } from './NewAdjective';
@@ -7,16 +7,26 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditAdjective } from './EditAdjective';
 import { useToggleState } from '../../../../components/useToggleState';
+import { useDispatch, useSelector } from 'react-redux';
+import { AdjectiveModel, AppState } from '../../../../model/app.model';
+import { getAdjectives } from '../../../../store/actions/adjectives.actions';
 
 export const Adjectives: React.FC = () => {
     
-    const adjectives = [
-        { label: 'Good' },
-        { label: 'weak' },
-        { label: 'strong' },
-        { label: 'brave' },
-        { label: 'smart' }
-    ];
+    const adjectives = useSelector((appState: AppState) => appState.adjectives);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: AdjectiveModel[] =  [
+            {id:'ds',comparative: '', superlative: '', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+            {id:'ds',comparative: '', superlative: '',  label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+        ];
+        dispatch(getAdjectives(data));
+    }
 
     return (
         <React.Fragment>

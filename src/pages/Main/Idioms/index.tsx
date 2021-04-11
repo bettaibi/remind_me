@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { NewIdiom } from './NewIdom';
@@ -6,14 +6,26 @@ import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { EditIdiom } from './EditIdiom';
 import { useToggleState } from '../../../components/useToggleState';
 import { Dialog } from '../../../components/Dialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState, IdiomsModel } from '../../../model/app.model';
+import { getIdioms } from '../../../store/actions/idioms.actions';
 
 export const Idioms: React.FC = () => {
-    
-    const idioms = [
-        { label: 'Never judge a book from his cover' },
-        { label: 'Charities begin at home' },
-        { label: 'It is the ends that counts' }
-    ];
+
+    const idioms = useSelector((appState: AppState) => appState.idioms);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: IdiomsModel[] =  [
+            {id:'ds', label: 'collaboration', explication:''},
+            {id:'ds', label: 'weakness',  explication: '' },
+        ];
+        dispatch(getIdioms(data));
+    }
 
     return (
         <React.Fragment>

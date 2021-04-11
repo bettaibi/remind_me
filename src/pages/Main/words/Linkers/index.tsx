@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewLinkers } from './NewLinkers';
@@ -7,16 +7,25 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditLinkers } from './EditLinkers';
 import { useToggleState } from '../../../../components/useToggleState';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState, LinkersModel } from '../../../../model/app.model';
+import { getLinkers } from '../../../../store/actions/linkers.actions';
 
 export const Linkers: React.FC = () => {
-    
-    const linkers = [
-        { label: 'in fact' },
-        { label: 'basically' },
-        { label: 'moreover' },
-        { label: 'besides' },
-        { label: 'in the other hand' }
-    ];
+    const linkers = useSelector((appState: AppState) => appState.linkers);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: LinkersModel[] =  [
+            {id:'ds', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+            {id:'ds', label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
+        ];
+        dispatch(getLinkers(data));
+    }
 
     return (
         <React.Fragment>

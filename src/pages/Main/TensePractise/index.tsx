@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
 import { useToggleState } from '../../../components/useToggleState';
-import { TensePracticeModel } from '../../../model/app.model';
+import { AppState, TensePracticeModel } from '../../../model/app.model';
+import { getTenses } from '../../../store/actions/tenses.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { Subject } from '../words/shared/Subject';
 import { EditSentences } from './EditSentences';
@@ -11,35 +13,45 @@ import { NewSentences } from './NewSentences';
 
 export const TensePractise: React.FC = () => {
 
-    const sentences: TensePracticeModel[] = [
-        {label:'I eat a banana every hour', sentences: [
-            {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
-            {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
-            {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
-            {tense: 'present progressive', sentence: 'i am eating a banana'},
-            {tense: 'future Simple', sentence: 'I will eat a banana'},
-            {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
-            {tense: 'present perfect', sentence: 'I have just eaten a banana'},
-        ]},
-        {label:'I eat a banana every hour', sentences: [
-            {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
-            {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
-            {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
-            {tense: 'present progressive', sentence: 'i am eating a banana'},
-            {tense: 'future Simple', sentence: 'I will eat a banana'},
-            {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
-            {tense: 'present perfect', sentence: 'I have just eaten a banana'},
-        ]},
-        {label: 'I eat a banana every hour', sentences: [
-            {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
-            {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
-            {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
-            {tense: 'present progressive', sentence: 'i am eating a banana'},
-            {tense: 'future Simple', sentence: 'I will eat a banana'},
-            {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
-            {tense: 'present perfect', sentence: 'I have just eaten a banana'},
-        ]}
-    ];
+    const sentences: any = useSelector((appState: AppState) => appState.tenses);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: TensePracticeModel[] = [
+            {id: "ddf" ,label:'I eat a banana every hour', sentences: [
+                {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
+                {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
+                {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
+                {tense: 'present progressive', sentence: 'i am eating a banana'},
+                {tense: 'future Simple', sentence: 'I will eat a banana'},
+                {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
+                {tense: 'present perfect', sentence: 'I have just eaten a banana'},
+            ]},
+            {id: "ddf",label:'I eat a banana every hour', sentences: [
+                {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
+                {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
+                {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
+                {tense: 'present progressive', sentence: 'i am eating a banana'},
+                {tense: 'future Simple', sentence: 'I will eat a banana'},
+                {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
+                {tense: 'present perfect', sentence: 'I have just eaten a banana'},
+            ]},
+            {id: "ddf",label: 'I eat a banana every hour', sentences: [
+                {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
+                {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
+                {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
+                {tense: 'present progressive', sentence: 'i am eating a banana'},
+                {tense: 'future Simple', sentence: 'I will eat a banana'},
+                {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
+                {tense: 'present perfect', sentence: 'I have just eaten a banana'},
+            ]}
+        ];
+        dispatch(getTenses(data));
+    }
 
     return (
         <React.Fragment >

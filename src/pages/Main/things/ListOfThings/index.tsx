@@ -1,30 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { Trash } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
-import { PicThingsModel } from '../../../../model/app.model';
+import { AppState, PicThingsModel } from '../../../../model/app.model';
 
 import pic from '../../../../assets/img/exp.jpg';
 import { FilrableGrid } from '../../words/shared/FilrableGrid';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { getThings } from '../../../../store/actions/thing.actions';
 
 export const ListOfThings: React.FC = () => {
     const history = useHistory();
+    const things: any = useSelector((appState: AppState) => appState.things);
+    const dispatch = useDispatch();
 
-    const things: PicThingsModel[] = [
-        { label: 'Recipe', picture: pic, things: [] },
-        { label: 'salad', picture: pic, things: [] },
-        { label: 'garlic', picture: pic, things: [] },
-        { label: 'onions', picture: pic, things: [] },
-        { label: 'Recipe', picture: pic, things: [] },
-        { label: 'salad', picture: pic, things: [] },
-        { label: 'garlic', picture: pic, things: [] },
-        { label: 'onions', picture: pic, things: [] },
-        { label: 'Recipe', picture: pic, things: [] },
-        { label: 'salad', picture: pic, things: [] },
-        { label: 'garlic', picture: pic, things: [] },
-        { label: 'onions', picture: pic, things: [] },
-    ];
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: PicThingsModel[] = [
+            { id:'sdf', label: 'Recipe', picture: pic, things: [] },
+            { id:'sdf', label: 'salad', picture: pic, things: [] },
+            { id:'sdf', label: 'garlic', picture: pic, things: [] },
+            { id:'sdf', label: 'onions', picture: pic, things: [] },
+            {id:'sdf',  label: 'Recipe', picture: pic, things: [] },
+            { id:'sdf', label: 'salad', picture: pic, things: [] },
+            {id:'sdf',  label: 'garlic', picture: pic, things: [] },
+            {id:'sdf',  label: 'onions', picture: pic, things: [] },
+            {id:'sdf',  label: 'Recipe', picture: pic, things: [] },
+            {id:'sdf',  label: 'salad', picture: pic, things: [] },
+            {id:'sdf',  label: 'garlic', picture: pic, things: [] },
+            {id:'sdf',  label: 'onions', picture: pic, things: [] },
+        ];
+        dispatch(getThings(data));
+    }
+
 
     const create = () => {
         history.push('/home/things/new')

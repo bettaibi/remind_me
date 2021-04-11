@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewPhrasalVerb } from './NewPhrasalVerb';
@@ -7,16 +7,25 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditPhrasalVerb } from './EditPhrasalVerb';
 import { useToggleState } from '../../../../components/useToggleState';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState, PhrasalModel } from '../../../../model/app.model';
+import { getPhrasalVerbs } from '../../../../store/actions/phrasalVerb.actions';
 
 export const PhrasalVerbs: React.FC = () => {
-    
-    const phrasalVerbs = [
-        { label: 'find out' },
-        { label: 'give up' },
-        { label: 'wake up' },
-        { label: 'figure out' },
-        { label: 'take off' }
-    ];
+    const phrasalVerbs = useSelector((appState: AppState) => appState.phrasalVerbs);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        let data: PhrasalModel[] =  [
+            {id:'ds', label: 'give up', definition:'',examples:[], translation:'', spelling:'' },
+            {id:'ds', label: 'figure out', definition:'',examples:[], translation:'', spelling:'' },
+        ];
+        dispatch(getPhrasalVerbs(data));
+    }
 
     return (
         <React.Fragment>

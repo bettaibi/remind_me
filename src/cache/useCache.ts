@@ -1,7 +1,6 @@
 import { CustomResponse } from "../model/app.model";
 import db from './db';
 
-
 const toJson = (success: boolean, msg: string, data?: any): CustomResponse => {
     return {
         message: msg,

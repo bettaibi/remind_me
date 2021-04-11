@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewVerb } from './NewVerb';
@@ -7,22 +7,26 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditVerb } from './EditVerb';
 import { useToggleState } from '../../../../components/useToggleState';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState, VerbModal } from '../../../../model/app.model';
+import { getVerbs } from '../../../../store/actions/verb.actions';
 
 export const Verbs: React.FC = () => {
-    
-    const verbs = [
-        { label: 'take' },
-        { label: 'eat' },
-        { label: 'manage' },
-        { label: 'create' },
-        { label: 'remove' },
-        { label: 'delete' },
-        { label: 'add' },
-        { label: 'kill' },
-        { label: 'hate' },
-        { label: 'revenge' },
-        { label: 'put' },
-    ];
+    const verbs = useSelector((state: AppState)=> state.verbs);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        const data: VerbModal[] = [
+            {id:'ds', label: 'take', past:'', pastParticipal: '', definition:'',examples:[],conjugation: [],category: '', translation:'', spelling:'',synonyms:[] },
+            {id:'ds', label: 'eat', past:'', pastParticipal: '', definition:'',examples:[],conjugation: [],category: '', translation:'', spelling:'',synonyms:[] },
+            {id:'ds', label: 'kill', past:'', pastParticipal: '', definition:'',examples:[],conjugation: [],category: '', translation:'', spelling:'',synonyms:[] },
+        ];
+        dispatch(getVerbs(data));
+    }
 
     return (
         <React.Fragment>
