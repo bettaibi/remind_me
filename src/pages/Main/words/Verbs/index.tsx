@@ -9,24 +9,35 @@ import { EditVerb } from './EditVerb';
 import { useToggleState } from '../../../../components/useToggleState';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState, VerbModal } from '../../../../model/app.model';
-import { getVerbs } from '../../../../store/actions/verb.actions';
+import { deleteVerb, getVerbs } from '../../../../store/actions/verb.actions';
+import { useCache, Collections } from '../../../../cache';
+import { useSnackbar } from '../../../../components/Snackbar';
 
 export const Verbs: React.FC = () => {
     const verbs = useSelector((state: AppState)=> state.verbs);
     const dispatch = useDispatch();
-
+    const { find } = useCache(Collections.VERBS);
+    const { Snackbar, showMsg } = useSnackbar();
+    console.log("ddd")
     useEffect(() => {
+        const fetchData = async () => {
+            try{
+                const res = await find();
+                console.log(res)
+                if(res.success){
+                    dispatch(getVerbs(res.data));
+                }
+                else{
+                    console.log(res.message)
+                }
+            }
+            catch(err){
+                throw err;
+            }
+        }
+        
         fetchData();
     }, []);
-
-    const fetchData = () => {
-        const data: VerbModal[] = [
-            {id:'ds', label: 'take', past:'', pastParticipal: '', definition:'',examples:[],conjugation: [],category: '', translation:'', spelling:'',synonyms:[] },
-            {id:'ds', label: 'eat', past:'', pastParticipal: '', definition:'',examples:[],conjugation: [],category: '', translation:'', spelling:'',synonyms:[] },
-            {id:'ds', label: 'kill', past:'', pastParticipal: '', definition:'',examples:[],conjugation: [],category: '', translation:'', spelling:'',synonyms:[] },
-        ];
-        dispatch(getVerbs(data));
-    }
 
     return (
         <React.Fragment>
@@ -47,35 +58,36 @@ export const Verbs: React.FC = () => {
             <PaginatedFiltrableList dataSource={verbs}>
                 {
                     (item) => (
-                        <Verb verb={item} />
+                        <Verb verb={item} showMsg = {showMsg} />
                     )
                 }
             </PaginatedFiltrableList>
 
-
+             <Snackbar />
         </React.Fragment>
     )
 };
 
 interface VerbProps {
-    verb: any;
+    verb: VerbModal;
+    showMsg: (title: string, message: string, type?: any) => void;
 }
 
-const Verb: React.FC<VerbProps> = ({ verb }) => {
+const Verb: React.FC<VerbProps> = ({ verb, showMsg }) => {
 
     return (
         <React.Fragment>
-            <VerbContent verb={verb} />
+            <VerbContent verb={verb} showMsg = {showMsg} />
 
             <div className="text-right">
-                <EditVerbContainer verb = {verb} />
-                <RemoveVerbContainer verb = {verb} />
+                <EditVerbContainer verb = {verb} showMsg = {showMsg} />
+                <RemoveVerbContainer verb = {verb} showMsg = {showMsg} />
             </div>
         </React.Fragment>
     )
 }
 
-const VerbContent: React.FC<VerbProps> = ({ verb }) => {
+const VerbContent: React.FC<VerbProps> = ({ verb, showMsg }) => {
     return (
         <div>
             content
@@ -83,7 +95,7 @@ const VerbContent: React.FC<VerbProps> = ({ verb }) => {
     )
 };
 
-const EditVerbContainer: React.FC<VerbProps> = ({ verb }) => {
+const EditVerbContainer: React.FC<VerbProps> = ({ verb, showMsg }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -97,16 +109,29 @@ const EditVerbContainer: React.FC<VerbProps> = ({ verb }) => {
     )
 };
 
-const RemoveVerbContainer: React.FC<VerbProps> = ({verb}) => {
-
+const RemoveVerbContainer: React.FC<VerbProps> = ({verb, showMsg}) => {
+    const { findOneAndDelete } = useCache(Collections.VERBS);
+    const dispatch = useDispatch();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this verb? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
-        toggleConfirmMessage();
+    async function onConfirm() {
+        try{
+            const res = await findOneAndDelete(verb.id || '');
+            if(res.success){
+                showMsg('Verb removed', 'A verb has been successfully removed');
+                dispatch(deleteVerb(verb.id || ''));
+                toggleConfirmMessage();
+            }
+            else{
+                showMsg('Failed to remove', res.message, 'danger');
+            }
+        }
+        catch(err){
+            throw err;
+        }
     }
 
     const removeVerb = () => {

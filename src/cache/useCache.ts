@@ -11,10 +11,10 @@ const toJson = (success: boolean, msg: string, data?: any): CustomResponse => {
 
 const useCache = (collection: string) => {
 
-    async function create (obj: any): Promise<CustomResponse> {
+    async function save (obj: any): Promise<CustomResponse> {
         try{
-            await db.collection(collection).add(obj);
-            return toJson(true, 'New record has been added');
+            const saved = await db.collection(collection).add(obj);
+            return toJson(true, 'New record has been added', saved);
         }
         catch(err){
             return toJson(false, 'Failed to create');
@@ -23,8 +23,8 @@ const useCache = (collection: string) => {
 
     async function saveByKey (obj: any, key: string): Promise<CustomResponse> {
         try{
-            await db.collection(collection).add(obj, key);
-            return toJson(true, 'New record has been added');
+            const saved = await db.collection(collection).add(obj, key);
+            return toJson(true, 'New record has been added', saved);
         }
         catch(err){
             return toJson(false, 'Failed to create');
@@ -43,8 +43,8 @@ const useCache = (collection: string) => {
 
     async function setById (obj: any, id: string): Promise<CustomResponse> {
         try{
-            const updated = await db.collection(collection).doc({id}).set(obj);
-            return toJson(true, 'New record has been overwrited', updated);
+            const doc = await db.collection(collection).doc({id}).set(obj);
+            return toJson(true, 'New record has been overwrited', doc);
         }
         catch(err){
             return toJson(false, 'Failed to overwrite');
@@ -53,8 +53,8 @@ const useCache = (collection: string) => {
 
     async function findOneAndDelete (id: string): Promise<CustomResponse> {
         try{
-            const updated = await db.collection(collection).doc({id}).delete();
-            return toJson(true, 'New record has been removed', updated);
+            const removed = await db.collection(collection).doc({id}).delete();
+            return toJson(true, 'New record has been removed', removed);
         }
         catch(err){
             return toJson(false, 'Failed to remove');
@@ -63,8 +63,8 @@ const useCache = (collection: string) => {
 
     async function drop (): Promise<CustomResponse> {
         try{
-            const updated = await db.collection(collection).delete();
-            return toJson(true, 'The whole collection has been removed', updated);
+            await db.collection(collection).delete();
+            return toJson(true, 'The whole collection has been removed');
         }
         catch(err){
             return toJson(false, 'Failed to remove');
@@ -73,8 +73,8 @@ const useCache = (collection: string) => {
 
     async function init (data: any[]): Promise<CustomResponse> {
         try{
-            const updated = await db.collection(collection).set(data);
-            return toJson(true, 'Init the whole collection', updated);
+            const datasource = await db.collection(collection).set(data);
+            return toJson(true, 'Init the whole collection', datasource);
         }
         catch(err){
             return toJson(false, 'Failed to remove');
@@ -83,8 +83,8 @@ const useCache = (collection: string) => {
 
     async function find (): Promise<CustomResponse> {
         try{
-            const updated = await db.collection(collection).get();
-            return toJson(true, 'list of data', updated);
+            const list = await db.collection(collection).get();
+            return toJson(true, 'list of data', list);
         }
         catch(err){
             return toJson(false, 'Failed to get');
@@ -93,8 +93,8 @@ const useCache = (collection: string) => {
 
     async function findOne (id: string): Promise<CustomResponse> {
         try{
-            const updated = await db.collection(collection).doc(id).get();
-            return toJson(true, 'find a document', updated);
+            const found = await db.collection(collection).doc(id).get();
+            return toJson(true, 'find a document', found);
         }
         catch(err){
             return toJson(false, 'Failed to get');
@@ -103,7 +103,7 @@ const useCache = (collection: string) => {
 
 
     return {
-        create,
+        save,
         saveByKey,
         findOneAndUpdate,
         setById,

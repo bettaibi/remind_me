@@ -16,9 +16,9 @@ const SnackbarContainer: React.FC<SnackbarState> = ({ isShown, message, type, ti
 
     return (
         ReactDOM.createPortal(
-                <Alert className="m-3 z-9999 fixed-top" show={isShown} variant={type}>
-                    <Alert.Heading>{title}</Alert.Heading>
-                    <p>
+                <Alert className="m-3 fixed-top" show={isShown} variant={type} style={{zIndex: 9999999999}}>
+                    <h5>{title}</h5>
+                    <p className="m-0">
                         {message}
                     </p>
                 </Alert>,

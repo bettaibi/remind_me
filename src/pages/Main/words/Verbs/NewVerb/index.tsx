@@ -8,6 +8,11 @@ import conjugationTable from '../../../../../model/conjugationTable.model';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
 import { VolumeUp } from 'react-bootstrap-icons';
 import UseAssistant from '../../../../../components/useAssistant';
+import { Collections, useCache } from '../../../../../cache';
+import { useSnackbar } from '../../../../../components/Snackbar';
+import { v4 } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { addVerb } from '../../../../../store/actions/verb.actions';
 
 const INITIAL_VALUE: VerbModal = {
     past: '',
@@ -16,7 +21,7 @@ const INITIAL_VALUE: VerbModal = {
     definition: '',
     examples: ['', '', ''],
     conjugation: conjugationTable,
-    category: '',
+    category: 'regular',
     synonyms: ['', ''],
     translation: '',
     spelling: ''
@@ -44,16 +49,37 @@ interface commonProps {
 
 export const NewVerb: React.FC<commonProps> = ({ handleToogle }) => {
     const { voiceHandler } = UseAssistant();
+    const { saveByKey } = useCache(Collections.VERBS);
+    const { Snackbar, showMsg } = useSnackbar();
+    const dispatch = useDispatch();
 
     const spellWord = (word: string) => {
         if (word) {
-            console.log(word)
             voiceHandler(word);
         }
     }
 
+    const create = async (values: VerbModal) => {
+        try{
+            const id = v4();
+            const res = await saveByKey({...values, id}, id);
+            if(res.success){
+                showMsg('created', 'A new Verb has been created!');
+                dispatch(addVerb({...values, id}));
+            }
+            else{
+                showMsg('Failed to Created', 'Failed to persist a new verb', 'danger');
+            }
+            
+        }
+        catch(err){
+            throw err;
+        }
+    }
+
     return (
-        <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => console.log(value)} validationSchema={schema}>
+        <React.Fragment>
+        <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => create(value)} validationSchema={schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>
@@ -306,5 +332,7 @@ export const NewVerb: React.FC<commonProps> = ({ handleToogle }) => {
                 )
             }
         </Formik>
+        <Snackbar />
+        </React.Fragment>
     )
 }
