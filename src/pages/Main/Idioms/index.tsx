@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState, IdiomsModel } from '../../../model/app.model';
 import { getIdioms } from '../../../store/actions/idioms.actions';
 
-export const Idioms: React.FC = () => {
+const Idioms: React.FC = () => {
 
     const idioms = useSelector((appState: AppState) => appState.idioms);
     const dispatch = useDispatch();
@@ -131,3 +131,5 @@ const RemoveItemContainer: React.FC<IdiomProps> = ({idiom}) => {
         </React.Fragment>
     )
 }
+
+export default Idioms;

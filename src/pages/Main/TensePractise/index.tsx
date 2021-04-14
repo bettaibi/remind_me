@@ -11,7 +11,7 @@ import { Subject } from '../words/shared/Subject';
 import { EditSentences } from './EditSentences';
 import { NewSentences } from './NewSentences';
 
-export const TensePractise: React.FC = () => {
+const TensePractise: React.FC = () => {
 
     const sentences: any = useSelector((appState: AppState) => appState.tenses);
     const dispatch = useDispatch();
@@ -141,3 +141,5 @@ const RemoveContainer: React.FC<NoteProp> = ({item}) => {
         </React.Fragment>
     )
 }
+
+export default TensePractise;

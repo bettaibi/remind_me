@@ -11,7 +11,7 @@ import { Subject } from '../words/shared/Subject';
 import { EditNote } from './EditNote';
 import { NewNote } from './NewNote';
 
-export const Notes: React.FC = () => {
+const Notes: React.FC = () => {
 
     const notes = useSelector((appState: AppState) => appState.notes);
     const dispatch = useDispatch();
@@ -117,3 +117,5 @@ const RemoveContainer: React.FC<NoteProp> = ({note}) => {
         </React.Fragment>
     )
 }
+
+export default Notes;

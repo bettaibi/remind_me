@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState, LinkersModel } from '../../../../model/app.model';
 import { getLinkers } from '../../../../store/actions/linkers.actions';
 
-export const Linkers: React.FC = () => {
+const Linkers: React.FC = () => {
     const linkers = useSelector((appState: AppState) => appState.linkers);
     const dispatch = useDispatch();
 
@@ -119,3 +119,5 @@ const RemoveItemContainer: React.FC<LinkerProps> = ({linker}) => {
         </React.Fragment>
     )
 }
+
+export default Linkers;

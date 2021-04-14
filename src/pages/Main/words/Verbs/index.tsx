@@ -12,7 +12,7 @@ import { AppState, VerbModal } from '../../../../model/app.model';
 import { deleteVerb, getVerbs } from '../../../../store/actions/verb.actions';
 import { useCache, Collections } from '../../../../cache';
 
-export const Verbs: React.FC = () => {
+const Verbs: React.FC = () => {
 
     const verbs = useSelector((state: AppState) => state.verbs);
     const dispatch = useDispatch();
@@ -135,3 +135,6 @@ const RemoveVerbContainer: React.FC<VerbProps> = ({verb, dispatch}) => {
         </React.Fragment>
     )
 }
+
+
+export default Verbs;

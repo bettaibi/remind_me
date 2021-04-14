@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState, PhrasalModel } from '../../../../model/app.model';
 import { getPhrasalVerbs } from '../../../../store/actions/phrasalVerb.actions';
 
-export const PhrasalVerbs: React.FC = () => {
+const PhrasalVerbs: React.FC = () => {
     const phrasalVerbs = useSelector((appState: AppState) => appState.phrasalVerbs);
     const dispatch = useDispatch();
 
@@ -119,3 +119,5 @@ const RemoveItemContainer: React.FC<PhrasalVerbProps> = ({phrasalVerb}) => {
         </React.Fragment>
     )
 }
+
+export default PhrasalVerbs;

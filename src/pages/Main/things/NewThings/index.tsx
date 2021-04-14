@@ -25,7 +25,7 @@ const schema = yup.object().shape({
     )
 })
 
-export const NewThings: React.FC = () => {
+const NewThings: React.FC = () => {
 
     return (
         <React.Fragment>
@@ -231,3 +231,5 @@ const FileUpload: React.FC<FileUploadProps> = ({ onPicChange }) => {
         </React.Fragment>
     )
 }
+
+export default NewThings;

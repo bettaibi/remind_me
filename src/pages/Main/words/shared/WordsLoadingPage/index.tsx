@@ -1,7 +1,7 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export const WordsLoadingPage: React.FC = () => {
+const WordsLoadingPage: React.FC = () => {
     return (
         <React.Fragment>
             <div className="bg-light border rounded p-3 mb-3">
@@ -31,3 +31,5 @@ export const WordsLoadingPage: React.FC = () => {
         </React.Fragment>
     )
 }
+
+export default WordsLoadingPage;

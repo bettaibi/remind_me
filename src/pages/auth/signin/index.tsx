@@ -22,7 +22,7 @@ const schema = yup.object().shape({
         .max(20, 'too much letters')
 });
 
-export const Signin: React.FC = () => {
+const Signin: React.FC = () => {
     const history = useHistory();
     const { Snackbar, showMsg } = useSnackbar();
     const { signInWithEmailAndPassword } = useAuth()
@@ -132,3 +132,5 @@ const DialogContainer = () => {
         </React.Fragment>
     )
 }
+
+export default Signin;

@@ -1,9 +1,11 @@
 import React from 'react';
 
-export const Games: React.FC = () => {
+const Games: React.FC = () => {
     return (
         <div>
             This is a Games Component
         </div>
     )
 }
+
+export default Games;

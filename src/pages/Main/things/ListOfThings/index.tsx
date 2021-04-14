@@ -10,7 +10,7 @@ import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getThings } from '../../../../store/actions/thing.actions';
 
-export const ListOfThings: React.FC = () => {
+const ListOfThings: React.FC = () => {
     const history = useHistory();
     const things: any = useSelector((appState: AppState) => appState.things);
     const dispatch = useDispatch();
@@ -115,5 +115,7 @@ const RemoveContainer: React.FC<ThingProp> = ({thing}) => {
         </React.Fragment>
     )
 }
+
+export default ListOfThings;
 
 

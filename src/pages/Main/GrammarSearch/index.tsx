@@ -14,7 +14,7 @@ const schema = Yup.object().shape({
     query: Yup.string().required('Enter a Verb to get its conjugations').max(25, 'Too much letters!')
 });
 
-export const GrammarSearch: React.FC = () => {
+const GrammarSearch: React.FC = () => {
     const { data, isLoading, isError, grammarSearch } = useGrammar();
     const initialValue = data? {query: data.conjugated_forms[0]['1']}: {query: ''};
 
@@ -205,3 +205,5 @@ const useGrammar = () => {
         grammarSearch
     }
 }
+
+export default GrammarSearch;

@@ -3,7 +3,7 @@ import { Form, Alert } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
 import UseAssistant from '../../../components/useAssistant';
 
-export const VoiceAssistance: React.FC = () => {
+const VoiceAssistance: React.FC = () => {
     const { setAssistantVoice, voiceHandler, changeAssistantVoice, currentVoice, voices} = UseAssistant();
     const [text, setText] = useState<string>('Hello, How it is going?');
 
@@ -77,3 +77,5 @@ export const VoiceAssistance: React.FC = () => {
         </Form>
     )
 }
+
+export default VoiceAssistance;

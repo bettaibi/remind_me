@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AdverbModel, AppState } from '../../../../model/app.model';
 import { getAdverbs } from '../../../../store/actions/adverb.actions';
 
-export const Adverbs: React.FC = () => {
+const Adverbs: React.FC = () => {
 
     const adverbs = useSelector((appState: AppState) => appState.adverbs);
     const dispatch = useDispatch();
@@ -120,3 +120,5 @@ const RemoveItemContainer: React.FC<AdverbProps> = ({adverb}) => {
         </React.Fragment>
     )
 }
+
+export default Adverbs;

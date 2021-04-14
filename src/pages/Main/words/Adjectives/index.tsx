@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AdjectiveModel, AppState } from '../../../../model/app.model';
 import { getAdjectives } from '../../../../store/actions/adjectives.actions';
 
-export const Adjectives: React.FC = () => {
+const Adjectives: React.FC = () => {
     
     const adjectives = useSelector((appState: AppState) => appState.adjectives);
     const dispatch = useDispatch();
@@ -120,3 +120,5 @@ const RemoveItemContainer: React.FC<AdjectiveProps> = ({adjective}) => {
         </React.Fragment>
     )
 }
+
+export default Adjectives;

@@ -24,7 +24,7 @@ const schema = yup.object().shape({
     .max(20, 'too much letters').oneOf([yup.ref('password')], 'Password must much')
 });
 
-export const Singup: React.FC = () => {
+const Singup: React.FC = () => {
     const history = useHistory();
     const { createUserWithEmailAndPassword } = useAuth();
     const { Snackbar, showMsg } = useSnackbar();
@@ -116,3 +116,5 @@ export const Singup: React.FC = () => {
     )
   
 }
+
+export default Singup;

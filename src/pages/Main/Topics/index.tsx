@@ -12,7 +12,7 @@ import { EditTopic } from './EditTopic';
 import { NewTopic } from './NewTopic';
 
 
-export const Topics: React.FC = () => {
+const Topics: React.FC = () => {
 
     const topics = useSelector((appState: AppState) => appState.topics);
     const dispatch = useDispatch();
@@ -117,3 +117,5 @@ const RemoveContainer: React.FC<TopicProp> = ({topic}) => {
         </React.Fragment>
     )
 }
+
+export default Topics;

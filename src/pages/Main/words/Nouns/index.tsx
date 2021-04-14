@@ -11,7 +11,7 @@ import { AppState, NounModel } from '../../../../model/app.model';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNouns } from '../../../../store/actions/noun.actions';
 
-export const Nouns: React.FC = () => {
+const Nouns: React.FC = () => {
     const nouns = useSelector((appState: AppState) => appState.nouns);
     const dispatch = useDispatch();
 
@@ -119,3 +119,5 @@ const RemoveNounContainer: React.FC<NounProps> = ({noun}) => {
         </React.Fragment>
     )
 }
+
+export default Nouns;

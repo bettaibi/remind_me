@@ -16,7 +16,7 @@ const schema = Yup.object().shape({
 const definitionApi = "https://api.dictionaryapi.dev/api/v2/entries/en_GB";
 
 
-export const WordDefinition: React.FC = () => {
+const WordDefinition: React.FC = () => {
     const { data, getDefinition, isLoading, isError } = useDefinition();
     let initilalValue = data ? { query: data.word } : { query: '' };
 
@@ -223,3 +223,5 @@ const DefinitionSkeleton: React.FC = () => {
         </div>
     )
 }
+
+export default WordDefinition;
