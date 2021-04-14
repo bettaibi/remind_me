@@ -9,7 +9,7 @@ const IdiomReducer = (state = [], action: ActionForm) => {
         case ADD_IDIOM:
             return [action.payload, ...state];
         case DELETE_IDIOM:
-            return [...state.filter((item: IdiomsModel) => item.id === action.id)];
+            return [...state.filter((item: IdiomsModel) => item.id !== action.id)];
         case UPDATE_IDIOM:
             return [...state.map((item: IdiomsModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

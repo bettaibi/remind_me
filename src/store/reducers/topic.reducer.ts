@@ -9,7 +9,7 @@ const TopicReducer = (state = [], action: ActionForm) => {
         case ADD_TOPIC:
             return [action.payload, ...state];
         case DELETE_TOPIC:
-            return [...state.filter((item: TopicModel) => item.id === action.id)];
+            return [...state.filter((item: TopicModel) => item.id !== action.id)];
         case UPDATE_TOPIC:
             return [...state.map((item: TopicModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

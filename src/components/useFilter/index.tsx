@@ -1,21 +1,19 @@
 import { useState } from "react";
 
 export const useFilter = (dataSource: any[]) => {
-    const [filtredArr, setFiltredArr] = useState<any[]>(dataSource);
+    const [term, setTerm] = useState<string>('');
 
-    const newFilter = (term: string) =>{
+    function filterHandler(){
         if(term === ''){
-            setFiltredArr(dataSource);
+            return [...dataSource];
         }
         else{
-            let newArr = [...dataSource.filter((item: any)=> item.label.toLowerCase().includes(term.toLowerCase()))]
-            setFiltredArr(newArr);
+            return [...dataSource.filter((item: any)=> item.label.toLowerCase().includes(term.toLowerCase()))];
         }
     }
 
-
-    return{
-        filtredArr,
-        newFilter
+    return {
+        setTerm,
+        filterHandler
     };
 }

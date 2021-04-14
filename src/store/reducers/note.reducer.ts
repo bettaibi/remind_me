@@ -9,7 +9,7 @@ const NoteReducer = (state = [], action: ActionForm) => {
         case ADD_NOTE:
             return [action.payload, ...state];
         case DELETE_NOTE:
-            return [...state.filter((item: GrammarNotesModel) => item.id === action.id)];
+            return [...state.filter((item: GrammarNotesModel) => item.id !== action.id)];
         case UPDATE_NOTE:
             return [...state.map((item: GrammarNotesModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

@@ -9,7 +9,7 @@ const PhrasalVerbReducer = (state = [], action: ActionForm) => {
         case ADD_PHRASALVERB:
             return [action.payload, ...state];
         case DELETE_PHRASALVERB:
-            return [...state.filter((item: PhrasalModel) => item.id === action.id)];
+            return [...state.filter((item: PhrasalModel) => item.id !== action.id)];
         case UPDATE_PHRASALVERB:
             return [...state.map((item: PhrasalModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

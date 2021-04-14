@@ -10,13 +10,13 @@ interface PaginatedFiltrableListProps {
 }
 
 export const PaginatedFiltrableList: React.FC<PaginatedFiltrableListProps> = ({dataSource, children}) => {
-  
-    const { filtredArr, newFilter } = useFilter(dataSource);
-    const { CustomPagination, list } = useCustomPagination(filtredArr, 5);
+    console.log("datasource", dataSource)
+    const { setTerm, filterHandler } = useFilter([...dataSource]);
+    const { CustomPagination, list } = useCustomPagination(filterHandler(), 5);
 
     const handleChange = (e: any) => {
-        newFilter(e.target.value);
-    }
+        setTerm(e.target.value);
+    };
 
     return (
         <React.Fragment>
@@ -31,7 +31,7 @@ export const PaginatedFiltrableList: React.FC<PaginatedFiltrableListProps> = ({d
                     <React.Fragment>
                        {
                                list.map((item: any, index: number) => (
-                                   <AccordionItems key={'s' + index}  eventKey={'ev' + index} headerText= {item.label} >
+                                   <AccordionItems key={item.id}  eventKey={'ev' + index} headerText= {item.label} >
                                        {children(item)}
                                    </AccordionItems>
                                ))

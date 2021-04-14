@@ -9,7 +9,7 @@ const ThingReducer = (state = [], action: ActionForm) => {
         case ADD_THING:
             return [action.payload, ...state];
         case DELETE_THING:
-            return [...state.filter((item: NounModel) => item.id === action.id)];
+            return [...state.filter((item: NounModel) => item.id !== action.id)];
         default: return state;
     }
 };

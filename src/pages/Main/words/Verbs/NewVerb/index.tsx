@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { Formik, FieldArray } from 'formik';
 import { Form, Col, Card, Container } from 'react-bootstrap';
 import { VerbModal } from '../../../../../model/app.model';
@@ -11,7 +11,6 @@ import UseAssistant from '../../../../../components/useAssistant';
 import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { v4 } from 'uuid';
-import { useDispatch } from 'react-redux';
 import { addVerb } from '../../../../../store/actions/verb.actions';
 
 const INITIAL_VALUE: VerbModal = {
@@ -45,13 +44,13 @@ const schema = yup.object().shape({
 
 interface commonProps {
     handleToogle: () => void;
+    dispatch: Dispatch<any>;
 }
 
-export const NewVerb: React.FC<commonProps> = ({ handleToogle }) => {
+export const NewVerb: React.FC<commonProps> = ({ handleToogle, dispatch }) => {
     const { voiceHandler } = UseAssistant();
     const { saveByKey } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();
-    const dispatch = useDispatch();
 
     const spellWord = (word: string) => {
         if (word) {

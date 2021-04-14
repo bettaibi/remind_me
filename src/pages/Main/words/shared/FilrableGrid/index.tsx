@@ -10,11 +10,11 @@ interface FilrableGridProps {
 }
 export const FilrableGrid: React.FC<FilrableGridProps> = ({dataSource, children}) => {
     
-    const { filtredArr, newFilter } = useFilter(dataSource);
-    const { CustomPagination, list } = useCustomPagination(filtredArr, 5);
+    const { filterHandler, setTerm } = useFilter(dataSource);
+    const { CustomPagination, list } = useCustomPagination(filterHandler(), 5);
 
     const handleChange = (e: any) => {
-        newFilter(e.target.value);
+        setTerm(e.target.value);
     }
 
     return (

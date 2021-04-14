@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
 import { Formik, FieldArray } from 'formik';
 import { Form, Col, Card, Container } from 'react-bootstrap';
@@ -9,7 +9,6 @@ import { VolumeUp } from 'react-bootstrap-icons';
 import UseAssistant from '../../../../../components/useAssistant';
 import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
-import { useDispatch } from 'react-redux';
 import { updateVerb } from '../../../../../store/actions/verb.actions';
 
 const schema = yup.object().shape({
@@ -31,14 +30,14 @@ const schema = yup.object().shape({
 interface VerbProps {
     verb: VerbModal;
     handleToggle: () => void;
+    dispatch: Dispatch<any>;
 }
 
-export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle}) => {
+export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle, dispatch}) => {
 
     const { voiceHandler } = UseAssistant();
     const { findOneAndUpdate } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();
-    const dispatch = useDispatch();
 
     const INITIAL_VALUE: VerbModal = {
         ...verb

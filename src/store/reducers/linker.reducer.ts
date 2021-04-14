@@ -9,7 +9,7 @@ const LinkerReducer = (state = [], action: ActionForm) => {
         case ADD_LINKER:
             return [action.payload, ...state];
         case DELETE_LINKER:
-            return [...state.filter((item: LinkersModel) => item.id === action.id)];
+            return [...state.filter((item: LinkersModel) => item.id !== action.id)];
         case UPDATE_LINKER:
             return [...state.map((item: LinkersModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

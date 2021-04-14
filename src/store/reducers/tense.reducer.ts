@@ -9,7 +9,7 @@ const TenseReducer = (state = [], action: ActionForm) => {
         case ADD_TENSE:
             return [action.payload, ...state];
         case DELETE_TENSE:
-            return [...state.filter((item: TensePracticeModel) => item.id === action.id)];
+            return [...state.filter((item: TensePracticeModel) => item.id !== action.id)];
         case UPDATE_TENSE:
             return [...state.map((item: TensePracticeModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

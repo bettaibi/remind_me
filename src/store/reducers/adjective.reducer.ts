@@ -10,7 +10,7 @@ const AdjectiveReducer = (state = [], action: ActionForm) => {
         case ADD_ADJECTIVE:
             return [action.payload, ...state];
         case DELETE_ADJECTIVE:
-            return [...state.filter((item: AdjectiveModel) => item.id === action.id)];
+            return [...state.filter((item: AdjectiveModel) => item.id !== action.id)];
         case UPDATE_ADJECTIVE:
             return [...state.map((item: AdjectiveModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

@@ -9,7 +9,7 @@ const NounReducer = (state = [], action: ActionForm) => {
         case ADD_NOUN:
             return [action.payload, ...state];
         case DELETE_NOUN:
-            return [...state.filter((item: NounModel) => item.id === action.id)];
+            return [...state.filter((item: NounModel) => item.id !== action.id)];
         case UPDATE_NOUN:
             return [...state.map((item: NounModel)=> item.id !== action.id? item: action.payload)];
         default: return state;

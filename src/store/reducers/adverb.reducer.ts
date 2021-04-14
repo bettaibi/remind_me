@@ -9,7 +9,7 @@ const AdverbReducer = (state = [], action: ActionForm) => {
         case ADD_ADVERB:
             return [action.payload, ...state];
         case DELETE_ADVERB:
-            return [...state.filter((item: AdverbModel) => item.id === action.id)];
+            return [...state.filter((item: AdverbModel) => item.id !== action.id)];
         case UPDATE_ADVERB:
             return [...state.map((item: AdverbModel)=> item.id !== action.id? item: action.payload)];
         default: return state;
