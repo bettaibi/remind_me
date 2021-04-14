@@ -6,7 +6,7 @@ import { VerbModal } from '../../../../../model/app.model';
 
 import * as yup from 'yup';
 import { VolumeUp } from 'react-bootstrap-icons';
-import UseAssistant from '../../../../../components/useAssistant';
+import useAssistant from '../../../../../components/useAssistant';
 import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { updateVerb } from '../../../../../store/actions/verb.actions';
@@ -35,7 +35,7 @@ interface VerbProps {
 
 export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle, dispatch}) => {
 
-    const { voiceHandler } = UseAssistant();
+    const { voiceHandler } = useAssistant();
     const { findOneAndUpdate } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();
 

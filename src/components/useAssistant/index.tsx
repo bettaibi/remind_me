@@ -6,7 +6,7 @@ function checkVoice(){
     return defaultVoice;
 }
 
-const UseAssistant = () =>{
+const useAssistant = () =>{
    const synthRef  = useRef(window.speechSynthesis);
    const [currentVoice, setCurrentVoice] = useState<number>(checkVoice);
    const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -48,4 +48,4 @@ const UseAssistant = () =>{
     }
 };
 
-export default UseAssistant;
+export default useAssistant;

@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import conjugationTable from '../../../../../model/conjugationTable.model';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
 import { VolumeUp } from 'react-bootstrap-icons';
-import UseAssistant from '../../../../../components/useAssistant';
+import useAssistant from '../../../../../components/useAssistant';
 import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { v4 } from 'uuid';
@@ -48,7 +48,7 @@ interface commonProps {
 }
 
 export const NewVerb: React.FC<commonProps> = ({ handleToogle, dispatch }) => {
-    const { voiceHandler } = UseAssistant();
+    const { voiceHandler } = useAssistant();
     const { saveByKey } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();
 
