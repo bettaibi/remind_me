@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { Formik, FieldArray } from 'formik';
 import { Form, Col, Card, Container } from 'react-bootstrap';
 import { VerbModal } from '../../../../../model/app.model';
@@ -8,7 +8,6 @@ import conjugationTable from '../../../../../model/conjugationTable.model';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
 import { VolumeUp } from 'react-bootstrap-icons';
 import useAssistant from '../../../../../components/useAssistant';
-import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { v4 } from 'uuid';
 import { addVerb } from '../../../../../store/actions/verb.actions';
@@ -45,12 +44,12 @@ const schema = yup.object().shape({
 
 interface commonProps {
     handleToogle: () => void;
+    saveByKey: (obj: any, key:string)=> any;
 }
 
-export const NewVerb: React.FC<commonProps> = ({ handleToogle }) => {
+export const NewVerb: React.FC<commonProps> = ({ handleToogle, saveByKey }) => {
     const { dispatch } = useSharedContext();
     const { voiceHandler } = useAssistant();
-    const { saveByKey } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();
 
     const spellWord = (word: string) => {

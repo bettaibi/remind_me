@@ -16,10 +16,10 @@ import useAssistant from '../../../../components/useAssistant';
 import { useSharedContext } from '../../../../Context';
 
 const Verbs: React.FC = () => {
-
+    
     const verbs = useSelector((state: AppState) => state.verbs);
     const { dispatch } = useSharedContext();
-    const { find } = useCache(Collections.VERBS);
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.VERBS);
 
     useEffect(() => {
         find().then((res) => {
@@ -30,7 +30,7 @@ const Verbs: React.FC = () => {
                 console.log(res.message)
             }
         })
-            .catch(err => console.error(err))
+        .catch(err => console.error(err))
     }, []);
 
     return (
@@ -43,7 +43,7 @@ const Verbs: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewVerb handleToogle={handleToggle} />
+                        <NewVerb handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -51,7 +51,7 @@ const Verbs: React.FC = () => {
             <PaginatedFiltrableList dataSource={verbs}>
                 {
                     (item) => (
-                        <Verb verb={item} />
+                        <Verb verb={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -61,17 +61,19 @@ const Verbs: React.FC = () => {
 
 interface VerbProps {
     verb: VerbModal;
+    findOneAndDelete: (id: string) => any;
+    findOneAndUpdate: (obj: any, id: string) => any;
 }
 
-const Verb: React.FC<VerbProps> = ({ verb }) => {
+const Verb: React.FC<VerbProps> = ({ verb, findOneAndDelete, findOneAndUpdate }) => {
 
     return (
         <React.Fragment>
             <VerbContent verb={verb} />
 
             <div className="text-right mt-3">
-                <EditVerbContainer verb={verb} />
-                <RemoveVerbContainer verb={verb} />
+                <EditVerbContainer verb={verb} findOneAndUpdate = {findOneAndUpdate}/>
+                <RemoveVerbContainer verb={verb} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
@@ -133,7 +135,7 @@ const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
                         <div className="d-flex flex-row flex-wrap">
                             {
                                 verb.synonyms.map((synonym: string, i: number) => (
-                                    <Badge className="px-2 py-1 mr-2"  variant="primary" key={verb.id + 'synonym' + i}>
+                                    <Badge className="px-2 py-1 mr-2"  variant="info" key={verb.id + 'synonym' + i}>
                                         {synonym}
                                     </Badge>
                                 ))
@@ -147,7 +149,11 @@ const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
     )
 };
 
-const EditVerbContainer: React.FC<VerbProps> = ({ verb }) => {
+interface EditVerbProps {
+    verb: VerbModal;
+    findOneAndUpdate: (obj: any, id: string) => any;
+}
+const EditVerbContainer: React.FC<EditVerbProps> = ({ verb, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -155,15 +161,18 @@ const EditVerbContainer: React.FC<VerbProps> = ({ verb }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditVerb verb={verb} handleToggle={handleToggle} />
+                <EditVerb findOneAndUpdate = {findOneAndUpdate} verb={verb} handleToggle={handleToggle} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveVerbContainer: React.FC<VerbProps> = ({ verb }) => {
+interface RemoveContainerProps {
+    verb: VerbModal;
+    findOneAndDelete: (id: string) => any;
+}
+const RemoveVerbContainer: React.FC<RemoveContainerProps> = ({ verb, findOneAndDelete}) => {
     const { dispatch } = useSharedContext();
-    const { findOneAndDelete } = useCache(Collections.VERBS);
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this verb? This cannot be undone.',
         onConfirmClick: onConfirm
@@ -195,6 +204,5 @@ const RemoveVerbContainer: React.FC<VerbProps> = ({ verb }) => {
         </React.Fragment>
     )
 }
-
 
 export default Verbs;

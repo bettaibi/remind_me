@@ -1,4 +1,4 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { FullPageHeader } from '../../../../../components/FullPageContainer';
 import { Formik, FieldArray } from 'formik';
 import { Form, Col, Card, Container } from 'react-bootstrap';
@@ -7,7 +7,6 @@ import { VerbModal } from '../../../../../model/app.model';
 import * as yup from 'yup';
 import { VolumeUp } from 'react-bootstrap-icons';
 import useAssistant from '../../../../../components/useAssistant';
-import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { updateVerb } from '../../../../../store/actions/verb.actions';
 import { useSharedContext } from '../../../../../Context';
@@ -31,13 +30,13 @@ const schema = yup.object().shape({
 interface VerbProps {
     verb: VerbModal;
     handleToggle: () => void;
+    findOneAndUpdate: (obj: any, id: string) => any;
 }
 
-export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle}) => {
+export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle, findOneAndUpdate}) => {
    
     const { dispatch } = useSharedContext();
     const { voiceHandler } = useAssistant();
-    const { findOneAndUpdate } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();
 
     const INITIAL_VALUE: VerbModal = {
