@@ -1,6 +1,7 @@
-import { NounModel, PhrasalModel, VerbModal, TopicModel, IdiomsModel, AdjectiveModel, AdverbModel, CustomResponse } from "../../../../model/app.model";
+import { NounModel, PhrasalModel, VerbModal, GrammarNotesModel, TopicModel, IdiomsModel, AdjectiveModel, AdverbModel, CustomResponse } from "../../../../model/app.model";
 
-type wordTypes = NounModel & PhrasalModel & VerbModal & TopicModel & IdiomsModel & AdjectiveModel &  AdverbModel;
+type wordTypes = NounModel & PhrasalModel & VerbModal & TopicModel & IdiomsModel 
+& AdjectiveModel &  AdverbModel & GrammarNotesModel;
 
 export interface wordsProps {
     word: wordTypes;
@@ -20,4 +21,15 @@ export interface WordEditProps{
 export interface WordRemoveProps{
     findOneAndDelete: (id: string) => Promise<CustomResponse>;
     word: wordTypes;
+}
+
+export interface AddProps{
+    handleToogle: () => void;
+    saveByKey: (obj: any, id: string) => any;
+}
+
+export interface EditProps{
+    handleToogle: () => void;
+    word: wordTypes;
+    findOneAndUpdate: (obj: any, id: string) => any;
 }

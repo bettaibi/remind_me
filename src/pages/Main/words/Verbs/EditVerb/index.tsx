@@ -58,7 +58,7 @@ export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle, findOneAndUpd
                 dispatch(updateVerb(id, values));
             }
             else{
-                showMsg('Failed to update', res.message);
+                showMsg('Failed to update', res.message, 'danger');
             }
         }
         catch(err){

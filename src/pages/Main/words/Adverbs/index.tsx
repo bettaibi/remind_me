@@ -7,26 +7,30 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditAdverb } from './EditAdverb';
 import { useToggleState } from '../../../../components/useToggleState';
-import { useDispatch, useSelector } from 'react-redux';
-import { AdverbModel, AppState } from '../../../../model/app.model';
-import { getAdverbs } from '../../../../store/actions/adverb.actions';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../model/app.model';
+import { deleteAdverb, getAdverbs } from '../../../../store/actions/adverb.actions';
+import { useSharedContext } from '../../../../Context';
+import { Collections, useCache } from '../../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
 
 const Adverbs: React.FC = () => {
-
     const adverbs = useSelector((appState: AppState) => appState.adverbs);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.ADVERBS);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getAdverbs(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
 
-    const fetchData = () => {
-        let data: AdverbModel[] =  [
-            {id:'ds', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-            {id:'ds', label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-        ];
-        dispatch(getAdverbs(data));
-    }
 
     return (
         <React.Fragment>
@@ -39,7 +43,7 @@ const Adverbs: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewAdverb handleToogle={handleToggle} />
+                        <NewAdverb handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -47,7 +51,7 @@ const Adverbs: React.FC = () => {
             <PaginatedFiltrableList dataSource={adverbs}>
                 {
                     (item) => (
-                        <Word adverb={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -57,25 +61,21 @@ const Adverbs: React.FC = () => {
     )
 };
 
-interface AdverbProps {
-    adverb: any;
-}
-
-const Word: React.FC<AdverbProps> = ({ adverb }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-            <ItemContent adverb={adverb} />
+            <ItemContent word={word} />
 
             <div className="text-right">
-                <EditItemContainer adverb = {adverb} />
-                <RemoveItemContainer adverb = {adverb} />
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
-const ItemContent: React.FC<AdverbProps> = ({ adverb }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -83,7 +83,7 @@ const ItemContent: React.FC<AdverbProps> = ({ adverb }) => {
     )
 };
 
-const EditItemContainer: React.FC<AdverbProps> = ({ adverb }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -91,22 +91,32 @@ const EditItemContainer: React.FC<AdverbProps> = ({ adverb }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditAdverb adverb={adverb} handleToogle={handleToggle} />
+                <EditAdverb word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveItemContainer: React.FC<AdverbProps> = ({adverb}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
-        message: 'Are you sure you want to remove this Adverb? This cannot be undone.',
+        message: 'Are you sure you want to remove this word? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
-        toggleConfirmMessage();
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deleteAdverb(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
     }
 
     const removeItem = () => {
@@ -120,5 +130,6 @@ const RemoveItemContainer: React.FC<AdverbProps> = ({adverb}) => {
         </React.Fragment>
     )
 }
+
 
 export default Adverbs;

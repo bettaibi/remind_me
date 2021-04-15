@@ -33,7 +33,6 @@ const PhrasalVerbs: React.FC = () => {
 
     return (
         <React.Fragment>
-            {/* <WordsLoadingPage /> */}
 
             <Subject
                 title="New Phrasal Verb"

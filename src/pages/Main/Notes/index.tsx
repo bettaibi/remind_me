@@ -1,33 +1,36 @@
 import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
 import { useToggleState } from '../../../components/useToggleState';
-import { AppState, GrammarNotesModel } from '../../../model/app.model';
-import { getNotes } from '../../../store/actions/note.actions';
+import { AppState } from '../../../model/app.model';
+import { deleteNote, getNotes } from '../../../store/actions/note.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { Subject } from '../words/shared/Subject';
 import { EditNote } from './EditNote';
 import { NewNote } from './NewNote';
+import { useSharedContext } from '../../../Context';
+import { Collections, useCache } from '../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
 
 const Notes: React.FC = () => {
 
     const notes = useSelector((appState: AppState) => appState.notes);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.NOTES);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getNotes(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
-
-    const fetchData = () => {
-        let data:  GrammarNotesModel[] = [
-            {id: 'kslsl',label: 'Casaul have', note: '', examples: [{sentence: '', answers : []}], question: ''},
-            {id: 'kslsl',label: 'How to make a suggession', note: '', examples: [{sentence: '', answers : []}], question: ''},
-            {id: 'kslsl',label: 'have to', note: '', examples: [{sentence: '', answers : []}], question: ''}
-        ];
-        dispatch(getNotes(data));
-    }
 
     return (
         <React.Fragment >
@@ -39,7 +42,7 @@ const Notes: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewNote handleToogle={handleToggle} />
+                        <NewNote handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -47,7 +50,7 @@ const Notes: React.FC = () => {
             <PaginatedFiltrableList dataSource={notes}>
                 {
                     (item) => (
-                        <Note note={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -56,26 +59,21 @@ const Notes: React.FC = () => {
     )
 }
 
-
-interface NoteProp {
-    note: GrammarNotesModel;
-}
-
-const Note: React.FC<NoteProp> = ({ note }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-        <TopicContent note={note} />
+            <ItemContent word={word} />
 
-        <div className="text-right">
-            <EditContainer note = {note} />
-            <RemoveContainer note = {note} />
-        </div>
-    </React.Fragment>
+            <div className="text-right">
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
+            </div>
+        </React.Fragment>
     )
 }
 
-const TopicContent: React.FC<NoteProp> = ({ note }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -83,7 +81,7 @@ const TopicContent: React.FC<NoteProp> = ({ note }) => {
     )
 };
 
-const EditContainer: React.FC<NoteProp> = ({ note }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -91,28 +89,41 @@ const EditContainer: React.FC<NoteProp> = ({ note }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditNote note={note} handleToogle={handleToggle} />
+                <EditNote word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-
-const RemoveContainer: React.FC<NoteProp> = ({note}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this Note? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deleteNote(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+    const removeItem = () => {
         toggleConfirmMessage();
     }
 
     return (
         <React.Fragment>
-            <Button variant="danger" size="sm" onClick={toggleConfirmMessage}>Remove</Button>
+            <Button variant="danger" size="sm" onClick={removeItem}>Remove</Button>
             <ConfirmDialog />
         </React.Fragment>
     )

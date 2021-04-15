@@ -9,6 +9,7 @@ import useAssistant from '../../../../../components/useAssistant';
 import { useSharedContext } from '../../../../../Context';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { updatePhrasalVerb } from '../../../../../store/actions/phrasalVerb.actions';
+import { EditProps } from '../../shared/words.model';
 
 
 const schema = yup.object().shape({
@@ -21,12 +22,7 @@ const schema = yup.object().shape({
     spelling: yup.string().required('This is a required field')
 });
 
-interface commonProps{
-    handleToogle: () => void;
-    word: PhrasalModel;
-    findOneAndUpdate: (obj: any, id: string) => any;
-}
-export const EditPhrasalVerb: React.FC<commonProps> = ({handleToogle, word, findOneAndUpdate}) => {
+export const EditPhrasalVerb: React.FC<EditProps> = ({handleToogle, word, findOneAndUpdate}) => {
     const { dispatch } = useSharedContext();
     const { voiceHandler } = useAssistant();
     const { Snackbar, showMsg } = useSnackbar();
@@ -42,11 +38,11 @@ export const EditPhrasalVerb: React.FC<commonProps> = ({handleToogle, word, find
             const id = word.id || '';
             const res = await findOneAndUpdate(values, id);
             if(res.success){
-                showMsg('Verb updated', res.message);
+                showMsg('Word updated', res.message);
                 dispatch(updatePhrasalVerb(id, values));
             }
             else{
-                showMsg('Failed to update', res.message);
+                showMsg('Failed to update', res.message, 'danger');
             }
         }
         catch(err){
@@ -55,11 +51,7 @@ export const EditPhrasalVerb: React.FC<commonProps> = ({handleToogle, word, find
     };
 
     const INITIAL_VALUE: PhrasalModel = {
-        label: word.label,
-        definition: word.definition,
-        examples: word.examples,
-        translation: word.translation,
-        spelling: word.spelling
+      ...word
     };
 
     return (

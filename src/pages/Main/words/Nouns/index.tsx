@@ -7,29 +7,32 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditNoun } from './EditNoun';
 import { useToggleState } from '../../../../components/useToggleState';
-import { AppState, NounModel } from '../../../../model/app.model';
-import { useDispatch, useSelector } from 'react-redux';
-import { getNouns } from '../../../../store/actions/noun.actions';
+import { AppState } from '../../../../model/app.model';
+import { useSelector } from 'react-redux';
+import { deleteNoun, getNouns } from '../../../../store/actions/noun.actions';
+import { useSharedContext } from '../../../../Context';
+import { Collections, useCache } from '../../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
 
 const Nouns: React.FC = () => {
     const nouns = useSelector((appState: AppState) => appState.nouns);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.NOUNS);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getNouns(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
-
-    const fetchData = () => {
-        let data: NounModel[] =  [
-            {id:'ds', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-            {id:'ds', label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-        ];
-        dispatch(getNouns(data));
-    }
 
     return (
         <React.Fragment>
-            {/* <WordsLoadingPage /> */}
 
             <Subject
                 title="New Noun"
@@ -38,7 +41,7 @@ const Nouns: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewNoun handleToogle={handleToggle} />
+                        <NewNoun handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -46,7 +49,7 @@ const Nouns: React.FC = () => {
             <PaginatedFiltrableList dataSource={nouns}>
                 {
                     (item) => (
-                        <Noun noun={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -56,25 +59,21 @@ const Nouns: React.FC = () => {
     )
 };
 
-interface NounProps {
-    noun: any;
-}
-
-const Noun: React.FC<NounProps> = ({ noun }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-            <NounContent noun={noun} />
+            <ItemContent word={word} />
 
             <div className="text-right">
-                <EditNounContainer noun = {noun} />
-                <RemoveNounContainer noun = {noun} />
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
-const NounContent: React.FC<NounProps> = ({ noun }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -82,7 +81,7 @@ const NounContent: React.FC<NounProps> = ({ noun }) => {
     )
 };
 
-const EditNounContainer: React.FC<NounProps> = ({ noun }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -90,31 +89,41 @@ const EditNounContainer: React.FC<NounProps> = ({ noun }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditNoun noun={noun} handleToogle={handleToggle} />
+                <EditNoun word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveNounContainer: React.FC<NounProps> = ({noun}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
-        message: 'Are you sure you want to remove this noun? This cannot be undone.',
+        message: 'Are you sure you want to remove this word? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
-        toggleConfirmMessage();
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deleteNoun(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
     }
 
-    const removeVerb = () => {
+    const removeItem = () => {
         toggleConfirmMessage();
     }
 
     return (
         <React.Fragment>
-            <Button variant="danger" size="sm" onClick={removeVerb}>Remove</Button>
+            <Button variant="danger" size="sm" onClick={removeItem}>Remove</Button>
             <ConfirmDialog />
         </React.Fragment>
     )

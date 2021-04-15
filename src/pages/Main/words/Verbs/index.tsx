@@ -8,12 +8,13 @@ import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditVerb } from './EditVerb';
 import { useToggleState } from '../../../../components/useToggleState';
 import { useSelector } from 'react-redux';
-import { AppState, VerbModal } from '../../../../model/app.model';
+import { AppState } from '../../../../model/app.model';
 import { deleteVerb, getVerbs } from '../../../../store/actions/verb.actions';
 import { useCache, Collections } from '../../../../cache';
 import { VolumeUp, ChatSquareQuote } from 'react-bootstrap-icons';
 import useAssistant from '../../../../components/useAssistant';
 import { useSharedContext } from '../../../../Context';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
 
 const Verbs: React.FC = () => {
     
@@ -51,7 +52,7 @@ const Verbs: React.FC = () => {
             <PaginatedFiltrableList dataSource={verbs}>
                 {
                     (item) => (
-                        <Verb verb={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
+                        <Verb word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -59,34 +60,25 @@ const Verbs: React.FC = () => {
     )
 };
 
-interface VerbProps {
-    verb: VerbModal;
-    findOneAndDelete: (id: string) => any;
-    findOneAndUpdate: (obj: any, id: string) => any;
-}
-
-const Verb: React.FC<VerbProps> = ({ verb, findOneAndDelete, findOneAndUpdate }) => {
+const Verb: React.FC<wordsProps> = ({ word, findOneAndDelete, findOneAndUpdate }) => {
 
     return (
         <React.Fragment>
-            <VerbContent verb={verb} />
+            <VerbContent word={word} />
 
             <div className="text-right mt-3">
-                <EditVerbContainer verb={verb} findOneAndUpdate = {findOneAndUpdate}/>
-                <RemoveVerbContainer verb={verb} findOneAndDelete = {findOneAndDelete} />
+                <EditVerbContainer word={word} findOneAndUpdate = {findOneAndUpdate}/>
+                <RemoveVerbContainer word={word} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
-interface VerbContentProps {
-    verb: VerbModal;
-}
-const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
+const VerbContent: React.FC<wordContentProps> = ({ word }) => {
     const { voiceHandler } = useAssistant();
 
     const spell = () => {
-        voiceHandler(verb.label);
+        voiceHandler(word.label);
     };
 
     return (
@@ -95,30 +87,30 @@ const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
                 <div>
                     <div className="mb-1">
                         <span className="mr-2 fw-500">Verb:</span>
-                        <span className="text-secondary">{verb.label} ({verb.category})</span>
+                        <span className="text-secondary">{word.label} ({word.category})</span>
                     </div>
                     <div className="mb-1">
                         <span className="mr-2 fw-500">Past Simple:</span>
-                        <span className="text-secondary">{verb.past}</span>
+                        <span className="text-secondary">{word.past}</span>
                     </div>
                     <div className="mb-1">
                         <span className="mr-2 fw-500">Past Participal:</span>
-                        <span className="text-secondary">{verb.pastParticipal}</span>
+                        <span className="text-secondary">{word.pastParticipal}</span>
                     </div>
                 </div>
                 <div>
-                    <span className="mr-2 text-muted">/{verb.spelling} /</span>
+                    <span className="mr-2 text-muted">/{word.spelling} /</span>
                     <span className="text-muted icons" onClick={spell}>
                         <VolumeUp size="20" />
                     </span>
                 </div>
             </div>
             <h6 className="text-dark">Definition</h6>
-            <p className="text-secondary">{verb.definition}</p>
+            <p className="text-secondary">{word.definition}</p>
             <h6>Examples</h6>
             {
-                verb.examples.map((item: string, index: number) => (
-                    <p key={verb.id + 'exmp' + index}>
+                word.examples.map((item: string, index: number) => (
+                    <p key={word.id + 'exmp' + index}>
                         <span className="mr-2">
                             <ChatSquareQuote />
                         </span>
@@ -129,13 +121,13 @@ const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
                 ))
             }
             {
-                verb.synonyms[0] !== "" && (
+                word.synonyms[0] !== "" && (
                     <React.Fragment>
                         <h6>Synonyms</h6>
                         <div className="d-flex flex-row flex-wrap">
                             {
-                                verb.synonyms.map((synonym: string, i: number) => (
-                                    <Badge className="px-2 py-1 mr-2"  variant="info" key={verb.id + 'synonym' + i}>
+                                word.synonyms.map((synonym: string, i: number) => (
+                                    <Badge className="px-2 py-1 mr-2"  variant="info" key={word.id + 'synonym' + i}>
                                         {synonym}
                                     </Badge>
                                 ))
@@ -149,11 +141,7 @@ const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
     )
 };
 
-interface EditVerbProps {
-    verb: VerbModal;
-    findOneAndUpdate: (obj: any, id: string) => any;
-}
-const EditVerbContainer: React.FC<EditVerbProps> = ({ verb, findOneAndUpdate }) => {
+const EditVerbContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -161,17 +149,13 @@ const EditVerbContainer: React.FC<EditVerbProps> = ({ verb, findOneAndUpdate }) 
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditVerb findOneAndUpdate = {findOneAndUpdate} verb={verb} handleToggle={handleToggle} />
+                <EditVerb findOneAndUpdate = {findOneAndUpdate} verb={word} handleToggle={handleToggle} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-interface RemoveContainerProps {
-    verb: VerbModal;
-    findOneAndDelete: (id: string) => any;
-}
-const RemoveVerbContainer: React.FC<RemoveContainerProps> = ({ verb, findOneAndDelete}) => {
+const RemoveVerbContainer: React.FC<WordRemoveProps> = ({ word, findOneAndDelete}) => {
     const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this verb? This cannot be undone.',
@@ -180,11 +164,11 @@ const RemoveVerbContainer: React.FC<RemoveContainerProps> = ({ verb, findOneAndD
 
     async function onConfirm() {
         try {
-            const res = await findOneAndDelete(verb.id || '');
+            const res = await findOneAndDelete(word.id || '');
             if (res.success) {
                 toggleConfirmMessage();
                 setTimeout(() => {
-                    dispatch(deleteVerb(verb.id || ''));
+                    dispatch(deleteVerb(word.id || ''));
                 }, 0);
             }
         }

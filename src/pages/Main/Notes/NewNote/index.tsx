@@ -6,6 +6,11 @@ import { GrammarNotesModel } from '../../../../model/app.model';
 import { Trash } from 'react-bootstrap-icons';
 
 import * as yup from 'yup';
+import { AddProps } from '../../words/shared/words.model';
+import { useSharedContext } from '../../../../Context';
+import { useSnackbar } from '../../../../components/Snackbar';
+import { v4 } from 'uuid';
+import { addNote } from '../../../../store/actions/note.actions';
 
 const INITIAL_VALUES: GrammarNotesModel = {
     label: '',
@@ -28,14 +33,31 @@ const schema = yup.object().shape({
     )
 })
 
-interface commonProps {
-    handleToogle: () => void;
-}
-export const NewNote: React.FC<commonProps> = ({ handleToogle }) => {
+export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
+    const { dispatch } = useSharedContext();
+    const { Snackbar, showMsg } = useSnackbar();
 
+    const create = async (values: GrammarNotesModel) => {
+        try{
+            const id = v4();
+            const res = await saveByKey({...values, id}, id);
+            if(res.success){
+                showMsg('created', res.message);
+                dispatch(addNote({...values, id}));
+            }
+            else{
+                showMsg('Failed to Created', 'Failed to persist', 'danger');
+            }
+            
+        }
+        catch(err){
+            throw err;
+        }
+    }
     
     return (
-        <Formik initialValues={INITIAL_VALUES} onSubmit={(values) => console.log(values)}
+       <React.Fragment>
+            <Formik initialValues={INITIAL_VALUES} onSubmit={(values) => create(values)}
         validationSchema = {schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, touched, errors, values }) => (
@@ -147,5 +169,7 @@ export const NewNote: React.FC<commonProps> = ({ handleToogle }) => {
                 )
             }
         </Formik>
+        <Snackbar />
+       </React.Fragment>
     )
 }

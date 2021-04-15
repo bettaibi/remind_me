@@ -5,7 +5,12 @@ import { FieldArray, Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Col, Container } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
-import UseAssistant from '../../../../../components/useAssistant';
+import useAssistant from '../../../../../components/useAssistant';
+import { AddProps } from '../../shared/words.model';
+import { useSharedContext } from '../../../../../Context';
+import { useSnackbar } from '../../../../../components/Snackbar';
+import { v4 } from 'uuid';
+import { addNoun } from '../../../../../store/actions/noun.actions';
 
 const INITIAL_VALUE: NounModel = {
     label: '',
@@ -29,22 +34,38 @@ const schema = yup.object().shape({
     spelling: yup.string().required('This is a required field')
 })
 
-interface commonProps {
-    handleToogle: () => void;
-}
-export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
+export const NewNoun: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
+    const { dispatch } = useSharedContext();
+    const { voiceHandler } = useAssistant();
+    const { Snackbar, showMsg } = useSnackbar();
 
-    const { voiceHandler } = UseAssistant();
+    const spellWord = (w: string) => {
+        if (w) {
+            voiceHandler(w);
+        }
+    }
 
-    const spellWord = (word: string) => {
-        if (word) {
-            console.log(word)
-            voiceHandler(word);
+    const create = async (values: NounModel) => {
+        try{
+            const id = v4();
+            const res = await saveByKey({...values, id}, id);
+            if(res.success){
+                showMsg('created', res.message);
+                dispatch(addNoun({...values, id}));
+            }
+            else{
+                showMsg('Failed to Created', 'Failed to persist', 'danger');
+            }
+            
+        }
+        catch(err){
+            throw err;
         }
     }
 
     return (
-        <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => console.log(value)} validationSchema={schema}>
+      <React.Fragment>
+            <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => create(value)} validationSchema={schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>
@@ -181,5 +202,7 @@ export const NewNoun: React.FC<commonProps> = ({ handleToogle }) => {
                 )
             }
         </Formik>
+        <Snackbar />
+      </React.Fragment>
     )
 }

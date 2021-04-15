@@ -7,29 +7,33 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditLinkers } from './EditLinkers';
 import { useToggleState } from '../../../../components/useToggleState';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppState, LinkersModel } from '../../../../model/app.model';
-import { getLinkers } from '../../../../store/actions/linkers.actions';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../model/app.model';
+import { deleteLinker, getLinkers } from '../../../../store/actions/linkers.actions';
+import { useSharedContext } from '../../../../Context';
+import { Collections, useCache } from '../../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
 
 const Linkers: React.FC = () => {
+    
     const linkers = useSelector((appState: AppState) => appState.linkers);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.LINKERS);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getLinkers(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
-
-    const fetchData = () => {
-        let data: LinkersModel[] =  [
-            {id:'ds', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-            {id:'ds', label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-        ];
-        dispatch(getLinkers(data));
-    }
 
     return (
         <React.Fragment>
-            {/* <WordsLoadingPage /> */}
 
             <Subject
                 title="New Linker"
@@ -38,7 +42,7 @@ const Linkers: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewLinkers handleToogle={handleToggle} />
+                        <NewLinkers handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -46,7 +50,7 @@ const Linkers: React.FC = () => {
             <PaginatedFiltrableList dataSource={linkers}>
                 {
                     (item) => (
-                        <Word linker={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -56,25 +60,21 @@ const Linkers: React.FC = () => {
     )
 };
 
-interface LinkerProps {
-    linker: any;
-}
-
-const Word: React.FC<LinkerProps> = ({ linker }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-            <ItemContent linker={linker} />
+            <ItemContent word={word} />
 
             <div className="text-right">
-                <EditItemContainer linker = {linker} />
-                <RemoveItemContainer linker = {linker} />
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
-const ItemContent: React.FC<LinkerProps> = ({ linker }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -82,7 +82,7 @@ const ItemContent: React.FC<LinkerProps> = ({ linker }) => {
     )
 };
 
-const EditItemContainer: React.FC<LinkerProps> = ({ linker }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -90,22 +90,32 @@ const EditItemContainer: React.FC<LinkerProps> = ({ linker }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditLinkers linkers={linker} handleToogle={handleToggle} />
+                <EditLinkers word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveItemContainer: React.FC<LinkerProps> = ({linker}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
-        message: 'Are you sure you want to remove this Linker? This cannot be undone.',
+        message: 'Are you sure you want to remove this word? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
-        toggleConfirmMessage();
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deleteLinker(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
     }
 
     const removeItem = () => {

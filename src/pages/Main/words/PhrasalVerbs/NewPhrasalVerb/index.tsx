@@ -10,6 +10,7 @@ import { v4 } from 'uuid';
 import { useSharedContext } from '../../../../../Context';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { addPhrasalVerb } from '../../../../../store/actions/phrasalVerb.actions';
+import { AddProps } from '../../shared/words.model';
 
 const INITIAL_VALUE: PhrasalModel = {
     label: '',
@@ -29,11 +30,7 @@ const schema = yup.object().shape({
     spelling: yup.string().required('This is a required field')
 })
 
-interface commonProps{
-    handleToogle: () => void;
-    saveByKey: (obj: any, id: string) => any;
-}
-export const NewPhrasalVerb: React.FC<commonProps> = ({handleToogle, saveByKey}) => {
+export const NewPhrasalVerb: React.FC<AddProps> = ({handleToogle, saveByKey}) => {
     const { dispatch } = useSharedContext();
     const { voiceHandler } = useAssistant();
     const { Snackbar, showMsg } = useSnackbar();

@@ -3,6 +3,9 @@ import { IdiomsModel } from '../../../../model/app.model';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button } from 'react-bootstrap';
+import { v4 } from 'uuid';
+import { useSharedContext } from '../../../../Context';
+import { addIdiom } from '../../../../store/actions/idioms.actions';
 
 const INITIAL_VALUE: IdiomsModel = {
     label: '',
@@ -16,11 +19,35 @@ const schema = yup.object().shape({
 
 interface commonProps{
     handleToogle: () => void;
+    showMsg: (title: string, msg: string, type?: any) => void;
+    saveByKey: (obj: any, id: string) => any;
 }
-export const NewIdiom: React.FC<commonProps> = ({handleToogle}) => {
+export const NewIdiom: React.FC<commonProps> = ({handleToogle, saveByKey, showMsg}) => {
+    const { dispatch } = useSharedContext();
+
+    const create = async (values: IdiomsModel) => {
+        try{
+            const id = v4();
+            const res = await saveByKey({...values, id}, id);
+            if(res.success){
+                showMsg('Idiom created', res.message);
+                dispatch(addIdiom({...values, id}));
+                setTimeout(()=>{
+                    handleToogle();
+                },0);
+            }
+            else{
+                showMsg('Failed to Created', 'Failed to persist', 'danger');
+            }
+            
+        }
+        catch(err){
+            throw err;
+        }
+    }
     
     return (
-        <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => console.log(value)} validationSchema={schema}>
+        <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => create(value)} validationSchema={schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>

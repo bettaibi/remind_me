@@ -7,30 +7,33 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditAdjective } from './EditAdjective';
 import { useToggleState } from '../../../../components/useToggleState';
-import { useDispatch, useSelector } from 'react-redux';
-import { AdjectiveModel, AppState } from '../../../../model/app.model';
-import { getAdjectives } from '../../../../store/actions/adjectives.actions';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../model/app.model';
+import { deleteAdjective, getAdjectives } from '../../../../store/actions/adjectives.actions';
+import { useSharedContext } from '../../../../Context';
+import { Collections, useCache } from '../../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
 
 const Adjectives: React.FC = () => {
     
     const adjectives = useSelector((appState: AppState) => appState.adjectives);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.ADJECTIVES);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getAdjectives(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
-
-    const fetchData = () => {
-        let data: AdjectiveModel[] =  [
-            {id:'ds',comparative: '', superlative: '', label: 'collaboration',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-            {id:'ds',comparative: '', superlative: '',  label: 'weakness',synonyms: [], definition:'',examples:[], translation:'', spelling:'' },
-        ];
-        dispatch(getAdjectives(data));
-    }
 
     return (
         <React.Fragment>
-            {/* <WordsLoadingPage /> */}
 
             <Subject
                 title="New Adjective"
@@ -39,7 +42,7 @@ const Adjectives: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewAdjective handleToogle={handleToggle} />
+                        <NewAdjective handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -47,7 +50,7 @@ const Adjectives: React.FC = () => {
             <PaginatedFiltrableList dataSource={adjectives}>
                 {
                     (item) => (
-                        <Word adjective={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -57,25 +60,21 @@ const Adjectives: React.FC = () => {
     )
 };
 
-interface AdjectiveProps {
-    adjective: any;
-}
-
-const Word: React.FC<AdjectiveProps> = ({ adjective }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-            <ItemContent adjective={adjective} />
+            <ItemContent word={word} />
 
             <div className="text-right">
-                <EditItemContainer adjective = {adjective} />
-                <RemoveItemContainer adjective = {adjective} />
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
-const ItemContent: React.FC<AdjectiveProps> = ({ adjective }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -83,7 +82,7 @@ const ItemContent: React.FC<AdjectiveProps> = ({ adjective }) => {
     )
 };
 
-const EditItemContainer: React.FC<AdjectiveProps> = ({ adjective }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -91,22 +90,32 @@ const EditItemContainer: React.FC<AdjectiveProps> = ({ adjective }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditAdjective adjective={adjective} handleToogle={handleToggle} />
+                <EditAdjective word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveItemContainer: React.FC<AdjectiveProps> = ({adjective}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
-        message: 'Are you sure you want to remove this Adjective? This cannot be undone.',
+        message: 'Are you sure you want to remove this word? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
-        toggleConfirmMessage();
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deleteAdjective(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
     }
 
     const removeItem = () => {
