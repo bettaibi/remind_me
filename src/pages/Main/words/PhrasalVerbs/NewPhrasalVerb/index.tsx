@@ -5,7 +5,11 @@ import { FieldArray, Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Col, Container } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
-import UseAssistant from '../../../../../components/useAssistant';
+import useAssistant from '../../../../../components/useAssistant';
+import { v4 } from 'uuid';
+import { useSharedContext } from '../../../../../Context';
+import { useSnackbar } from '../../../../../components/Snackbar';
+import { addPhrasalVerb } from '../../../../../store/actions/phrasalVerb.actions';
 
 const INITIAL_VALUE: PhrasalModel = {
     label: '',
@@ -27,19 +31,40 @@ const schema = yup.object().shape({
 
 interface commonProps{
     handleToogle: () => void;
+    saveByKey: (obj: any, id: string) => any;
 }
-export const NewPhrasalVerb: React.FC<commonProps> = ({handleToogle}) => {
-    const { voiceHandler } = UseAssistant();
+export const NewPhrasalVerb: React.FC<commonProps> = ({handleToogle, saveByKey}) => {
+    const { dispatch } = useSharedContext();
+    const { voiceHandler } = useAssistant();
+    const { Snackbar, showMsg } = useSnackbar();
 
     const spellWord = (word: string) => {
         if (word) {
-            console.log(word)
             voiceHandler(word);
         }
     }
 
+    const create = async (values: PhrasalModel) => {
+        try{
+            const id = v4();
+            const res = await saveByKey({...values, id}, id);
+            if(res.success){
+                showMsg('created', res.message);
+                dispatch(addPhrasalVerb({...values, id}));
+            }
+            else{
+                showMsg('Failed to Created', 'Failed to persist', 'danger');
+            }
+            
+        }
+        catch(err){
+            throw err;
+        }
+    }
+
     return (
-        <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => console.log(value)} validationSchema={schema}>
+       <React.Fragment>
+            <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => create(value)} validationSchema={schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>
@@ -94,8 +119,6 @@ export const NewPhrasalVerb: React.FC<commonProps> = ({handleToogle}) => {
                                         {errors.spelling}
                                     </Form.Control.Feedback>
                                 </Form.Group>
-
-
                             </Form.Row>
 
                             <Form.Group>
@@ -144,5 +167,7 @@ export const NewPhrasalVerb: React.FC<commonProps> = ({handleToogle}) => {
                 )
             }
         </Formik>
+        <Snackbar />
+       </React.Fragment>
     )
 }

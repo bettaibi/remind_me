@@ -7,25 +7,29 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditPhrasalVerb } from './EditPhrasalVerb';
 import { useToggleState } from '../../../../components/useToggleState';
-import { useSelector, useDispatch } from 'react-redux';
-import { AppState, PhrasalModel } from '../../../../model/app.model';
-import { getPhrasalVerbs } from '../../../../store/actions/phrasalVerb.actions';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../model/app.model';
+import { deletePhrasalVerb, getPhrasalVerbs } from '../../../../store/actions/phrasalVerb.actions';
+import { useSharedContext } from '../../../../Context';
+import { useCache, Collections } from '../../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
 
 const PhrasalVerbs: React.FC = () => {
     const phrasalVerbs = useSelector((appState: AppState) => appState.phrasalVerbs);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.PHRASALVERBS);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getPhrasalVerbs(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
-
-    const fetchData = () => {
-        let data: PhrasalModel[] =  [
-            {id:'ds', label: 'give up', definition:'',examples:[], translation:'', spelling:'' },
-            {id:'ds', label: 'figure out', definition:'',examples:[], translation:'', spelling:'' },
-        ];
-        dispatch(getPhrasalVerbs(data));
-    }
 
     return (
         <React.Fragment>
@@ -38,7 +42,7 @@ const PhrasalVerbs: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewPhrasalVerb handleToogle={handleToggle} />
+                        <NewPhrasalVerb handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -46,7 +50,7 @@ const PhrasalVerbs: React.FC = () => {
             <PaginatedFiltrableList dataSource={phrasalVerbs}>
                 {
                     (item) => (
-                        <Word phrasalVerb={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete}  />
                     )
                 }
             </PaginatedFiltrableList>
@@ -56,25 +60,21 @@ const PhrasalVerbs: React.FC = () => {
     )
 };
 
-interface PhrasalVerbProps {
-    phrasalVerb: any;
-}
-
-const Word: React.FC<PhrasalVerbProps> = ({ phrasalVerb }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-            <ItemContent phrasalVerb={phrasalVerb} />
+            <ItemContent word={word} />
 
             <div className="text-right">
-                <EditItemContainer phrasalVerb = {phrasalVerb} />
-                <RemoveItemContainer phrasalVerb = {phrasalVerb} />
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
-const ItemContent: React.FC<PhrasalVerbProps> = ({ phrasalVerb }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -82,7 +82,7 @@ const ItemContent: React.FC<PhrasalVerbProps> = ({ phrasalVerb }) => {
     )
 };
 
-const EditItemContainer: React.FC<PhrasalVerbProps> = ({ phrasalVerb }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -90,22 +90,32 @@ const EditItemContainer: React.FC<PhrasalVerbProps> = ({ phrasalVerb }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditPhrasalVerb phrasalVerb={phrasalVerb} handleToogle={handleToggle} />
+                <EditPhrasalVerb word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveItemContainer: React.FC<PhrasalVerbProps> = ({phrasalVerb}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this phrasal verb? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
-        toggleConfirmMessage();
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deletePhrasalVerb(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
     }
 
     const removeItem = () => {
