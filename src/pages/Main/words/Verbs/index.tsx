@@ -1,5 +1,5 @@
-import React, { Dispatch, useEffect } from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Badge, Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewVerb } from './NewVerb';
 import { Subject } from '../shared/Subject';
@@ -7,17 +7,18 @@ import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditVerb } from './EditVerb';
 import { useToggleState } from '../../../../components/useToggleState';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppState, VerbModal } from '../../../../model/app.model';
 import { deleteVerb, getVerbs } from '../../../../store/actions/verb.actions';
 import { useCache, Collections } from '../../../../cache';
-import { VolumeUp, ChatSquareQuote, Check } from 'react-bootstrap-icons';
+import { VolumeUp, ChatSquareQuote } from 'react-bootstrap-icons';
 import useAssistant from '../../../../components/useAssistant';
+import { useSharedContext } from '../../../../Context';
 
 const Verbs: React.FC = () => {
 
     const verbs = useSelector((state: AppState) => state.verbs);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
     const { find } = useCache(Collections.VERBS);
 
     useEffect(() => {
@@ -34,7 +35,6 @@ const Verbs: React.FC = () => {
 
     return (
         <React.Fragment>
-            {/* <WordsLoadingPage /> */}
 
             <Subject
                 title="New Verb"
@@ -43,7 +43,7 @@ const Verbs: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewVerb dispatch={dispatch} handleToogle={handleToggle} />
+                        <NewVerb handleToogle={handleToggle} />
                     )
                 }
             </Subject>
@@ -51,7 +51,7 @@ const Verbs: React.FC = () => {
             <PaginatedFiltrableList dataSource={verbs}>
                 {
                     (item) => (
-                        <Verb dispatch={dispatch} verb={item} />
+                        <Verb verb={item} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -61,18 +61,17 @@ const Verbs: React.FC = () => {
 
 interface VerbProps {
     verb: VerbModal;
-    dispatch: Dispatch<any>;
 }
 
-const Verb: React.FC<VerbProps> = ({ verb, dispatch }) => {
+const Verb: React.FC<VerbProps> = ({ verb }) => {
 
     return (
         <React.Fragment>
             <VerbContent verb={verb} />
 
             <div className="text-right mt-3">
-                <EditVerbContainer verb={verb} dispatch={dispatch} />
-                <RemoveVerbContainer verb={verb} dispatch={dispatch} />
+                <EditVerbContainer verb={verb} />
+                <RemoveVerbContainer verb={verb} />
             </div>
         </React.Fragment>
     )
@@ -131,18 +130,15 @@ const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
                 verb.synonyms[0] !== "" && (
                     <React.Fragment>
                         <h6>Synonyms</h6>
-                        {
-                            verb.synonyms.map((item: string, i: number) => {
-                                <p key={verb.id + 'synonym' + i}>
-                                    <span className="mr-2">
-                                        <Check />
-                                    </span>
-                                    {
-                                        item
-                                    }
-                                </p>
-                            })
-                        }
+                        <div className="d-flex flex-row flex-wrap">
+                            {
+                                verb.synonyms.map((synonym: string, i: number) => (
+                                    <Badge className="px-2 py-1 mr-2"  variant="primary" key={verb.id + 'synonym' + i}>
+                                        {synonym}
+                                    </Badge>
+                                ))
+                            }
+                        </div>  
                     </React.Fragment>
                 )
             }
@@ -151,7 +147,7 @@ const VerbContent: React.FC<VerbContentProps> = ({ verb }) => {
     )
 };
 
-const EditVerbContainer: React.FC<VerbProps> = ({ verb, dispatch }) => {
+const EditVerbContainer: React.FC<VerbProps> = ({ verb }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -159,14 +155,14 @@ const EditVerbContainer: React.FC<VerbProps> = ({ verb, dispatch }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditVerb verb={verb} handleToggle={handleToggle} dispatch={dispatch} />
+                <EditVerb verb={verb} handleToggle={handleToggle} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveVerbContainer: React.FC<VerbProps> = ({ verb, dispatch }) => {
-
+const RemoveVerbContainer: React.FC<VerbProps> = ({ verb }) => {
+    const { dispatch } = useSharedContext();
     const { findOneAndDelete } = useCache(Collections.VERBS);
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this verb? This cannot be undone.',

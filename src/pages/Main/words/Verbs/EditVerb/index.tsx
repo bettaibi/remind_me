@@ -10,6 +10,7 @@ import useAssistant from '../../../../../components/useAssistant';
 import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { updateVerb } from '../../../../../store/actions/verb.actions';
+import { useSharedContext } from '../../../../../Context';
 
 const schema = yup.object().shape({
     past: yup.string().required('This field is required').min(2, 'too short').max(50, 'too much'),
@@ -30,11 +31,11 @@ const schema = yup.object().shape({
 interface VerbProps {
     verb: VerbModal;
     handleToggle: () => void;
-    dispatch: Dispatch<any>;
 }
 
-export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle, dispatch}) => {
-
+export const EditVerb: React.FC<VerbProps> = ({verb, handleToggle}) => {
+   
+    const { dispatch } = useSharedContext();
     const { voiceHandler } = useAssistant();
     const { findOneAndUpdate } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();

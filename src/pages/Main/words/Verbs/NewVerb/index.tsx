@@ -12,6 +12,7 @@ import { Collections, useCache } from '../../../../../cache';
 import { useSnackbar } from '../../../../../components/Snackbar';
 import { v4 } from 'uuid';
 import { addVerb } from '../../../../../store/actions/verb.actions';
+import { useSharedContext } from '../../../../../Context';
 
 const INITIAL_VALUE: VerbModal = {
     past: '',
@@ -44,10 +45,10 @@ const schema = yup.object().shape({
 
 interface commonProps {
     handleToogle: () => void;
-    dispatch: Dispatch<any>;
 }
 
-export const NewVerb: React.FC<commonProps> = ({ handleToogle, dispatch }) => {
+export const NewVerb: React.FC<commonProps> = ({ handleToogle }) => {
+    const { dispatch } = useSharedContext();
     const { voiceHandler } = useAssistant();
     const { saveByKey } = useCache(Collections.VERBS);
     const { Snackbar, showMsg } = useSnackbar();
