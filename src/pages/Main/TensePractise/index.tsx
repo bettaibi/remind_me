@@ -1,57 +1,37 @@
 import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
 import { useToggleState } from '../../../components/useToggleState';
-import { AppState, TensePracticeModel } from '../../../model/app.model';
-import { getTenses } from '../../../store/actions/tenses.actions';
+import { AppState } from '../../../model/app.model';
+import { deleteTense, getTenses } from '../../../store/actions/tenses.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { Subject } from '../words/shared/Subject';
 import { EditSentences } from './EditSentences';
 import { NewSentences } from './NewSentences';
+import { useSharedContext } from '../../../Context';
+import { Collections, useCache } from '../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
 
 const TensePractise: React.FC = () => {
 
-    const sentences: any = useSelector((appState: AppState) => appState.tenses);
-    const dispatch = useDispatch();
+    const data = useSelector((appState: AppState) => appState.tenses);
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.TENSES);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getTenses(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
 
-    const fetchData = () => {
-        let data: TensePracticeModel[] = [
-            {id: "ddf" ,label:'I eat a banana every hour', sentences: [
-                {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
-                {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
-                {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
-                {tense: 'present progressive', sentence: 'i am eating a banana'},
-                {tense: 'future Simple', sentence: 'I will eat a banana'},
-                {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
-                {tense: 'present perfect', sentence: 'I have just eaten a banana'},
-            ]},
-            {id: "ddf",label:'I eat a banana every hour', sentences: [
-                {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
-                {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
-                {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
-                {tense: 'present progressive', sentence: 'i am eating a banana'},
-                {tense: 'future Simple', sentence: 'I will eat a banana'},
-                {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
-                {tense: 'present perfect', sentence: 'I have just eaten a banana'},
-            ]},
-            {id: "ddf",label: 'I eat a banana every hour', sentences: [
-                {tense: 'Present Simple', sentence: 'I eat a banana every hour'},
-                {tense: 'past Simple', sentence: 'I ate a banana an hour ago'},
-                {tense: 'past progressive', sentence: 'I was eating a banana one hour ago'},
-                {tense: 'present progressive', sentence: 'i am eating a banana'},
-                {tense: 'future Simple', sentence: 'I will eat a banana'},
-                {tense: 'future progressive', sentence: 'I will be eating a banana one hour later'},
-                {tense: 'present perfect', sentence: 'I have just eaten a banana'},
-            ]}
-        ];
-        dispatch(getTenses(data));
-    }
 
     return (
         <React.Fragment >
@@ -63,15 +43,15 @@ const TensePractise: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewSentences handleToogle={handleToggle} />
+                        <NewSentences handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
 
-            <PaginatedFiltrableList dataSource={sentences}>
+            <PaginatedFiltrableList dataSource={data}>
                 {
                     (item) => (
-                        <TenseItem item={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -80,26 +60,21 @@ const TensePractise: React.FC = () => {
     )
 }
 
-
-interface NoteProp {
-    item: TensePracticeModel;
-}
-
-const TenseItem: React.FC<NoteProp> = ({ item }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-        <ItemContent item={item} />
+            <ItemContent word={word} />
 
-        <div className="text-right">
-            <EditContainer item = {item} />
-            <RemoveContainer item = {item} />
-        </div>
-    </React.Fragment>
+            <div className="text-right">
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
+            </div>
+        </React.Fragment>
     )
 }
 
-const ItemContent: React.FC<NoteProp> = ({ item }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -107,7 +82,7 @@ const ItemContent: React.FC<NoteProp> = ({ item }) => {
     )
 };
 
-const EditContainer: React.FC<NoteProp> = ({ item }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -115,28 +90,41 @@ const EditContainer: React.FC<NoteProp> = ({ item }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditSentences sentences={item} handleToogle={handleToggle} />
+                <EditSentences word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-
-const RemoveContainer: React.FC<NoteProp> = ({item}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deleteTense(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+    const removeItem = () => {
         toggleConfirmMessage();
     }
 
     return (
         <React.Fragment>
-            <Button variant="danger" size="sm" onClick={toggleConfirmMessage}>Remove</Button>
+            <Button variant="danger" size="sm" onClick={removeItem}>Remove</Button>
             <ConfirmDialog />
         </React.Fragment>
     )

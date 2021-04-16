@@ -1,33 +1,36 @@
 import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
 import { useToggleState } from '../../../components/useToggleState';
-import { AppState, TopicModel } from '../../../model/app.model';
-import { getTopics } from '../../../store/actions/topic.actions';
+import { AppState } from '../../../model/app.model';
+import { deleteTopic, getTopics } from '../../../store/actions/topic.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { Subject } from '../words/shared/Subject';
 import { EditTopic } from './EditTopic';
 import { NewTopic } from './NewTopic';
-
+import { useSharedContext } from '../../../Context';
+import { Collections, useCache } from '../../../cache';
+import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
 
 const Topics: React.FC = () => {
 
     const topics = useSelector((appState: AppState) => appState.topics);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndUpdate, findOneAndDelete, saveByKey } = useCache(Collections.TOPICS);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getTopics(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
     }, []);
-
-    const fetchData = () => {
-        let data: TopicModel[] =  [
-            {id:'ds', label: 'collaboration', vocabs:[] ,paragraph: ""},
-            {id:'ds', label: 'weakness', vocabs:[] ,paragraph: ""},
-        ];
-        dispatch(getTopics(data));
-    }
 
     return (
         <React.Fragment >
@@ -39,7 +42,7 @@ const Topics: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewTopic handleToogle={handleToggle} />
+                        <NewTopic handleToogle={handleToggle} saveByKey = {saveByKey} />
                     )
                 }
             </Subject>
@@ -47,7 +50,7 @@ const Topics: React.FC = () => {
             <PaginatedFiltrableList dataSource={topics}>
                 {
                     (item) => (
-                        <Topic topic={item} />
+                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -55,27 +58,21 @@ const Topics: React.FC = () => {
     </React.Fragment>
     )
 }
-
-
-interface TopicProp {
-    topic: TopicModel;
-}
-
-const Topic: React.FC<TopicProp> = ({ topic }) => {
+const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
-            <TopicContent topic={topic} />
+            <ItemContent word={word} />
 
             <div className="text-right">
-                <EditContainer topic = {topic} />
-                <RemoveContainer topic = {topic} />
+                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
+                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
-const TopicContent: React.FC<TopicProp> = ({ topic }) => {
+const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
         <div>
             content
@@ -83,7 +80,7 @@ const TopicContent: React.FC<TopicProp> = ({ topic }) => {
     )
 };
 
-const EditContainer: React.FC<TopicProp> = ({ topic }) => {
+const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
 
     return (
@@ -91,28 +88,41 @@ const EditContainer: React.FC<TopicProp> = ({ topic }) => {
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditTopic topic={topic} handleToogle={handleToggle} />
+                <EditTopic word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-
-const RemoveContainer: React.FC<TopicProp> = ({topic}) => {
-
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+    const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
-        message: 'Are you sure you want to remove this Topic? This cannot be undone.',
+        message: 'Are you sure you want to remove this topic? This cannot be undone.',
         onConfirmClick: onConfirm
     });
 
-    function onConfirm() {
-        console.log("Confirm Clicked");
+    async function onConfirm() {
+        try {
+            const res = await findOneAndDelete(word.id || '');
+            if (res.success) {
+                toggleConfirmMessage();
+                setTimeout(() => {
+                    dispatch(deleteTopic(word.id || ''));
+                }, 0);
+            }
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+    const removeItem = () => {
         toggleConfirmMessage();
     }
 
     return (
         <React.Fragment>
-            <Button variant="danger" size="sm" onClick={toggleConfirmMessage}>Remove</Button>
+            <Button variant="danger" size="sm" onClick={removeItem}>Remove</Button>
             <ConfirmDialog />
         </React.Fragment>
     )

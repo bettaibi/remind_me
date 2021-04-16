@@ -154,7 +154,6 @@ export interface TopicModel{
     id?: string;
     label: string;
     vocabs: VocabularyModal[];
-    paragraph: string;
 }
 
 export interface VocabularyModal{

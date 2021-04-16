@@ -5,8 +5,6 @@ import { updateIdiom } from '../../../../store/actions/idioms.actions';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Button } from 'react-bootstrap';
-import { v4 } from 'uuid';
-
 
 const schema = yup.object().shape({
     label: yup.string().required('This field is required'),

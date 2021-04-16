@@ -5,12 +5,11 @@ import { FieldArray, Formik } from 'formik';
 import * as yup from 'yup';
 import { Form, Col, Container } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
-import { AddProps, EditProps } from '../../shared/words.model';
-import { addAdverb, updateAdverb } from '../../../../../store/actions/adverb.actions';
+import { EditProps } from '../../shared/words.model';
+import { updateAdverb } from '../../../../../store/actions/adverb.actions';
 import { useSharedContext } from '../../../../../Context';
 import useAssistant from '../../../../../components/useAssistant';
 import { useSnackbar } from '../../../../../components/Snackbar';
-import { v4 } from 'uuid';
 
 const schema = yup.object().shape({
     label: yup.string().required('This field is required').min(2, 'too short').max(40, 'too much'),

@@ -1,7 +1,7 @@
-import { NounModel, PhrasalModel, VerbModal, GrammarNotesModel, TopicModel, IdiomsModel, AdjectiveModel, AdverbModel, CustomResponse } from "../../../../model/app.model";
+import { NounModel, PhrasalModel, VerbModal, TensePracticeModel, GrammarNotesModel, TopicModel, IdiomsModel, AdjectiveModel, AdverbModel, CustomResponse } from "../../../../model/app.model";
 
 type wordTypes = NounModel & PhrasalModel & VerbModal & TopicModel & IdiomsModel 
-& AdjectiveModel &  AdverbModel & GrammarNotesModel;
+& AdjectiveModel &  AdverbModel & GrammarNotesModel & TensePracticeModel;
 
 export interface wordsProps {
     word: wordTypes;

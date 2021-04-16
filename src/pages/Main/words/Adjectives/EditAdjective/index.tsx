@@ -6,11 +6,10 @@ import * as yup from 'yup';
 import { Form, Col, Container } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
 import useAssistant from '../../../../../components/useAssistant';
-import { AddProps, EditProps } from '../../shared/words.model';
+import { EditProps } from '../../shared/words.model';
 import { useSharedContext } from '../../../../../Context';
 import { useSnackbar } from '../../../../../components/Snackbar';
-import { v4 } from 'uuid';
-import { addAdjective, updateAdjective } from '../../../../../store/actions/adjectives.actions';
+import { updateAdjective } from '../../../../../store/actions/adjectives.actions';
 
 const schema = yup.object().shape({
     label: yup.string().required('This field is required').min(2, 'too short').max(40, 'too much'),
