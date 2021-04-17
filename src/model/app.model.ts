@@ -11,7 +11,7 @@ export interface AppState{
     topics: TopicModel[];
     tenses: TensePracticeModel[];
     notes: GrammarNotesModel[];
-    things: ThingModel[];
+    things: PicThingsModel[];
     idioms: IdiomsModel[];
 }
 

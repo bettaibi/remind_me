@@ -43,13 +43,14 @@ export const NewSentences: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
     const { dispatch } = useSharedContext();
     const { Snackbar, showMsg } = useSnackbar();
 
-    const create = async (values: TensePracticeModel) => {
+    const create = async (values: TensePracticeModel, resetForm: ()=> void) => {
         try {
             const id = v4();
             const res = await saveByKey({ ...values, id }, id);
             if (res.success) {
                 showMsg('created', res.message);
                 dispatch(addTense({ ...values, id }));
+                resetForm();
             }
             else {
                 showMsg('Failed to Created', 'Failed to persist', 'danger');
@@ -64,7 +65,7 @@ export const NewSentences: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
 
     return (
         <React.Fragment>
-            <Formik initialValues={INITIAL_VALUES} onSubmit={(values) => create(values)}
+            <Formik initialValues={INITIAL_VALUES} onSubmit={(values, {resetForm}) => create(values, resetForm)}
                 validationSchema={schema}>
                 {
                     ({ handleChange, handleBlur, handleSubmit, touched, errors, values }) => (

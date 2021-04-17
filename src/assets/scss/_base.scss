@@ -105,6 +105,7 @@ html, body{
         &:hover{
             .pic-actions{
                 display: flex;
+                flex-direction: column;
             }
         }
         .pic-actions{

@@ -40,13 +40,14 @@ export const NewTopic: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
         }
     }
 
-    const create = async (values: TopicModel) => {
+    const create = async (values: TopicModel, resetForm: ()=> void) => {
         try {
             const id = v4();
             const res = await saveByKey({ ...values, id }, id);
             if (res.success) {
                 showMsg('created', res.message);
                 dispatch(addTopic({ ...values, id }));
+                resetForm();
             }
             else {
                 showMsg('Failed to Created', 'Failed to persist', 'danger');
@@ -60,7 +61,7 @@ export const NewTopic: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
 
     return (
         <React.Fragment>
-            <Formik initialValues={INITIAL_VALUE} onSubmit={(values) => create(values)}
+            <Formik initialValues={INITIAL_VALUE} onSubmit={(values, {resetForm}) => create(values, resetForm)}
                 validationSchema={schema}>
                 {
                     ({ handleSubmit, handleChange, handleBlur, values, isValid, touched, errors }) => (

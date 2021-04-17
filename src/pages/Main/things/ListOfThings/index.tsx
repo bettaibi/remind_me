@@ -2,40 +2,34 @@ import React, { useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { Trash } from 'react-bootstrap-icons';
 import { useHistory } from 'react-router-dom';
-import { AppState, PicThingsModel } from '../../../../model/app.model';
+import { AppState, CustomResponse, PicThingsModel } from '../../../../model/app.model';
 
-import pic from '../../../../assets/img/exp.jpg';
 import { FilrableGrid } from '../../words/shared/FilrableGrid';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getThings } from '../../../../store/actions/thing.actions';
+import { useSharedContext } from '../../../../Context';
+import { Collections, useCache } from '../../../../cache';
+import { useSnackbar } from '../../../../components/Snackbar';
 
 const ListOfThings: React.FC = () => {
     const history = useHistory();
     const things: any = useSelector((appState: AppState) => appState.things);
-    const dispatch = useDispatch();
+    const { dispatch } = useSharedContext();
+    const { find, findOneAndDelete } = useCache(Collections.THINGS);
 
     useEffect(() => {
-        fetchData();
+        find().then((res) => {
+            if (res.success) {
+                dispatch(getThings(res.data));
+            }
+            else {
+                console.log(res.message);
+            }
+        })
+        .catch(err => console.error(err));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const fetchData = () => {
-        let data: PicThingsModel[] = [
-            { id:'sdf', label: 'Recipe', picture: pic, things: [] },
-            { id:'sdf', label: 'salad', picture: pic, things: [] },
-            { id:'sdf', label: 'garlic', picture: pic, things: [] },
-            { id:'sdf', label: 'onions', picture: pic, things: [] },
-            {id:'sdf',  label: 'Recipe', picture: pic, things: [] },
-            { id:'sdf', label: 'salad', picture: pic, things: [] },
-            {id:'sdf',  label: 'garlic', picture: pic, things: [] },
-            {id:'sdf',  label: 'onions', picture: pic, things: [] },
-            {id:'sdf',  label: 'Recipe', picture: pic, things: [] },
-            {id:'sdf',  label: 'salad', picture: pic, things: [] },
-            {id:'sdf',  label: 'garlic', picture: pic, things: [] },
-            {id:'sdf',  label: 'onions', picture: pic, things: [] },
-        ];
-        dispatch(getThings(data));
-    }
 
 
     const create = () => {
@@ -53,22 +47,23 @@ const ListOfThings: React.FC = () => {
                 </div>
             </div>
 
-            <Things dataSource={things} />
+            <Things dataSource={things} findOneAndDelete = {findOneAndDelete} />
         </React.Fragment>
     )
 }
 
 interface ThingsProps {
     dataSource: PicThingsModel[];
+    findOneAndDelete: (id: string) => Promise<CustomResponse>;
 }
 
-const Things: React.FC<ThingsProps> = ({ dataSource }) => {
+const Things: React.FC<ThingsProps> = ({ dataSource, findOneAndDelete }) => {
 
     return (
         <FilrableGrid dataSource = {dataSource}>
             {
-                (item) => (
-                    <Thing thing={item} />
+                (item: PicThingsModel) => (
+                    <Thing thing={item} findOneAndDelete = {findOneAndDelete} />
                 )
             }
         </FilrableGrid>
@@ -77,32 +72,42 @@ const Things: React.FC<ThingsProps> = ({ dataSource }) => {
 
 interface ThingProp {
     thing: PicThingsModel;
+    findOneAndDelete: (id: string) => Promise<CustomResponse>;
 }
 
-const Thing: React.FC<ThingProp> = ({ thing }) => {
+const Thing: React.FC<ThingProp> = ({ thing, findOneAndDelete }) => {
 
     return (
         <React.Fragment>
             <div className="pic-container rounded overflow-hidden" style={{backgroundColor: 'lightgray'}}>
                 <img src={thing.picture} alt="thing" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div className="pic-actions">
-                   <RemoveContainer thing = {thing} />
+                   <RemoveContainer thing = {thing} findOneAndDelete = {findOneAndDelete} />
+                   <small className="text-white">{thing.label}</small>
                 </div>
             </div>
         </React.Fragment>
     )
 }
 
-const RemoveContainer: React.FC<ThingProp> = ({thing}) => {
+const RemoveContainer: React.FC<ThingProp> = ({thing, findOneAndDelete}) => {
 
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this Pic? This cannot be undone.',
         onConfirmClick: onConfirm
     });
+    const {Snackbar, showMsg} = useSnackbar();
 
     function onConfirm() {
         console.log("Confirm Clicked");
-        toggleConfirmMessage();
+        findOneAndDelete(thing.id || '').then((res) =>{
+            if(res.success){
+                toggleConfirmMessage();
+            }
+            else{
+                showMsg('Failed to remove', 'Something wrong, We cannot remove this picture', 'danger');
+            }
+        }).catch(err => console.log(err.message));
     }
 
     return (
@@ -112,6 +117,7 @@ const RemoveContainer: React.FC<ThingProp> = ({thing}) => {
                         <Trash className="align-self-center" size="22" />
              </Button>
             <ConfirmDialog />
+            <Snackbar />
         </React.Fragment>
     )
 }

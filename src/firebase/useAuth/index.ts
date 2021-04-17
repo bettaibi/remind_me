@@ -69,13 +69,43 @@ const useAuth = () =>{
         }
     }
 
+   const getCurrentUser = () => {
+        try{
+            auth.onAuthStateChanged((user)=> {
+                if(user){
+                    return {success: true, message: 'user Authenticated', data: user};
+                }
+                else{
+                    return {success: false, message: 'No user is signed in.'};
+                }
+            })
+        }
+        catch(err){
+            return {success: false, message: err.message};
+        }
+   };
+
+   const logout = () => {
+       try{
+            auth.signOut().then(()=>{
+                return {success: true, message: 'user logged out'};
+            })
+            .catch(err => {return {success: false, message: err.message}})
+       }
+       catch(err){
+        return {success: false, message: err.message};
+       }
+   }
+
     return {
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
         signOut,
         sendPasswordResetEmail,
         deleteUserAccount,
-        updateUserProfile
+        updateUserProfile,
+        getCurrentUser,
+        logout
     }
 };
 

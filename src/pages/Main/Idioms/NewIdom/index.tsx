@@ -25,7 +25,7 @@ interface commonProps{
 export const NewIdiom: React.FC<commonProps> = ({handleToogle, saveByKey, showMsg}) => {
     const { dispatch } = useSharedContext();
 
-    const create = async (values: IdiomsModel) => {
+    const create = async (values: IdiomsModel, resetForm: ()=> void) => {
         try{
             const id = v4();
             const res = await saveByKey({...values, id}, id);
@@ -35,6 +35,7 @@ export const NewIdiom: React.FC<commonProps> = ({handleToogle, saveByKey, showMs
                 setTimeout(()=>{
                     handleToogle();
                 },0);
+                resetForm();
             }
             else{
                 showMsg('Failed to Created', 'Failed to persist', 'danger');
@@ -47,7 +48,7 @@ export const NewIdiom: React.FC<commonProps> = ({handleToogle, saveByKey, showMs
     }
     
     return (
-        <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => create(value)} validationSchema={schema}>
+        <Formik initialValues={INITIAL_VALUE} onSubmit={(value, {resetForm}) => create(value, resetForm)} validationSchema={schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                     <Form onSubmit={handleSubmit}>

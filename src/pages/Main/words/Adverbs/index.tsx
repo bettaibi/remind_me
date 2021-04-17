@@ -30,6 +30,7 @@ const Adverbs: React.FC = () => {
             }
         })
         .catch(err => console.error(err));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 

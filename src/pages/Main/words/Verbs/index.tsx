@@ -30,7 +30,8 @@ const Verbs: React.FC = () => {
                 console.log(res.message)
             }
         })
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

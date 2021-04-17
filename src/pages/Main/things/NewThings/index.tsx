@@ -6,6 +6,7 @@ import { Trash } from 'react-bootstrap-icons';
 import * as yup from 'yup';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { useSnackbar } from '../../../../components/Snackbar';
+import { Collections, useCache } from '../../../../cache';
 
 
 const INITIAL_VALUE: PicThingsModel = {
@@ -26,22 +27,58 @@ const schema = yup.object().shape({
 })
 
 const NewThings: React.FC = () => {
+    const {saveByKey } = useCache(Collections.THINGS);
+    let currentPic: any = null;
+    
+    const save = (values: PicThingsModel, resetForm : () => void) => {
+        try{
+            console.log(values);
+            resetForm();
+            console.log(currentPic)
+        }
+        catch(err){
+            throw err;
+        }
+    }
+
+    const getCurrentPic = (pic: any) =>{
+        try{
+            currentPic = pic;
+            console.log(pic)
+        }
+        catch(err){
+            throw err;
+        }
+    };
 
     return (
         <React.Fragment>
             <div className="bg-light border rounded overflow-hidden mb-3" style={{ height: '300px' }}>
-                <PictureComponent />
+                <PictureComponent getCurrentPic = {getCurrentPic} />
             </div>
 
-            <ThingsForm />
+            <ThingsForm save = {save} />
         </React.Fragment>
     )
 }
 
-const ThingsForm: React.FC = () => {
+interface ThingsFormProps{
+    save: (values: PicThingsModel, resetForm : () => void) => void;
+}
+
+const ThingsForm: React.FC<ThingsFormProps> = ({save}) => {
+
+    const create = (values: PicThingsModel, resetForm : () => void) =>{
+        try{
+            save(values, resetForm);
+        }
+        catch(err){
+            throw err;
+        }
+    };
 
     return (
-        <Formik initialValues={INITIAL_VALUE} onSubmit={(values) => console.log(values)}
+        <Formik initialValues={INITIAL_VALUE} onSubmit={(values, {resetForm}) => create(values, resetForm)}
             validationSchema={schema}>
             {
                 ({ handleSubmit, handleChange, handleBlur, values, isValid, touched, errors }) => (
@@ -174,12 +211,16 @@ const InsertRecord: React.FC<InsertRecordProp> = ({push}) =>{
     )
 }
 
-const PictureComponent: React.FC = () => {
+interface PictureComponentProps{
+    getCurrentPic: (pic: any) => void;
+}
+const PictureComponent: React.FC<PictureComponentProps> = ({getCurrentPic}) => {
     const [pic, setPic] = useState<any>(null);
 
     const onPicChange = async (file: File) => {
         try {
             const base64 = await toBase64(file);
+            getCurrentPic(base64);
             setPic(base64);
         }
         catch (err) {

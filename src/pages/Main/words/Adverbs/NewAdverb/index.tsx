@@ -45,13 +45,14 @@ export const NewAdverb: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
         }
     }
 
-    const create = async (values: AdverbModel) => {
+    const create = async (values: AdverbModel, resetForm: ()=> void) => {
         try {
             const id = v4();
             const res = await saveByKey({ ...values, id }, id);
             if (res.success) {
                 showMsg('created', res.message);
                 dispatch(addAdverb({ ...values, id }));
+                resetForm();
             }
             else {
                 showMsg('Failed to Created', 'Failed to persist', 'danger');
@@ -65,7 +66,7 @@ export const NewAdverb: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
 
     return (
         <React.Fragment>
-            <Formik initialValues={INITIAL_VALUE} onSubmit={(value) => create(value)} validationSchema={schema}>
+            <Formik initialValues={INITIAL_VALUE} onSubmit={(value , {resetForm}) => create(value, resetForm)} validationSchema={schema}>
                 {
                     ({ handleBlur, handleChange, handleSubmit, errors, touched, values }) => (
                         <Form onSubmit={handleSubmit}>

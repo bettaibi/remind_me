@@ -37,13 +37,14 @@ export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
     const { dispatch } = useSharedContext();
     const { Snackbar, showMsg } = useSnackbar();
 
-    const create = async (values: GrammarNotesModel) => {
+    const create = async (values: GrammarNotesModel, resetForm: ()=> void) => {
         try{
             const id = v4();
             const res = await saveByKey({...values, id}, id);
             if(res.success){
                 showMsg('created', res.message);
                 dispatch(addNote({...values, id}));
+                resetForm();
             }
             else{
                 showMsg('Failed to Created', 'Failed to persist', 'danger');
@@ -57,7 +58,7 @@ export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
     
     return (
        <React.Fragment>
-            <Formik initialValues={INITIAL_VALUES} onSubmit={(values) => create(values)}
+            <Formik initialValues={INITIAL_VALUES} onSubmit={(values, {resetForm}) => create(values, resetForm)}
         validationSchema = {schema}>
             {
                 ({ handleBlur, handleChange, handleSubmit, touched, errors, values }) => (
