@@ -13,6 +13,8 @@ import { NewSentences } from './NewSentences';
 import { useSharedContext } from '../../../Context';
 import { Collections, useCache } from '../../../cache';
 import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
+import { ChatSquareQuote } from 'react-bootstrap-icons';
+import { SentenceModal } from '../../../model/app.model';
 
 const TensePractise: React.FC = () => {
 
@@ -75,10 +77,27 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 }
 
 const ItemContent: React.FC<wordContentProps> = ({ word }) => {
+
     return (
-        <div>
-            content
-        </div>
+        <React.Fragment>
+            {
+                word?.sentences && (
+                    <React.Fragment>
+                        <h6>All Sentences</h6>
+                        {
+                            word.sentences.map((item: SentenceModal, idx: number) => (
+                                <details key={word.id + 'details' + idx}>
+                                    <summary style={{outline: 'none'}}>{item.tense}</summary>
+                                    <p className="text-secondary mb-2">
+                                       "{item.sentence}"
+                                    </p>
+                                </details>
+                            ))
+                        }
+                    </React.Fragment>
+                )
+            }
+        </React.Fragment>
     )
 };
 

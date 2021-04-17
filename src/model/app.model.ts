@@ -177,11 +177,11 @@ interface NoteExamples{
 
 export interface TensePracticeModel{
     id?: string;
-    sentences: SentenseModal[];
+    sentences: SentenceModal[];
     label: string;
 }
 
-interface SentenseModal{
+export interface SentenceModal{
     tense: string;
     sentence: string;
 }

@@ -12,7 +12,8 @@ import { AppState } from '../../../../model/app.model';
 import { deleteAdverb, getAdverbs } from '../../../../store/actions/adverb.actions';
 import { useSharedContext } from '../../../../Context';
 import { Collections, useCache } from '../../../../cache';
-import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import { WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import WordContent from '../shared/WordContent';
 
 const Adverbs: React.FC = () => {
     const adverbs = useSelector((appState: AppState) => appState.adverbs);
@@ -65,7 +66,7 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 
     return (
         <React.Fragment>
-            <ItemContent word={word} />
+            <WordContent word={word} />
 
             <div className="text-right">
                 <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
@@ -74,14 +75,6 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
         </React.Fragment>
     )
 }
-
-const ItemContent: React.FC<wordContentProps> = ({ word }) => {
-    return (
-        <div>
-            content
-        </div>
-    )
-};
 
 const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();

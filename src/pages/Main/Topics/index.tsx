@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
 import { useToggleState } from '../../../components/useToggleState';
-import { AppState } from '../../../model/app.model';
+import { AppState, VocabularyModal } from '../../../model/app.model';
 import { deleteTopic, getTopics } from '../../../store/actions/topic.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { Subject } from '../words/shared/Subject';
@@ -13,6 +13,7 @@ import { NewTopic } from './NewTopic';
 import { useSharedContext } from '../../../Context';
 import { Collections, useCache } from '../../../cache';
 import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
+import { ChatSquareQuote } from 'react-bootstrap-icons';
 
 const Topics: React.FC = () => {
 
@@ -29,12 +30,12 @@ const Topics: React.FC = () => {
                 console.log(res.message);
             }
         })
-        .catch(err => console.error(err));
+            .catch(err => console.error(err));
     }, []);
 
     return (
         <React.Fragment >
-            
+
             <Subject
                 title="New Topic"
                 definition="
@@ -42,7 +43,7 @@ const Topics: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewTopic handleToogle={handleToggle} saveByKey = {saveByKey} />
+                        <NewTopic handleToogle={handleToggle} saveByKey={saveByKey} />
                     )
                 }
             </Subject>
@@ -50,12 +51,12 @@ const Topics: React.FC = () => {
             <PaginatedFiltrableList dataSource={topics}>
                 {
                     (item) => (
-                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
+                        <Word word={item} findOneAndUpdate={findOneAndUpdate} findOneAndDelete={findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
 
-    </React.Fragment>
+        </React.Fragment>
     )
 }
 const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
@@ -64,19 +65,42 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
         <React.Fragment>
             <ItemContent word={word} />
 
-            <div className="text-right">
-                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
-                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
+            <div className="text-right mt-3">
+                <EditItemContainer word={word} findOneAndUpdate={findOneAndUpdate} />
+                <RemoveItemContainer word={word} findOneAndDelete={findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
 
 const ItemContent: React.FC<wordContentProps> = ({ word }) => {
+
     return (
-        <div>
-            content
-        </div>
+        <React.Fragment>
+            {
+                word?.vocabs && (
+                    <React.Fragment>
+                        <h6>Related Vocabulary</h6>
+                        {
+                            word.vocabs.map((item: VocabularyModal, idx: number) => (
+                                <details key={word.id + 'details' + idx}>
+                                    <summary style={{outline: 'none'}}>{item.name}</summary>
+                                    <p className="text-secondary">
+                                       "{item.definition}"
+                                    </p>
+                                    <p>
+                                        <span className="mr-2">
+                                            <ChatSquareQuote />
+                                        </span>
+                                        {item.example}
+                                    </p>
+                                </details>
+                            ))
+                        }
+                    </React.Fragment>
+                )
+            }
+        </React.Fragment>
     )
 };
 
@@ -88,13 +112,13 @@ const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) 
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditTopic word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
+                <EditTopic word={word} handleToogle={handleToggle} findOneAndUpdate={findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({ word, findOneAndDelete }) => {
     const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this topic? This cannot be undone.',

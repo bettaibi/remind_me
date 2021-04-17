@@ -13,6 +13,7 @@ import { useSharedContext } from '../../../Context';
 import { Collections, useCache } from '../../../cache';
 import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
 import { useSnackbar } from '../../../components/Snackbar';
+import { ChatSquareQuote } from 'react-bootstrap-icons';
 
 const Idioms: React.FC = () => {
 
@@ -65,9 +66,12 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 
 const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
-        <div>
-            content
-        </div>
+        <p className="text-secondary">
+            <span className="mr-3">
+              <ChatSquareQuote size="22" />
+            </span>
+            {word.explication}
+        </p>
     )
 };
 

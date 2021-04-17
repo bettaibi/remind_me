@@ -3,8 +3,8 @@ import { useSharedContext } from '../../../../Context';
 import { CustomResponse, IdiomsModel } from '../../../../model/app.model';
 import { updateIdiom } from '../../../../store/actions/idioms.actions';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import { Form, Button } from 'react-bootstrap';
+import * as yup from 'yup';
 
 const schema = yup.object().shape({
     label: yup.string().required('This field is required'),

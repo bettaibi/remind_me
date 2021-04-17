@@ -12,7 +12,8 @@ import { useSelector } from 'react-redux';
 import { deleteNoun, getNouns } from '../../../../store/actions/noun.actions';
 import { useSharedContext } from '../../../../Context';
 import { Collections, useCache } from '../../../../cache';
-import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import { WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import WordContent from '../shared/WordContent';
 
 const Nouns: React.FC = () => {
     const nouns = useSelector((appState: AppState) => appState.nouns);
@@ -28,7 +29,7 @@ const Nouns: React.FC = () => {
                 console.log(res.message);
             }
         })
-        .catch(err => console.error(err));
+            .catch(err => console.error(err));
     }, []);
 
     return (
@@ -41,7 +42,7 @@ const Nouns: React.FC = () => {
                 ">
                 {
                     (handleToggle) => (
-                        <NewNoun handleToogle={handleToggle} saveByKey = {saveByKey} />
+                        <NewNoun handleToogle={handleToggle} saveByKey={saveByKey} />
                     )
                 }
             </Subject>
@@ -49,7 +50,7 @@ const Nouns: React.FC = () => {
             <PaginatedFiltrableList dataSource={nouns}>
                 {
                     (item) => (
-                        <Word word={item} findOneAndUpdate = {findOneAndUpdate} findOneAndDelete = {findOneAndDelete} />
+                        <Word word={item} findOneAndUpdate={findOneAndUpdate} findOneAndDelete={findOneAndDelete} />
                     )
                 }
             </PaginatedFiltrableList>
@@ -63,23 +64,15 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 
     return (
         <React.Fragment>
-            <ItemContent word={word} />
+            <WordContent word={word} />
 
-            <div className="text-right">
-                <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
-                <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
+            <div className="text-right mt-3">
+                <EditItemContainer word={word} findOneAndUpdate={findOneAndUpdate} />
+                <RemoveItemContainer word={word} findOneAndDelete={findOneAndDelete} />
             </div>
         </React.Fragment>
     )
 }
-
-const ItemContent: React.FC<wordContentProps> = ({ word }) => {
-    return (
-        <div>
-            content
-        </div>
-    )
-};
 
 const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();
@@ -89,13 +82,13 @@ const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) 
             <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
 
             <FullPageContainer show={show}>
-                <EditNoun word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
+                <EditNoun word={word} handleToogle={handleToggle} findOneAndUpdate={findOneAndUpdate} />
             </FullPageContainer>
         </React.Fragment>
     )
 };
 
-const RemoveItemContainer: React.FC<WordRemoveProps> = ({word, findOneAndDelete}) => {
+const RemoveItemContainer: React.FC<WordRemoveProps> = ({ word, findOneAndDelete }) => {
     const { dispatch } = useSharedContext();
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this word? This cannot be undone.',

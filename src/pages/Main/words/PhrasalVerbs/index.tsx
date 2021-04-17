@@ -12,7 +12,8 @@ import { AppState } from '../../../../model/app.model';
 import { deletePhrasalVerb, getPhrasalVerbs } from '../../../../store/actions/phrasalVerb.actions';
 import { useSharedContext } from '../../../../Context';
 import { useCache, Collections } from '../../../../cache';
-import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import { WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import WordContent from '../shared/WordContent';
 
 const PhrasalVerbs: React.FC = () => {
     const phrasalVerbs = useSelector((appState: AppState) => appState.phrasalVerbs);
@@ -63,7 +64,7 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 
     return (
         <React.Fragment>
-            <ItemContent word={word} />
+            <WordContent word={word} />
 
             <div className="text-right">
                 <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
@@ -72,14 +73,6 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
         </React.Fragment>
     )
 }
-
-const ItemContent: React.FC<wordContentProps> = ({ word }) => {
-    return (
-        <div>
-            content
-        </div>
-    )
-};
 
 const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();

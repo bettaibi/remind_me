@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Badge, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { NewVerb } from './NewVerb';
 import { Subject } from '../shared/Subject';
@@ -11,10 +11,9 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../../model/app.model';
 import { deleteVerb, getVerbs } from '../../../../store/actions/verb.actions';
 import { useCache, Collections } from '../../../../cache';
-import { VolumeUp, ChatSquareQuote } from 'react-bootstrap-icons';
-import useAssistant from '../../../../components/useAssistant';
 import { useSharedContext } from '../../../../Context';
-import { wordContentProps, WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import { WordEditProps, WordRemoveProps, wordsProps } from '../shared/words.model';
+import WordContent from '../shared/WordContent';
 
 const Verbs: React.FC = () => {
     
@@ -64,7 +63,7 @@ const Verb: React.FC<wordsProps> = ({ word, findOneAndDelete, findOneAndUpdate }
 
     return (
         <React.Fragment>
-            <VerbContent word={word} />
+            <WordContent word={word} />
 
             <div className="text-right mt-3">
                 <EditVerbContainer word={word} findOneAndUpdate = {findOneAndUpdate}/>
@@ -73,73 +72,6 @@ const Verb: React.FC<wordsProps> = ({ word, findOneAndDelete, findOneAndUpdate }
         </React.Fragment>
     )
 }
-
-const VerbContent: React.FC<wordContentProps> = ({ word }) => {
-    const { voiceHandler } = useAssistant();
-
-    const spell = () => {
-        voiceHandler(word.label);
-    };
-
-    return (
-        <React.Fragment>
-            <div className="d-flex flex-row justify-content-between mb-2">
-                <div>
-                    <div className="mb-1">
-                        <span className="mr-2 fw-500">Verb:</span>
-                        <span className="text-secondary">{word.label} ({word.category})</span>
-                    </div>
-                    <div className="mb-1">
-                        <span className="mr-2 fw-500">Past Simple:</span>
-                        <span className="text-secondary">{word.past}</span>
-                    </div>
-                    <div className="mb-1">
-                        <span className="mr-2 fw-500">Past Participal:</span>
-                        <span className="text-secondary">{word.pastParticipal}</span>
-                    </div>
-                </div>
-                <div>
-                    <span className="mr-2 text-muted">/{word.spelling} /</span>
-                    <span className="text-muted icons" onClick={spell}>
-                        <VolumeUp size="20" />
-                    </span>
-                </div>
-            </div>
-            <h6 className="text-dark">Definition</h6>
-            <p className="text-secondary">{word.definition}</p>
-            <h6>Examples</h6>
-            {
-                word.examples.map((item: string, index: number) => (
-                    <p key={word.id + 'exmp' + index}>
-                        <span className="mr-2">
-                            <ChatSquareQuote />
-                        </span>
-                        {
-                            item
-                        }
-                    </p>
-                ))
-            }
-            {
-                word.synonyms[0] !== "" && (
-                    <React.Fragment>
-                        <h6>Synonyms</h6>
-                        <div className="d-flex flex-row flex-wrap">
-                            {
-                                word.synonyms.map((synonym: string, i: number) => (
-                                    <Badge className="px-2 py-1 mr-2"  variant="info" key={word.id + 'synonym' + i}>
-                                        {synonym}
-                                    </Badge>
-                                ))
-                            }
-                        </div>  
-                    </React.Fragment>
-                )
-            }
-
-        </React.Fragment>
-    )
-};
 
 const EditVerbContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
     const { handleToggle, show } = useToggleState();

@@ -75,9 +75,9 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 
 const ItemContent: React.FC<wordContentProps> = ({ word }) => {
     return (
-        <div>
-            content
-        </div>
+        <p className="text-secondary">
+            "{word.note}"
+        </p>
     )
 };
 
@@ -86,7 +86,7 @@ const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) 
 
     return (
         <React.Fragment>
-            <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Update</Button>
+            <Button className="mr-2" variant="primary" size="sm" onClick={handleToggle}>Details</Button>
 
             <FullPageContainer show={show}>
                 <EditNote word={word} handleToogle={handleToggle} findOneAndUpdate = {findOneAndUpdate} />
