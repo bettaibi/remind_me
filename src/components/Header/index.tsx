@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap'
-import { House, PieChart, List, Puzzle, Bell } from 'react-bootstrap-icons';
+import { PieChart, List, Puzzle, Bell } from 'react-bootstrap-icons';
 import { SidenavContainer, useSidenavContainer } from '../sidenavContainer';
 import { StatusBar } from '../StatusBar';
 import { NavLink } from 'react-router-dom';
@@ -20,20 +20,18 @@ export const Header: React.FC = () => {
                 <Container className="h-100">
                     <div className="h-100 d-flex flex-row justify-content-between align-items-center">
                         <NavLink to="/home" className="d-flex flex-column align-items-center btn-icon">
-                            <House size="18" />
-                            <span className="fs-14">Home</span>
-                        </NavLink>
-                        <NavLink to="/home" className="d-flex flex-column align-items-center btn-icon">
                             <PieChart size="18" />
-                            <span className="fs-14">Progress</span>
+                            <span className="fs-14">My Progress</span>
                         </NavLink>
+
                         <NavLink to="/home/games" className="d-flex flex-column align-items-center btn-icon">
                             <Puzzle size="18" />
                             <span className="fs-14">Games</span>
                         </NavLink>
-                        <NavLink to="/home/something" className="d-flex flex-column align-items-center btn-icon">
+
+                        <NavLink to="/home/profile" className="d-flex flex-column align-items-center btn-icon">
                             <Bell size="18" />
-                            <span className="fs-14">Notifications</span>
+                            <span className="fs-14">Profile</span>
                         </NavLink>
 
                         <button className="d-flex flex-column align-items-center d-md-none btn-icon"

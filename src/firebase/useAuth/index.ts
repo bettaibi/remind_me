@@ -61,41 +61,52 @@ const useAuth = () =>{
 
     const updateUserProfile = async (displayName: string, photoURL: string): Promise<CustomResponse> => {
         try{
-            await auth.currentUser?.updateProfile({displayName, photoURL})
-            return {success: true, message: 'Profile updated'};
+            const user = auth.currentUser;
+            if(user){
+                await user.updateProfile({displayName, photoURL});
+                return {success: true, message: 'Your Profile has successfully updated'};
+             }else{
+                 return {success: false, message: 'No such user'};
+             }
         }
         catch(err){
             return {success: false, message: err.message};
         }
     }
 
-   const getCurrentUser = () => {
+    const updateUserPassword = async (newPassword: string) : Promise<CustomResponse> => {
         try{
-            auth.onAuthStateChanged((user)=> {
-                if(user){
-                    return {success: true, message: 'user Authenticated', data: user};
-                }
-                else{
-                    return {success: false, message: 'No user is signed in.'};
-                }
-            })
+            const user = auth.currentUser;
+            if(user){
+               await user.updatePassword(newPassword);
+               return {success: true, message: 'Your Password has successfully updated'};
+            }else{
+                return {success: false, message: 'No such user'};
+            }
         }
         catch(err){
             return {success: false, message: err.message};
         }
-   };
+    }
 
-   const logout = () => {
-       try{
-            auth.signOut().then(()=>{
-                return {success: true, message: 'user logged out'};
-            })
-            .catch(err => {return {success: false, message: err.message}})
-       }
-       catch(err){
-        return {success: false, message: err.message};
-       }
-   }
+    const updateUserEmail = async (newEmail: string) : Promise<CustomResponse> => {
+        try{
+            const user = auth.currentUser;
+            if(user){
+               await user.updateEmail(newEmail);
+               return {success: true, message: 'your Email has successfully updated'};
+            }else{
+                return {success: false, message: 'No such user'};
+            }
+        }
+        catch(err){
+            return {success: false, message: err.message};
+        }
+    }
+
+   const onAuthStateChanged = auth.onAuthStateChanged;
+   
+   const user = auth.currentUser;
 
     return {
         signInWithEmailAndPassword,
@@ -104,8 +115,10 @@ const useAuth = () =>{
         sendPasswordResetEmail,
         deleteUserAccount,
         updateUserProfile,
-        getCurrentUser,
-        logout
+        onAuthStateChanged,
+        updateUserPassword,
+        updateUserEmail,
+        user
     }
 };
 
