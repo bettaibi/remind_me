@@ -21,6 +21,7 @@ const Adverbs = lazy(() => import('./words/Adverbs'));
 const Adjectives = lazy(() => import('./words/Adjectives'));
 const PhrasalVerbs = lazy(() => import('./words/PhrasalVerbs'));
 const Profile = lazy(() => import('./Profile'));
+const QuestionAnswer = lazy(() => import('./QuestionAnswer'));
 
 const Main: React.FC = () => {
 
@@ -46,6 +47,7 @@ const Main: React.FC = () => {
                     <Route path="/home/notes" component={Notes} />
                     <Route path="/home/tenses" component={TensePractise} />
                     <Route path="/home/profile" component={Profile} />
+                    <Route path="/home/QA" component= {QuestionAnswer} />
                 </Switch>
             </Suspense>
         </main>

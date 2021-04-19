@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
                 <AccordionItems eventKey="update_profile" headerText="Profile Details" >
                     <ProfileDetails updateUserProfile={updateUserProfile} user={user} />
                 </AccordionItems>
-                <AccordionItems eventKey="update_email" headerText="Email Setting" >
+                <AccordionItems eventKey="ev0" headerText="Email Setting" >
                     <EmailSetting updateUserEmail={updateUserEmail} user={user} />
                 </AccordionItems>
                 <AccordionItems eventKey="update_password" headerText="Password Setting" >

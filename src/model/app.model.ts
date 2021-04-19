@@ -13,6 +13,7 @@ export interface AppState{
     notes: GrammarNotesModel[];
     things: PicThingsModel[];
     idioms: IdiomsModel[];
+    questionAndAnswers: QAModel[];
 }
 
 export interface WordDefinitionForm{
@@ -184,4 +185,10 @@ export interface TensePracticeModel{
 export interface SentenceModal{
     tense: string;
     sentence: string;
+}
+
+export interface QAModel{
+    id?: string;
+    label: string;
+    result: string;
 }

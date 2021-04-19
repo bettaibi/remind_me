@@ -12,6 +12,7 @@ import NoteReducer from './reducers/note.reducer';
 import IdiomReducer from './reducers/idiom.reducer';
 import ThingReducer from './reducers/thing.reducer';
 import TenseReducer from './reducers/tense.reducer';
+import QAReducer from './reducers/questionAnswer.reducer';
 
 import { combineReducers } from 'redux';
 
@@ -30,7 +31,8 @@ const appReducer = combineReducers({
     notes: NoteReducer,
     idioms: IdiomReducer,
     things: ThingReducer,
-    tenses: TenseReducer
+    tenses: TenseReducer,
+    questionAndAnswers: QAReducer
 });
 
 export default appReducer;

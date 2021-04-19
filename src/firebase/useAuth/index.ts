@@ -1,7 +1,7 @@
 import { CustomResponse } from "../../model/app.model";
 import { auth } from "../firebase";
 
-const useAuth = () =>{
+const useAuth = () => {
 
     const signInWithEmailAndPassword = async (email: string, password: string): Promise<CustomResponse> =>{
         try{

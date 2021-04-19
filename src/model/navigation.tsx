@@ -7,7 +7,8 @@ import {
     JournalBookmark, 
     JournalCheck,
     Stickies,
-    PencilSquare
+    PencilSquare,
+    QuestionOctagon
 
 } from 'react-bootstrap-icons';
 import { v4 } from 'uuid';
@@ -46,6 +47,7 @@ export const navigations: Navigation[] = [
     {id: v4(), title: 'English Topics', icon: <JournalBookmark />, path: '/home/topics'},
     {id: v4(), title: 'English Grammar Notes', icon: <JournalCheck />, path: '/home/notes'},
     {id: v4(), title: 'English Tenses Practise', icon: <PencilSquare />, path: '/home/tenses'},
+    {id: v4(), title: 'Q&A', icon: <QuestionOctagon />, path: '/home/QA'},
     
     {id: v4(), title: 'Definition & Synonyms', icon: <ClipboardCheck />, path: '/home/word-definition'},
     {id: v4(), title: 'Conjugation & Grammar', icon: <CardChecklist />, path: '/home/grammar-search'},

@@ -45,4 +45,8 @@ export const DELETE_IDIOM = "DELETE_IDIOM";
 export const GET_THINGS = "GET_THINGS";
 export const ADD_THING = "ADD_THING";
 export const DELETE_THING = "DELETE_THING";
+export const GET_QA = "GET_QA";
+export const ADD_QA = "ADD_QA";
+export const UPDATE_QA = "UPDATE_QA";
+export const DELETE_QA = "DELETE_QA";
 

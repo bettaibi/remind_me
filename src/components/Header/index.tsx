@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap'
-import { PieChart, List, Puzzle, Bell } from 'react-bootstrap-icons';
+import { PieChart, List, Puzzle, Person } from 'react-bootstrap-icons';
 import { SidenavContainer, useSidenavContainer } from '../sidenavContainer';
 import { StatusBar } from '../StatusBar';
 import { NavLink } from 'react-router-dom';
@@ -30,7 +30,7 @@ export const Header: React.FC = () => {
                         </NavLink>
 
                         <NavLink to="/home/profile" className="d-flex flex-column align-items-center btn-icon">
-                            <Bell size="18" />
+                            <Person size="18" />
                             <span className="fs-14">Profile</span>
                         </NavLink>
 
