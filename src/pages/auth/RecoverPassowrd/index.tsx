@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 
 import * as yup from 'yup';
 import { useSnackbar } from '../../../components/Snackbar';
-import useAuth from '../../../firebase/useAuth';
+import { useSharedContext } from '../../../Context';
 
 const schema = yup.object().shape({
     email: yup.string().required('This Field is required').email('Ivalid Email')
@@ -16,25 +16,19 @@ const initialValue: RecoverObject = { email: ''};
 
 interface RecoverPasswordProps{
     handleClose: () => void;
-}
+};
 
 export const RecoverPassword: React.FC<RecoverPasswordProps> = ({handleClose}) => {
     const { Snackbar, showMsg } = useSnackbar();
-    const { sendPasswordResetEmail } = useAuth();
+    const { sendPasswordResetEmail } = useSharedContext();
 
     const resetPassword = async (values: RecoverObject) =>{
-        try{
-            const res = await sendPasswordResetEmail(values.email);
-            if(res.success){
-                showMsg('Check your email', res.message);
-            }
-            else{
-                showMsg("Operation Failed","We Couldn't send you a reset link, please verify your email and try again!", 'danger');
-            }
-        }
-        catch(err){
-            throw err;
-        }
+        sendPasswordResetEmail(values.email).then((v)=>{
+            showMsg('Check your email', 'A Reset link has been sent to th given email address');
+        })
+        .catch(err => {
+            showMsg("Operation Failed","We Couldn't send you a reset link, please verify your email and try again!", 'warning');
+        });
     }
 
     return (

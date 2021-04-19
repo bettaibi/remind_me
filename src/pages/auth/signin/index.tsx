@@ -7,12 +7,12 @@ import { RecoverPassword } from '../RecoverPassowrd';
 
 import { useSnackbar } from '../../../components/Snackbar';
 import { LoginForm } from '../../../model/app.model';
-import useAuth from '../../../firebase/useAuth';
 
 import * as yup from 'yup';
 
 import logo from '../../../assets/img/logo90.png';
 import { useToggleState } from '../../../components/useToggleState';
+import { useSharedContext } from '../../../Context';
 
 const defaultState: LoginForm = { email: '', password: '' };
 
@@ -25,26 +25,22 @@ const schema = yup.object().shape({
 const Signin: React.FC = () => {
     const history = useHistory();
     const { Snackbar, showMsg } = useSnackbar();
-    const { signInWithEmailAndPassword } = useAuth()
+    const { signInWithEmailAndPassword } = useSharedContext();
 
     const navigateTo = (e: any) => {
         e.preventDefault();
         history.push('/signup')
     };
 
-    const login = async (values: LoginForm) => {
-        try {
-            const res = await signInWithEmailAndPassword(values.email, values.password);
-            if (res.success) {
-                showMsg("User logged In", res.message, "success");
-            }
-            else {
-                showMsg('Failure', 'Failed to logged in', 'danger');
-            }
-        }
-        catch (error) {
-            throw error;
-        }
+    const login = (values: LoginForm) => {
+        signInWithEmailAndPassword(values.email, values.password).then((v)=>{
+           setTimeout(()=>{
+            history.push('/');
+           },1000);
+        })
+        .catch(err => {
+            showMsg('Failure', err.message, 'danger');
+        });
     }
 
     return (

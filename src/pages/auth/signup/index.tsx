@@ -5,8 +5,8 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 
 import logo from '../../../assets/img/logo90.png';
-import useAuth from '../../../firebase/useAuth';
 import { useSnackbar } from '../../../components/Snackbar';
+import { useSharedContext } from '../../../Context';
 
 interface RegisterForm{
     email: string;
@@ -26,7 +26,7 @@ const schema = yup.object().shape({
 
 const Singup: React.FC = () => {
     const history = useHistory();
-    const { createUserWithEmailAndPassword } = useAuth();
+    const { createUserWithEmailAndPassword } = useSharedContext();
     const { Snackbar, showMsg } = useSnackbar();
 
     const navigateTo = (e: any) =>{
@@ -34,22 +34,15 @@ const Singup: React.FC = () => {
         history.push('/signin')
     }
 
-    const createUser = async (values: RegisterForm): Promise<void> =>{
-        try{
-            const res = await createUserWithEmailAndPassword(values.email, values.password);
-            if(res.success){
-                showMsg('Account Created', res.message, 'success');
-                // Update Cache
-
-                // Update Redux App State
-            }
-            else{
-                showMsg('Failure', res.message, 'danger');
-            }
-        }
-        catch(err){
-            throw err;
-        }
+    const createUser = (values: RegisterForm) =>{
+        createUserWithEmailAndPassword(values.email, values.password).then((v)=>{
+            setTimeout(()=>{
+                history.push('/');
+            },1000);
+        })
+        .catch(err => {
+            showMsg('Failure', err.message, 'danger');
+        });
     }   
 
     return (

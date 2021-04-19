@@ -2,11 +2,10 @@ import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AccordionItems, ReusableAccordion } from '../../../components/ReusableAccordion';
-import useAuth from '../../../firebase/useAuth';
-import { CustomResponse } from '../../../model/app.model';
 
 import * as yup from 'yup';
 import { useSnackbar } from '../../../components/Snackbar';
+import { useSharedContext } from '../../../Context';
 
 const userProfileSchema = yup.object().shape({
     displayName: yup.string().required('Name is required'),
@@ -26,15 +25,13 @@ const PasswordSettingSchema = yup.object().shape({
 });
 
 const Profile: React.FC = () => {
-    const { signOut, updateUserEmail, updateUserPassword, updateUserProfile, user } = useAuth();
+    const {signOut, updateUserEmail, updateUserPassword, updateUserProfile, user} = useSharedContext();
 
     function logout() {
-        signOut().then((res) => {
-            if (res.success) {
-                // do something
-            }
+        signOut().then(() => {
+            window.location.reload();
         })
-            .catch(err => console.log(err));
+        .catch(err => console.log(err));
     }
 
     return (
@@ -62,7 +59,7 @@ const Profile: React.FC = () => {
 }
 
 interface ProfileDetailsProps {
-    updateUserProfile: (displayName: string, photoUrl: string) => Promise<CustomResponse>,
+    updateUserProfile: (displayName: string, photoUrl: string) => Promise<any>,
     user: any;
 }
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ updateUserProfile, user }) => {
@@ -71,25 +68,15 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ updateUserProfile, user
 
     const INITIAL_VALUES = {
         displayName: user ? user.displayName : '',
-        photoUrl: user ? user.photoUrl : '',
+        photoUrl: user ? user.photoURL : '',
     };
 
     function update(values: any): void {
-        try {
-            console.log(values)
-            updateUserProfile(values.displayName, values.photoUrl).then((res) => {
-                if (res.success) {
-                    // do Something
-                    showMsg('Password updated', res.message);
-                }
-                else {
-                    showMsg('Password updated', res.message, 'warning');
-                }
-            });
-        }
-        catch (err) {
-            throw err
-        }
+        updateUserProfile(values.displayName, values.photoUrl).then(() => {
+            showMsg('Profile updated', 'your profile has been updated');
+        }).catch(err => {
+            showMsg('Failed to', err.message, 'warning');
+        });
     };
 
     return (
@@ -138,7 +125,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ updateUserProfile, user
 }
 
 interface EmailSettingProps {
-    updateUserEmail: (newEmail: string) => Promise<CustomResponse>,
+    updateUserEmail: (newEmail: string) => Promise<any>,
     user: any;
 }
 const EmailSetting: React.FC<EmailSettingProps> = ({ updateUserEmail, user }) => {
@@ -150,21 +137,11 @@ const EmailSetting: React.FC<EmailSettingProps> = ({ updateUserEmail, user }) =>
     };
 
     function update(values: any): void {
-        try {
-            console.log(values)
-            updateUserEmail(values.newEmail).then((res) => {
-                if (res.success) {
-                    // do Something
-                    showMsg('Password updated', res.message);
-                }
-                else {
-                    showMsg('Password updated', res.message, 'warning');
-                }
-            });
-        }
-        catch (err) {
-            throw err
-        }
+        updateUserEmail(values.newEmail).then(() => {
+            showMsg('Email updated', 'your email has been updated');
+        }).catch(err => {
+            showMsg('Failed to updated', err.message, 'warning');
+        });
     };
 
     return (
@@ -203,7 +180,7 @@ const EmailSetting: React.FC<EmailSettingProps> = ({ updateUserEmail, user }) =>
 }
 
 interface PasswordSettingProps {
-    updateUserPassword: (newPassword: string) => Promise<CustomResponse>
+    updateUserPassword: (newPassword: string) => Promise<any>
 }
 const PasswordSetting: React.FC<PasswordSettingProps> = ({ updateUserPassword }) => {
     const { Snackbar, showMsg } = useSnackbar();
@@ -215,21 +192,11 @@ const PasswordSetting: React.FC<PasswordSettingProps> = ({ updateUserPassword })
     };
 
     function update(values: any): void {
-        try {
-            console.log(values)
-            updateUserPassword(values.newPassword).then((res) => {
-                if (res.success) {
-                    // do Something
-                    showMsg('Password updated', res.message);
-                }
-                else {
-                    showMsg('Password updated', res.message, 'warning');
-                }
-            });
-        }
-        catch (err) {
-            throw err
-        }
+        updateUserPassword(values.newPassword).then(() => {
+            showMsg('Password updated', 'your password has been updated');
+        }).catch(err => {
+            showMsg('Failed to', err.message, 'warning');
+        });
     };
 
     return (
