@@ -5,6 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { ContextProvider } from './Context';
 import PrivateRoute from './components/PrivateRoute';
+import AppLoading from './components/AppLoading';
 
 const Signin = lazy(() => import('./pages/auth/signin'));
 const Singup = lazy(() => import('./pages/auth/signup'));
@@ -40,7 +41,7 @@ function App() {
   return (
     <Router>
       <ContextProvider>
-        <Suspense fallback={<div>loading...</div>}>
+        <Suspense fallback={<AppLoading />}>
           <div className="main-container">
             <Switch>
               <Route path="/" exact>

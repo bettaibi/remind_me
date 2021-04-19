@@ -1,5 +1,6 @@
 import React, { Dispatch, useContext, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import AppLoading from '../components/AppLoading';
 import { auth } from "../firebase/firebase";
 
 interface ContextProps{
@@ -84,7 +85,7 @@ export const ContextProvider: React.FC = ({children}) => {
 
     return(
         <Shared.Provider value = {value}>
-            {!loading && children}
+            {loading? <AppLoading /> : children}
         </Shared.Provider>
     )
 };
