@@ -102,6 +102,7 @@ html, body{
     .pic-container{
         position: relative;
         cursor: pointer;
+        height: 180px;
         &:hover{
             .pic-actions{
                 display: flex;

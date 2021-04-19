@@ -11,6 +11,7 @@ import { getThings } from '../../../../store/actions/thing.actions';
 import { useSharedContext } from '../../../../Context';
 import { Collections, useCache } from '../../../../cache';
 import { useSnackbar } from '../../../../components/Snackbar';
+import useStorage from '../../../../firebase/useStorage';
 
 const ListOfThings: React.FC = () => {
     const history = useHistory();
@@ -97,17 +98,25 @@ const RemoveContainer: React.FC<ThingProp> = ({thing, findOneAndDelete}) => {
         onConfirmClick: onConfirm
     });
     const {Snackbar, showMsg} = useSnackbar();
+    const { removeUpload } = useStorage();
 
     function onConfirm() {
         console.log("Confirm Clicked");
-        findOneAndDelete(thing.id || '').then((res) =>{
-            if(res.success){
-                toggleConfirmMessage();
-            }
-            else{
-                showMsg('Failed to remove', 'Something wrong, We cannot remove this picture', 'danger');
-            }
-        }).catch(err => console.log(err.message));
+        const id = thing.id || '';
+        
+        removeUpload(id).then(()=>{
+            findOneAndDelete(id).then((res) =>{
+                if(res.success){
+                    toggleConfirmMessage();
+                }
+                else{
+                    showMsg('Failed to remove', 'Something wrong, We cannot remove this picture', 'danger');
+                }
+            }).catch(err => console.log(err.message));
+        })
+        .catch(err =>{
+            showMsg('Failed to remove', err.message, 'danger');
+        });
     }
 
     return (

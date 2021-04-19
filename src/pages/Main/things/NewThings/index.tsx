@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { useSnackbar } from '../../../../components/Snackbar';
 import { Collections, useCache } from '../../../../cache';
-
+import useStorage from '../../../../firebase/useStorage';
 
 const INITIAL_VALUE: PicThingsModel = {
     label: '',
@@ -28,13 +28,20 @@ const schema = yup.object().shape({
 
 const NewThings: React.FC = () => {
     const {saveByKey } = useCache(Collections.THINGS);
+    const { upload } = useStorage();
     let currentPic: any = null;
     
-    const save = (values: PicThingsModel, resetForm : () => void) => {
+    const save = async (values: PicThingsModel, resetForm : () => void) => {
         try{
-            console.log(values);
-            resetForm();
-            console.log(currentPic)
+            if(!currentPic) return;
+            const {downloadURL, fileId} = await upload(currentPic);
+            const res = await saveByKey({...values, id: fileId, picture: downloadURL}, fileId);
+            if(res.success){
+                resetForm();
+            }
+            else{
+                console.log("failed")
+            }
         }
         catch(err){
             throw err;
@@ -44,7 +51,6 @@ const NewThings: React.FC = () => {
     const getCurrentPic = (pic: any) =>{
         try{
             currentPic = pic;
-            console.log(pic)
         }
         catch(err){
             throw err;
@@ -220,7 +226,7 @@ const PictureComponent: React.FC<PictureComponentProps> = ({getCurrentPic}) => {
     const onPicChange = async (file: File) => {
         try {
             const base64 = await toBase64(file);
-            getCurrentPic(base64);
+            getCurrentPic(file);
             setPic(base64);
         }
         catch (err) {

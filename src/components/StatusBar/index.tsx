@@ -7,9 +7,18 @@ export const StatusBar: React.FC = () => {
             <div className="container d-flex justify-content-between align-items-center h-100">
                 <span>Welcome Nidhal Bettaibi</span>
                 <div>
-                    <Facebook className="icons mr-2" />
-                    <Github className="icons mr-2" />
-                    <Linkedin className="icons" />
+                    
+                    <a href="https://www.facebook.com/" className="icons mr-2 text-white" >
+                      <Facebook/>
+                    </a>
+                    <a href="https://github.com/bettaibi" className="icons mr-2 text-white" >
+                      <Github/>
+                    </a>
+                    <a href="https://www.linkedin.com/in/nidhal-bettaibi-39b3a0b2/" className="icons text-white" >
+                     <Linkedin/>
+                    </a>
+                    
+                   
                 </div>
             </div>
         </div>
