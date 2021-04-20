@@ -7,7 +7,7 @@ import { AppState, CustomResponse, PicThingsModel } from '../../../../model/app.
 import { FilrableGrid } from '../../words/shared/FilrableGrid';
 import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { useSelector } from 'react-redux';
-import { getThings } from '../../../../store/actions/thing.actions';
+import { deleteThing, getThings } from '../../../../store/actions/thing.actions';
 import { useSharedContext } from '../../../../Context';
 import { Collections, useCache } from '../../../../cache';
 import { useSnackbar } from '../../../../components/Snackbar';
@@ -92,8 +92,8 @@ const Thing: React.FC<ThingProp> = ({ thing, findOneAndDelete }) => {
 }
 
 const RemoveContainer: React.FC<ThingProp> = ({thing, findOneAndDelete}) => {
-
-    const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
+    const { dispatch } = useSharedContext();
+    const { ConfirmDialog, toggleConfirmMessage, setIsloading } = useConfirmDialog({
         message: 'Are you sure you want to remove this Pic? This cannot be undone.',
         onConfirmClick: onConfirm
     });
@@ -101,12 +101,13 @@ const RemoveContainer: React.FC<ThingProp> = ({thing, findOneAndDelete}) => {
     const { removeUpload } = useStorage();
 
     function onConfirm() {
-        console.log("Confirm Clicked");
+        setIsloading(true);
         const id = thing.id || '';
         
         removeUpload(id).then(()=>{
             findOneAndDelete(id).then((res) =>{
                 if(res.success){
+                    dispatch(deleteThing(id));
                     toggleConfirmMessage();
                 }
                 else{

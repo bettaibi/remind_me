@@ -1,19 +1,28 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Dialog } from '../Dialog';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { useToggleState } from '../useToggleState';
 
-interface ConfirmDialogProps{
+interface ConfirmDialogProps {
     message: string;
-    onConfirmClick: ()=>void;
+    onConfirmClick: () => void;
 }
 
-export const useConfirmDialog = (obj: ConfirmDialogProps) =>{
+export const useConfirmDialog = (obj: ConfirmDialogProps) => {
     const { handleToggle, show, handleHide } = useToggleState();
+    const [isLoading, setIsloading] = useState<boolean>(false);
 
-    const toggleConfirmMessage = () => handleToggle();
+    useEffect(() => {
+        return () => {
+            setIsloading(false);
+        }
+    }, []);
 
-    const {message, onConfirmClick } = obj;
+    const toggleConfirmMessage = () => {
+        handleToggle();
+    };
+
+    const { message, onConfirmClick } = obj;
 
     const ConfirmDialog = useCallback(
         () => (
@@ -24,15 +33,29 @@ export const useConfirmDialog = (obj: ConfirmDialogProps) =>{
                 </p>
                 <div className="text-right">
                     <Button className="mr-2" variant="secondary" onClick={handleHide} size="sm">Close</Button>
-                    <Button variant="primary" size="sm" onClick={onConfirmClick}>Confirm</Button>
+                    <Button variant="primary" size="sm" onClick={onConfirmClick} disabled={isLoading}>
+                        {!isLoading ? 'Confirm' : (
+                            <>
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                <span className="ml-2">Loading...</span>
+                            </>
+                        )}
+                    </Button>
                 </div>
             </Dialog>
         ),
-        [show, message, onConfirmClick, handleHide]
+        [show, message, onConfirmClick, handleHide, isLoading]
     )
 
     return {
         ConfirmDialog,
-        toggleConfirmMessage
+        toggleConfirmMessage,
+        setIsloading
     }
 }

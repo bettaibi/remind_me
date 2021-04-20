@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Button, Col, Form } from 'react-bootstrap';
+import { Button, Col, Form, Spinner } from 'react-bootstrap';
 import { Formik, FieldArray } from 'formik';
 import { PicThingsModel, ThingModel } from '../../../../model/app.model';
 import { Trash } from 'react-bootstrap-icons';
@@ -8,6 +8,7 @@ import { useConfirmDialog } from '../../../../components/ConfirmDialog';
 import { useSnackbar } from '../../../../components/Snackbar';
 import { Collections, useCache } from '../../../../cache';
 import useStorage from '../../../../firebase/useStorage';
+import Resizer from "react-image-file-resizer";
 
 const INITIAL_VALUE: PicThingsModel = {
     label: '',
@@ -27,32 +28,38 @@ const schema = yup.object().shape({
 })
 
 const NewThings: React.FC = () => {
-    const {saveByKey } = useCache(Collections.THINGS);
+    const { saveByKey } = useCache(Collections.THINGS);
     const { upload } = useStorage();
-    let currentPic: any = null;
-    
-    const save = async (values: PicThingsModel, resetForm : () => void) => {
-        try{
-            if(!currentPic) return;
-            const {downloadURL, fileId} = await upload(currentPic);
-            const res = await saveByKey({...values, id: fileId, picture: downloadURL}, fileId);
-            if(res.success){
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    let currentPic: string;
+
+    const save = async (values: PicThingsModel, resetForm: () => void) => {
+        try {
+            if (!currentPic) return;
+            setIsLoading(true);
+            const data64 = currentPic.replace('data:image/jpeg;base64,', '');
+            const { downloadURL, fileId } = await upload(data64);
+            const res = await saveByKey({ ...values, id: fileId, picture: downloadURL }, fileId);
+            if (res.success) {
                 resetForm();
+                setIsLoading(false);
             }
-            else{
+            else {
                 console.log("failed")
             }
         }
-        catch(err){
+        catch (err) {
+            setIsLoading(false);
             throw err;
         }
     }
 
-    const getCurrentPic = (pic: any) =>{
-        try{
+    const getCurrentPic = (pic: any) => {
+        try {
             currentPic = pic;
         }
-        catch(err){
+        catch (err) {
             throw err;
         }
     };
@@ -60,34 +67,35 @@ const NewThings: React.FC = () => {
     return (
         <React.Fragment>
             <div className="bg-light border rounded overflow-hidden mb-3" style={{ height: '300px' }}>
-                <PictureComponent getCurrentPic = {getCurrentPic} />
+                <PictureComponent getCurrentPic={getCurrentPic} />
             </div>
 
-            <ThingsForm save = {save} />
+            <ThingsForm save={save} isLoading={isLoading} />
         </React.Fragment>
     )
 }
 
-interface ThingsFormProps{
-    save: (values: PicThingsModel, resetForm : () => void) => void;
+interface ThingsFormProps {
+    save: (values: PicThingsModel, resetForm: () => void) => void;
+    isLoading: boolean;
 }
 
-const ThingsForm: React.FC<ThingsFormProps> = ({save}) => {
+const ThingsForm: React.FC<ThingsFormProps> = ({ save, isLoading }) => {
 
-    const create = (values: PicThingsModel, resetForm : () => void) =>{
-        try{
+    const create = (values: PicThingsModel, resetForm: () => void) => {
+        try {
             save(values, resetForm);
         }
-        catch(err){
+        catch (err) {
             throw err;
         }
     };
 
     return (
-        <Formik initialValues={INITIAL_VALUE} onSubmit={(values, {resetForm}) => create(values, resetForm)}
+        <Formik initialValues={INITIAL_VALUE} onSubmit={(values, { resetForm }) => create(values, resetForm)}
             validationSchema={schema}>
             {
-                ({ handleSubmit, handleChange, handleBlur, values, isValid, touched, errors }) => (
+                ({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => (
                     <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label>Subject</Form.Label>
@@ -102,21 +110,34 @@ const ThingsForm: React.FC<ThingsFormProps> = ({save}) => {
 
                         <FieldArray name="things">
                             {
-                                ({ remove, push}) => (
+                                ({ remove, push }) => (
                                     <React.Fragment>
                                         <div className="d-flex flex-row justify-content-between align-items-center">
                                             <h6 className="m-0">CREATE THINGS</h6>
                                             <div>
-                                                <InsertRecord push = {push} />
-                                                <Button size="sm" variant="primary" type="submit">Save All</Button>
+                                                <InsertRecord push={push} />
+                                                <Button size="sm" variant="primary" type="submit" disabled={isLoading}>
+                                                    {!isLoading ? 'Save All' : (
+                                                        <React.Fragment>
+                                                            <Spinner
+                                                                as="span"
+                                                                animation="border"
+                                                                size="sm"
+                                                                role="status"
+                                                                aria-hidden="true"
+                                                            />
+                                                            <span className="ml-2">Loading...</span>
+                                                        </React.Fragment>
+                                                    )}
+                                                </Button>
                                             </div>
                                         </div>
 
                                         {values.things.length > 0 && values.things.map((item: ThingModel, i: number) => (
                                             <div className="bg-light border rounded pt-3 px-3 mt-3" key={i + 'thin' + i}>
                                                 <div className="d-flex justify-content-between">
-                                                    <h6 className="m-0">Thing {i+1}</h6>
-                                                    <RemoveRecord remove={remove} index = {i} />
+                                                    <h6 className="m-0">Thing {i + 1}</h6>
+                                                    <RemoveRecord remove={remove} index={i} />
                                                 </div>
                                                 <Form.Row>
                                                     <Form.Group as={Col}>
@@ -166,11 +187,11 @@ const ThingsForm: React.FC<ThingsFormProps> = ({save}) => {
     )
 }
 
-interface RemoveRecordProps{
+interface RemoveRecordProps {
     remove: (index: number) => void;
     index: number;
 }
-const RemoveRecord: React.FC<RemoveRecordProps> = ({remove, index}) => {
+const RemoveRecord: React.FC<RemoveRecordProps> = ({ remove, index }) => {
     const { ConfirmDialog, toggleConfirmMessage } = useConfirmDialog({
         message: 'Are you sure you want to remove this record? This cannot be undone.',
         onConfirmClick: onConfirm
@@ -179,9 +200,9 @@ const RemoveRecord: React.FC<RemoveRecordProps> = ({remove, index}) => {
     function onConfirm() {
         console.log("Confirm Clicked");
         toggleConfirmMessage();
-        setTimeout(()=>{
+        setTimeout(() => {
             remove(index);
-        },0)
+        }, 0)
     }
 
     return (
@@ -196,20 +217,20 @@ const RemoveRecord: React.FC<RemoveRecordProps> = ({remove, index}) => {
     )
 }
 
-interface InsertRecordProp{
+interface InsertRecordProp {
     push: (obj: any) => void;
 }
-const InsertRecord: React.FC<InsertRecordProp> = ({push}) =>{
+const InsertRecord: React.FC<InsertRecordProp> = ({ push }) => {
     const { Snackbar, showMsg } = useSnackbar();
-    
+
     const newRecord = async () => {
-        push({name: '', translation: '', utility: ''});
+        push({ name: '', translation: '', utility: '' });
         showMsg('Record Inserted', 'A new record has been created for you.');
     }
     return (
         <React.Fragment>
             <Button size="sm" variant="success" className="mr-2"
-                onClick= {newRecord}>
+                onClick={newRecord}>
                 New Thing
             </Button>
             <Snackbar />
@@ -217,16 +238,16 @@ const InsertRecord: React.FC<InsertRecordProp> = ({push}) =>{
     )
 }
 
-interface PictureComponentProps{
+interface PictureComponentProps {
     getCurrentPic: (pic: any) => void;
 }
-const PictureComponent: React.FC<PictureComponentProps> = ({getCurrentPic}) => {
+const PictureComponent: React.FC<PictureComponentProps> = ({ getCurrentPic }) => {
     const [pic, setPic] = useState<any>(null);
 
     const onPicChange = async (file: File) => {
         try {
-            const base64 = await toBase64(file);
-            getCurrentPic(file);
+            const base64 = await resizeFile(file);
+            getCurrentPic(base64);
             setPic(base64);
         }
         catch (err) {
@@ -234,11 +255,20 @@ const PictureComponent: React.FC<PictureComponentProps> = ({getCurrentPic}) => {
         }
     }
 
-    const toBase64 = (file: File) => new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+    const resizeFile = (file: File) =>
+    new Promise((resolve) => {
+        Resizer.imageFileResizer(
+            file,
+            300,
+            400,
+            "JPEG",
+            90,
+            0,
+            (uri) => {
+                resolve(uri);
+            },
+            "base64"
+        );
     });
 
     return (

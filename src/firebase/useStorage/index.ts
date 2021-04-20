@@ -7,12 +7,12 @@ interface FileProps{
 }
 const useStorage = () => {
 
-    const upload = async (img: File): Promise<FileProps> => {
+    const upload = async (img: string): Promise<FileProps> => {
        try{ 
             var storageRef = storage.ref();
             const fileId = v4();
             var fileRef = storageRef.child(`images/${fileId}.jpg`);
-            const snapshot = await fileRef.put(img);
+            const snapshot = await fileRef.putString(img, 'base64');
             const downloadURL = await snapshot.ref.getDownloadURL();
             return {
                 downloadURL,
