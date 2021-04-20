@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Header } from './components/Header';
 import { Sidenav } from './components/Sidenav';
 import { Container, Row, Col } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ContextProvider } from './Context';
 import PrivateRoute from './components/PrivateRoute';
 import AppLoading from './components/AppLoading';
@@ -39,7 +39,7 @@ function UserLayout(){
 }
 function App() {
   return (
-    <Router>
+    <HashRouter basename="/">
       <ContextProvider>
         <Suspense fallback={<AppLoading />}>
           <div className="main-container">
@@ -56,7 +56,7 @@ function App() {
           </div>
         </Suspense>
       </ContextProvider>
-    </Router>
+    </HashRouter>
   );
 }
 
