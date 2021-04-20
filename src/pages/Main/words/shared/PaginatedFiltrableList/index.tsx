@@ -10,7 +10,7 @@ interface PaginatedFiltrableListProps {
 }
 
 export const PaginatedFiltrableList: React.FC<PaginatedFiltrableListProps> = ({dataSource, children}) => {
-    console.log("datasource", dataSource)
+
     const { setTerm, filterHandler } = useFilter([...dataSource]);
     const { CustomPagination, list } = useCustomPagination(filterHandler(), 5);
 

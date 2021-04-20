@@ -37,7 +37,6 @@ const Todos: React.FC = () => {
         <React.Fragment>
             <AddTodoContainer saveByKey={saveByKey} />
 
-
             <ReusableAccordion>
                 {
                     todos.map((item: any, idx: number) => (
