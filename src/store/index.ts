@@ -13,6 +13,7 @@ import IdiomReducer from './reducers/idiom.reducer';
 import ThingReducer from './reducers/thing.reducer';
 import TenseReducer from './reducers/tense.reducer';
 import QAReducer from './reducers/questionAnswer.reducer';
+import TodosReducer from './reducers/todos.reducers';
 
 import { combineReducers } from 'redux';
 
@@ -32,7 +33,8 @@ const appReducer = combineReducers({
     idioms: IdiomReducer,
     things: ThingReducer,
     tenses: TenseReducer,
-    questionAndAnswers: QAReducer
+    questionAndAnswers: QAReducer,
+    todos: TodosReducer
 });
 
 export default appReducer;

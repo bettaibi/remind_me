@@ -49,4 +49,8 @@ export const GET_QA = "GET_QA";
 export const ADD_QA = "ADD_QA";
 export const UPDATE_QA = "UPDATE_QA";
 export const DELETE_QA = "DELETE_QA";
+export const GET_TODOS = "GET_TODOS";
+export const ADD_TODO = "ADD_TODO";
+export const UPDATE_TODO = "UPDATE_TODO";
+export const DELETE_TODO = "DELETE_TODO";
 

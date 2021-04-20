@@ -14,6 +14,7 @@ export interface AppState{
     things: PicThingsModel[];
     idioms: IdiomsModel[];
     questionAndAnswers: QAModel[];
+    todos: TodosModel[];
 }
 
 export interface WordDefinitionForm{
@@ -191,4 +192,10 @@ export interface QAModel{
     id?: string;
     label: string;
     result: string;
+}
+
+export interface TodosModel{
+    id?: string;
+    label: string;
+    description: string;
 }
