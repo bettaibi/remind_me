@@ -54,7 +54,7 @@ export const EditQA: React.FC<commonProps> = ({ handleToogle, word, findOneAndUp
                             <Form.Label>
                                 Q/A
                                 </Form.Label>
-                            <Form.Control placeholder="Write a question or give an answer.." autoComplete="off" name="label" size="sm"
+                            <Form.Control spellCheck="true" placeholder="Write a question or give an answer.." autoComplete="off" name="label" size="sm"
                                 onChange={handleChange} onBlur={handleBlur} value={values.label}
                                 isInvalid={touched.label && !!errors.label}
                             ></Form.Control>
@@ -68,7 +68,7 @@ export const EditQA: React.FC<commonProps> = ({ handleToogle, word, findOneAndUp
                             <Form.Label>
                                 Result
                                 </Form.Label>
-                            <Form.Control placeholder="Write the appropriate result.." autoComplete="off" name="result" size="sm"
+                            <Form.Control spellCheck="true" placeholder="Write the appropriate result.." autoComplete="off" name="result" size="sm"
                                 onChange={handleChange} onBlur={handleBlur} value={values.result}
                                 isInvalid={touched.result && !!errors.result}
                             ></Form.Control>

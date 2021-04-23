@@ -57,7 +57,7 @@ export const NewIdiom: React.FC<commonProps> = ({handleToogle, saveByKey, showMs
                                 <Form.Label>
                                     Phrase / Idiom
                                 </Form.Label>
-                                <Form.Control placeholder="Write something..." autoComplete="off" name="label" size="sm"
+                                <Form.Control spellCheck="true" placeholder="Write something..." autoComplete="off" name="label" size="sm"
                                     onChange={handleChange} onBlur={handleBlur} value={values.label}
                                     isInvalid={touched.label && !!errors.label}
                                 ></Form.Control>
@@ -69,7 +69,7 @@ export const NewIdiom: React.FC<commonProps> = ({handleToogle, saveByKey, showMs
 
                             <Form.Group>
                                 <Form.Label>Explication / Meaning</Form.Label>
-                                <Form.Control as="textarea" placeholder="let me explain" size="sm" autoComplete="off" name="explication"
+                                <Form.Control spellCheck="true" as="textarea" placeholder="let me explain" size="sm" autoComplete="off" name="explication"
                                     onChange={handleChange} onBlur={handleBlur} value={values.explication}
                                     isInvalid={touched.explication && !!errors.explication}
                                 ></Form.Control>

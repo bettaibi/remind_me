@@ -13,7 +13,8 @@ import { EditTodo } from './EditTodos';
 import { NewTodo } from './NewTodo';
 import { WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
 import { AccordionItems, ReusableAccordion } from '../../../components/ReusableAccordion';
-
+import { VolumeUp } from 'react-bootstrap-icons';
+import useAssistant from '../../../components/useAssistant';
 
 const Todos: React.FC = () => {
     const todos = useSelector((appState: AppState) => appState.todos);
@@ -52,6 +53,16 @@ const Todos: React.FC = () => {
 }
 
 const Todo: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }) => {
+    const { voiceHandler } = useAssistant();
+
+    const spellWord = () => {
+        try {
+            voiceHandler(word.label);
+        }
+        catch (err) {
+            throw err;
+        }
+    }
 
     return (
         <React.Fragment>
@@ -59,9 +70,13 @@ const Todo: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
                 {word?.description}
             </p>
 
-            <div className="text-right">
+            <div className="text-right mt-3">
                 <EditItemContainer word={word} findOneAndUpdate={findOneAndUpdate} />
                 <RemoveItemContainer word={word} findOneAndDelete={findOneAndDelete} />
+                <button className="btn btn-outline-secondary btn-sm ml-2" onClick = {spellWord}>
+                    <span className="mr-1">Spell</span>
+                    <VolumeUp size="18" />
+                </button>
             </div>
         </React.Fragment>
     )

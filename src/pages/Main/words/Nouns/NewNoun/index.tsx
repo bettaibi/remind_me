@@ -80,7 +80,7 @@ export const NewNoun: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
                                         <VolumeUp size="20" />
                                     </span>
                                 </Form.Label>
-                                <Form.Control placeholder="a word" autoComplete="off" name="label" size="sm"
+                                <Form.Control spellCheck="true" placeholder="a word" autoComplete="off" name="label" size="sm"
                                     onChange={handleChange} onBlur={handleBlur} value={values.label}
                                     isInvalid={touched.label && !!errors.label}
                                 ></Form.Control>
@@ -112,7 +112,7 @@ export const NewNoun: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
                                             <VolumeUp size="20" />
                                         </span>
                                     </Form.Label>
-                                    <Form.Control placeholder="Spelling" autoComplete="off" name="spelling" size="sm"
+                                    <Form.Control spellCheck="true" placeholder="Spelling" autoComplete="off" name="spelling" size="sm"
                                         onChange={handleChange} onBlur={handleBlur} value={values.spelling}
                                         isInvalid={touched.spelling && !!errors.spelling}
                                     ></Form.Control>
@@ -159,7 +159,7 @@ export const NewNoun: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
 
                             <Form.Group>
                                 <Form.Label>Definition / Meaning</Form.Label>
-                                <Form.Control as="textarea" placeholder="word definition" size="sm" autoComplete="off" name="definition"
+                                <Form.Control spellCheck="true" as="textarea" placeholder="word definition" size="sm" autoComplete="off" name="definition"
                                     onChange={handleChange} onBlur={handleBlur} value={values.definition}
                                     isInvalid={touched.definition && !!errors.definition}
                                 ></Form.Control>

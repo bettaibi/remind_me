@@ -83,7 +83,7 @@ export const NewAdjective: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
                                             <VolumeUp size="20" />
                                         </span>
                                     </Form.Label>
-                                    <Form.Control placeholder="a word" autoComplete="off" name="label" size="sm"
+                                    <Form.Control spellCheck="true" placeholder="a word" autoComplete="off" name="label" size="sm"
                                         onChange={handleChange} onBlur={handleBlur} value={values.label}
                                         isInvalid={touched.label && !!errors.label}
                                     ></Form.Control>
@@ -101,7 +101,7 @@ export const NewAdjective: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
                                                 <VolumeUp size="20" />
                                             </span>
                                         </Form.Label>
-                                        <Form.Control placeholder="Enter the comparative form" autoComplete="off" name="comparative" size="sm"
+                                        <Form.Control spellCheck="true" placeholder="Enter the comparative form" autoComplete="off" name="comparative" size="sm"
                                             onChange={handleChange} onBlur={handleBlur} value={values.comparative}
                                             isInvalid={touched.comparative && !!errors.comparative}
                                         ></Form.Control>
@@ -117,7 +117,7 @@ export const NewAdjective: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
                                                 <VolumeUp size="20" />
                                             </span>
                                         </Form.Label>
-                                        <Form.Control placeholder="Enter the superlative form" autoComplete="off" name="superlative" size="sm"
+                                        <Form.Control spellCheck="true" placeholder="Enter the superlative form" autoComplete="off" name="superlative" size="sm"
                                             onChange={handleChange} onBlur={handleBlur} value={values.superlative}
                                             isInvalid={touched.superlative && !!errors.superlative}
                                         ></Form.Control>

@@ -72,7 +72,7 @@ export const EditTopic:React.FC<EditProps> = ({handleToogle, word, findOneAndUpd
                                             <VolumeUp size="20" />
                                         </span>
                                     </Form.Label>
-                                    <Form.Control autoComplete="off" placeholder="What's the name of the topic would you like talking about" name="label"
+                                    <Form.Control spellCheck="true" autoComplete="off" placeholder="What's the name of the topic would you like talking about" name="label"
                                         onChange={handleChange} onBlur={handleBlur} value={values.label} size="sm"
                                         isInvalid={touched.label && !!errors.label} />
 

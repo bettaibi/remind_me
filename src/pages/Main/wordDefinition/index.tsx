@@ -13,8 +13,7 @@ const schema = Yup.object().shape({
     query: Yup.string().required('Enter a word to get its definition').max(50, 'Too much letters!')
 });
 
-const definitionApi = "https://api.dictionaryapi.dev/api/v2/entries/en_GB";
-
+const definitionApi = process.env.REACT_APP_DEFINITION_API;
 
 const WordDefinition: React.FC = () => {
     const { data, getDefinition, isLoading, isError } = useDefinition();

@@ -67,7 +67,7 @@ export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
                         <Container className="py-3">
                             <Form.Group>
                                 <Form.Label>Title</Form.Label>
-                                <Form.Control autoComplete="off" size="sm" placeholder="Enter a title" name="label"
+                                <Form.Control spellCheck="true" autoComplete="off" size="sm" placeholder="Enter a title" name="label"
                                     onChange={handleChange} onBlur={handleBlur} value={values.label}
                                     isInvalid={touched.label && !!errors.label} />
 
@@ -78,7 +78,7 @@ export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
 
                             <Form.Group>
                                 <Form.Label>Note</Form.Label>
-                                <Form.Control autoComplete="off" size="sm" placeholder="your notes here.." name="note"
+                                <Form.Control spellCheck="true" autoComplete="off" size="sm" placeholder="your notes here.." name="note"
                                     onChange={handleChange} onBlur={handleBlur} value={values.note}
                                     isInvalid={touched.note && !!errors.note} />
 
@@ -89,7 +89,7 @@ export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
 
                             <Form.Group>
                                 <Form.Label>Question (<small>A general question which adapts with the case of the note</small>)</Form.Label>
-                                <Form.Control autoComplete="off" size="sm" placeholder="add a question" name="question"
+                                <Form.Control spellCheck="true" autoComplete="off" size="sm" placeholder="add a question" name="question"
                                     onChange={handleChange} onBlur={handleBlur} value={values.question}
                                     isInvalid={touched.question && !!errors.question} />
 

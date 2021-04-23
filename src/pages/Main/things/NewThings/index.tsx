@@ -99,7 +99,7 @@ const ThingsForm: React.FC<ThingsFormProps> = ({ save, isLoading }) => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group>
                             <Form.Label>Subject</Form.Label>
-                            <Form.Control autoComplete="off" placeholder="What's the subject of the pic" name="label"
+                            <Form.Control spellCheck="true" autoComplete="off" placeholder="What's the subject of the pic" name="label"
                                 onChange={handleChange} onBlur={handleBlur} value={values.label} size="sm"
                                 isInvalid={touched.label && !!errors.label} />
 

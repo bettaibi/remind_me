@@ -81,7 +81,7 @@ export const NewLinkers: React.FC<AddProps> = ({handleToogle, saveByKey}) => {
                                             <VolumeUp size="20" />
                                         </span>
                                     </Form.Label>
-                                    <Form.Control placeholder="a word" autoComplete="off" name="label" size="sm"
+                                    <Form.Control spellCheck="true" placeholder="a word" autoComplete="off" name="label" size="sm"
                                         onChange={handleChange} onBlur={handleBlur} value={values.label}
                                         isInvalid={touched.label && !!errors.label}
                                     ></Form.Control>
@@ -94,7 +94,7 @@ export const NewLinkers: React.FC<AddProps> = ({handleToogle, saveByKey}) => {
                                 <Form.Row>
                                     <Form.Group as={Col}>
                                         <Form.Label>Arabic Translation</Form.Label>
-                                        <Form.Control placeholder="translate to arabic" autoComplete="off" name="translation" size="sm"
+                                        <Form.Control spellCheck="true" placeholder="translate to arabic" autoComplete="off" name="translation" size="sm"
                                             onChange={handleChange} onBlur={handleBlur} value={values.translation}
                                             isInvalid={touched.translation && !!errors.translation}
                                         ></Form.Control>
@@ -160,7 +160,7 @@ export const NewLinkers: React.FC<AddProps> = ({handleToogle, saveByKey}) => {
 
                                 <Form.Group>
                                     <Form.Label>Definition / Meaning</Form.Label>
-                                    <Form.Control as="textarea" placeholder="word definition" size="sm" autoComplete="off" name="definition"
+                                    <Form.Control spellCheck="true" as="textarea" placeholder="word definition" size="sm" autoComplete="off" name="definition"
                                         onChange={handleChange} onBlur={handleBlur} value={values.definition}
                                         isInvalid={touched.definition && !!errors.definition}
                                     ></Form.Control>

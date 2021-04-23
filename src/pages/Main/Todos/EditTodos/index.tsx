@@ -53,7 +53,7 @@ export const EditTodo: React.FC<commonProps> = ({handleToogle, findOneAndUpdate,
                                 <Form.Label>
                                    label
                                 </Form.Label>
-                                <Form.Control placeholder="Write something..." autoComplete="off" name="label" size="sm"
+                                <Form.Control spellCheck="true" placeholder="Write something..." autoComplete="off" name="label" size="sm"
                                     onChange={handleChange} onBlur={handleBlur} value={values.label}
                                     isInvalid={touched.label && !!errors.label}
                                 ></Form.Control>
@@ -65,7 +65,7 @@ export const EditTodo: React.FC<commonProps> = ({handleToogle, findOneAndUpdate,
 
                             <Form.Group>
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" placeholder="let me explain" size="sm" autoComplete="off" name="description"
+                                <Form.Control as="textarea" spellCheck="true" placeholder="let me explain" size="sm" autoComplete="off" name="description"
                                     onChange={handleChange} onBlur={handleBlur} value={values.description}
                                 ></Form.Control>
                             </Form.Group>

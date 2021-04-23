@@ -93,7 +93,7 @@ export const NewVerb: React.FC<commonProps> = ({ handleToogle, saveByKey }) => {
                                             <VolumeUp size="20" />
                                         </span>
                                     </Form.Label>
-                                    <Form.Control placeholder="Infinitive Form" autoComplete="off" name="label" size="sm"
+                                    <Form.Control spellCheck="true" placeholder="Infinitive Form" autoComplete="off" name="label" size="sm"
                                         onChange={handleChange} onBlur={handleBlur} value={values.label}
                                         isInvalid={touched.label && !!errors.label}
                                     ></Form.Control>
@@ -109,7 +109,7 @@ export const NewVerb: React.FC<commonProps> = ({ handleToogle, saveByKey }) => {
 
                                 <Form.Group as={Col} xs="6">
                                     <Form.Label>Verb Category</Form.Label>
-                                    <Form.Control size="sm" as="select" name="category"
+                                    <Form.Control spellCheck="true" size="sm" as="select" name="category"
                                         onChange={handleChange} onBlur={handleBlur} value={values.category}
                                         isInvalid={touched.category && !!errors.category}
                                         placeholder="In which category this verb is belong?">
@@ -129,7 +129,7 @@ export const NewVerb: React.FC<commonProps> = ({ handleToogle, saveByKey }) => {
                                             <VolumeUp size="20" />
                                     </span>
                                     </Form.Label>
-                                    <Form.Control placeholder="Past Form" autoComplete="off" name="past" size="sm"
+                                    <Form.Control spellCheck="true" placeholder="Past Form" autoComplete="off" name="past" size="sm"
                                         onChange={handleChange} onBlur={handleBlur} value={values.past}
                                         isInvalid={touched.past && !!errors.past}
                                     ></Form.Control>
@@ -150,7 +150,7 @@ export const NewVerb: React.FC<commonProps> = ({ handleToogle, saveByKey }) => {
                                             <VolumeUp size="20" />
                                         </span>
                                     </Form.Label>
-                                    <Form.Control placeholder="Past Participal Form" size="sm" autoComplete="off" name="pastParticipal"
+                                    <Form.Control spellCheck="true" placeholder="Past Participal Form" size="sm" autoComplete="off" name="pastParticipal"
                                         onChange={handleChange} onBlur={handleBlur} value={values.pastParticipal}
                                         isInvalid={touched.pastParticipal && !!errors.pastParticipal}
                                     ></Form.Control>
@@ -243,7 +243,7 @@ export const NewVerb: React.FC<commonProps> = ({ handleToogle, saveByKey }) => {
 
                             <Form.Group>
                                 <Form.Label>Definition / Meaning</Form.Label>
-                                <Form.Control as="textarea" placeholder="Verb definition" size="sm" autoComplete="off" name="definition"
+                                <Form.Control spellCheck="true" as="textarea" placeholder="Verb definition" size="sm" autoComplete="off" name="definition"
                                     onChange={handleChange} onBlur={handleBlur} value={values.definition}
                                     isInvalid={touched.definition && !!errors.definition}
                                 ></Form.Control>
