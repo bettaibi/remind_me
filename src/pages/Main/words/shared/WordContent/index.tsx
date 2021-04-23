@@ -1,5 +1,4 @@
 import React from 'react';
-import { Badge } from 'react-bootstrap';
 import { ChatSquareQuote, VolumeUp } from 'react-bootstrap-icons';
 import useAssistant from '../../../../../components/useAssistant';
 import { wordContentProps } from '../words.model';

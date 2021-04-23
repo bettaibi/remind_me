@@ -8,7 +8,7 @@ import Skeleton from 'react-loading-skeleton';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-const linguaApi = "https://lt-nlgservice.herokuapp.com/rest/english/conjugate";
+const linguaApi = process.env.REACT_APP_GRAMMAR_API;
 
 const schema = Yup.object().shape({
     query: Yup.string().required('Enter a Verb to get its conjugations').max(25, 'Too much letters!')
