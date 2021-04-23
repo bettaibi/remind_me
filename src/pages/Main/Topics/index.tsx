@@ -40,7 +40,7 @@ const Topics: React.FC = () => {
             <Subject
                 title="New Topic"
                 definition="
-                    A Topic is a word used to identify any of a class of people, places or things.
+                    Hey dude, What's the topic of today ?
                 ">
                 {
                     (handleToggle) => (

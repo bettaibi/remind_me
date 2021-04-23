@@ -40,7 +40,7 @@ const ListOfThings: React.FC = () => {
     return (
         <React.Fragment >
             <div className="bg-light border rounded p-3">
-                Give names to all things inside a picture.
+                Rename all things in the picture.
                 <div className="text-right mt-2">
                     <button className="btn btn-primary btn-sm" onClick={create}>
                         Create

@@ -104,7 +104,7 @@ const NewItemContainer: React.FC<NewItemProps> = ({saveByKey}) => {
             
             <div className="border rounded p-3 bg-light mb-3">
                     <p >
-                      AQ  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                      This is a Question/Answer Section.
                     </p>
                     <div className="text-right">
                         <Button variant="primary" size="sm" onClick={handleShow}>New QA</Button>

@@ -41,7 +41,7 @@ const Adverbs: React.FC = () => {
             <Subject
                 title="New Adverb"
                 definition="
-                    A noun is a word used to identify any of a class of people, places or things.
+                    An Adverb is a word to describe the verb and often used to show the manner, degree..
                 ">
                 {
                     (handleToggle) => (

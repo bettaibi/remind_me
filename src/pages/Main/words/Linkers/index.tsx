@@ -40,7 +40,7 @@ const Linkers: React.FC = () => {
             <Subject
                 title="New Linker"
                 definition="
-                    A noun is a word used to identify any of a class of people, places or things.
+                    A Linker is a word used to link two or more sentences together.
                 ">
                 {
                     (handleToggle) => (

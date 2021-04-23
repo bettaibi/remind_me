@@ -104,7 +104,7 @@ const NewItemContainer: React.FC<NewItemProps> = ({saveByKey}) => {
             
             <div className="border rounded p-3 bg-light mb-3">
                     <p >
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        Idioms are words or phrases that aren't meant to be taken literally.
                     </p>
                     <div className="text-right">
                         <Button variant="primary" size="sm" onClick={handleShow}>New Idiom</Button>

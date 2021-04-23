@@ -41,7 +41,7 @@ const TensePractise: React.FC = () => {
             <Subject
                 title="Add sentences"
                 definition="
-                    A Note is a word used to identify any of a class of people, places or things.
+                    Master English tenses by adding a sentence and convert it each time to a new tense.
                 ">
                 {
                     (handleToggle) => (

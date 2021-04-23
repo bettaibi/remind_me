@@ -39,7 +39,8 @@ const Notes: React.FC = () => {
             <Subject
                 title="New Note"
                 definition="
-                    A Note is a word used to identify any of a class of people, places or things.
+                    You will find all your Grammar Notes below.
+                    Would you like to create a new Grammar Note?
                 ">
                 {
                     (handleToggle) => (

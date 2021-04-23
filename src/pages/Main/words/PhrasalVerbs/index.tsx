@@ -39,7 +39,8 @@ const PhrasalVerbs: React.FC = () => {
             <Subject
                 title="New Phrasal Verb"
                 definition="
-                    A noun is a word used to identify any of a class of people, places or things.
+                    Phrasal Verbs are a combination of two or three words. They are generally used in spoken English and Informal texts.
+                    it could be a verb + preposition or a verb + adverb such as (look forward to or go through).
                 ">
                 {
                     (handleToggle) => (

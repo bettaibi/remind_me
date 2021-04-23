@@ -40,7 +40,7 @@ const Adjectives: React.FC = () => {
             <Subject
                 title="New Adjective"
                 definition="
-                    A noun is a word used to identify any of a class of people, places or things.
+                    An Adjective is word wich describes a noun, it can also describe the quantity of nouns (many, few, millions, eleven..)
                 ">
                 {
                     (handleToggle) => (
