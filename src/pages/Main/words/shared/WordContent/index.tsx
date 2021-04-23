@@ -55,10 +55,8 @@ const WordContent: React.FC<wordContentProps> = ({ word }) => {
                             <h6>Synonyms</h6>
                             <div className="d-flex flex-row flex-wrap">
                                 {
-                                    word.synonyms.map((synonym: string, i: number) => (
-                                        <Badge className="px-3 py-1 mr-2" variant="info" key={word.id + 'synonym' + i}>
-                                            {synonym}
-                                        </Badge>
+                                   word.synonyms.map((synonym: string, c: number) => (
+                                        <span key={'sy' + c} className="border rounded-lg text-secondary py-1 px-2 mr-2 my-1">{synonym}</span>
                                     ))
                                 }
                             </div>
