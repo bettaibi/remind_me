@@ -17,6 +17,7 @@ const INITIAL_VALUE: PhrasalModel = {
     definition: '',
     examples: ['', '', ''],
     translation: '',
+    synonyms: ['', ''],
     spelling: ''
 }
 
@@ -51,7 +52,7 @@ export const NewPhrasalVerb: React.FC<AddProps> = ({handleToogle, saveByKey}) =>
                 resetForm();
             }
             else{
-                showMsg('Failed to Created', 'Failed to persist', 'danger');
+                showMsg('Failed to Created', res.message, 'warning');
             }
             
         }
@@ -130,6 +131,38 @@ export const NewPhrasalVerb: React.FC<AddProps> = ({handleToogle, saveByKey}) =>
                                     {errors.definition}
                                 </Form.Control.Feedback>
                             </Form.Group>
+
+                            <FieldArray name="synonyms">
+                                {
+                                    () => (
+                                        <React.Fragment>
+                                            {
+                                                values.synonyms.length > 0 && (
+                                                    <React.Fragment>
+                                                        <div className="mb-2">
+                                                            <h6>Synonyms</h6>
+                                                            <small className="text-secondary">Enter two synonyms related to inserted word (this section is optional). </small>
+                                                        </div>
+
+                                                        <Form.Row>
+                                                            {
+                                                                values.synonyms.map((item: string, index: number) => (
+                                                                    <Form.Group as={Col} xs="6" key={'syno' + index}>
+                                                                        <Form.Label>Synonym {index + 1}: </Form.Label>
+                                                                        <Form.Control placeholder="synonym" size="sm" autoComplete="off" name={`synonyms.${index}`}
+                                                                            onChange={handleChange} onBlur={handleBlur} value={values.synonyms[index]}
+                                                                        ></Form.Control>
+                                                                    </Form.Group>
+                                                                ))
+                                                            }
+                                                        </Form.Row>
+                                                    </React.Fragment>
+                                                )
+                                            }
+                                        </React.Fragment>
+                                    )
+                                }
+                            </FieldArray>
 
                             <div className="mb-2">
                                 <h6>Examples</h6>

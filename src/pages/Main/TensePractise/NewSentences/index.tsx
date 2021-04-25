@@ -53,7 +53,7 @@ export const NewSentences: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
                 resetForm();
             }
             else {
-                showMsg('Failed to Created', 'Failed to persist', 'danger');
+                showMsg('Failed to Created', res.message, 'warning');
             }
 
         }

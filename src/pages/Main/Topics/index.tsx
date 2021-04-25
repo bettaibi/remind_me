@@ -86,15 +86,17 @@ const ItemContent: React.FC<wordContentProps> = ({ word }) => {
                             word.vocabs.map((item: VocabularyModal, idx: number) => (
                                 <details key={word.id + 'details' + idx}>
                                     <summary style={{outline: 'none'}}>{item.name}</summary>
-                                    <p className="text-secondary">
+                                    <div className="ml-3">
+                                    { item.definition &&  <p className="text-secondary">
                                        "{item.definition}"
-                                    </p>
+                                    </p>}
                                     <p>
                                         <span className="mr-2">
                                             <ChatSquareQuote />
                                         </span>
                                         {item.example}
                                     </p>
+                                    </div>
                                 </details>
                             ))
                         }

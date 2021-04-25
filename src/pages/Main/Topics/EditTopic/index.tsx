@@ -17,7 +17,6 @@ const schema = yup.object().shape({
     vocabs: yup.array().of(
         yup.object().shape({
             name: yup.string().required('Name is required'),
-            definition: yup.string().required('Definition is required'),
             example: yup.string().required('An Example is required'),
         })
     )
@@ -146,11 +145,7 @@ export const EditTopic:React.FC<EditProps> = ({handleToogle, word, findOneAndUpd
                                                                 </span>
                                                             </Form.Label>
                                                             <Form.Control autoComplete="off" size="sm" as="textarea" placeholder="Is That thing useful?" name={`vocabs.${i}.definition`}
-                                                                onChange={handleChange} onBlur={handleBlur} value={values.vocabs[i].definition}
-                                                                isInvalid={touched.vocabs && !!errors.vocabs} />
-                                                            <Form.Control.Feedback type="invalid">
-                                                                Definition is required
-                                                  </Form.Control.Feedback>
+                                                                onChange={handleChange} onBlur={handleBlur} value={values.vocabs[i].definition} />
                                                         </Form.Group>
                                                     </div>
                                                 ))}

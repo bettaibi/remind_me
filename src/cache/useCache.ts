@@ -23,17 +23,28 @@ const useCache = (collection: string) => {
 
     async function saveByKey (obj: any, key: string): Promise<CustomResponse> {
         try{
-            const saved = await db.collection(collection).add(obj, key);
+            const label = obj.label.trim().toLowerCase();
+            const found = await db.collection(collection).doc({label}).get();
+            if(found){
+                return toJson(false, `The word ${label} already exsist!`);
+            }
+            const saved = await db.collection(collection).add({
+                ...obj, 
+                label: label
+            }, key);
             return toJson(true, 'New record has been added', saved);
         }
         catch(err){
-            return toJson(false, 'Failed to create');
+            return toJson(false, 'Failed to persist a new Word');
         }
     };
 
     async function findOneAndUpdate (obj: any, id: string): Promise<CustomResponse> {
         try{
-            const updated = await db.collection(collection).doc({id}).update(obj);
+            const updated = await db.collection(collection).doc({id}).update({
+                ...obj,
+                label: obj.label.trim().toLowerCase()
+            });
             return toJson(true, 'New record has been updated', updated);
         }
         catch(err){
@@ -93,7 +104,7 @@ const useCache = (collection: string) => {
 
     async function findOne (id: string): Promise<CustomResponse> {
         try{
-            const found = await db.collection(collection).doc(id).get();
+            const found = await db.collection(collection).doc({id}).get();
             return toJson(true, 'find a document', found);
         }
         catch(err){

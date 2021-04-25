@@ -96,7 +96,7 @@ const AddTodoContainer: React.FC<NewItemProps> = ({ saveByKey }) => {
                 <Button onClick={handleShow} size="sm">ADD A NEW TODO</Button>
             </div>
 
-            <Dialog show={show} headerText="New Idiom" handleClose={handleHide} centered={false}>
+            <Dialog show={show} headerText="New TODO" handleClose={handleHide} centered={false}>
                 <NewTodo handleToogle={handleHide} saveByKey={saveByKey} showMsg={showMsg} />
             </Dialog>
             <Snackbar />
@@ -112,7 +112,7 @@ const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) 
         <React.Fragment>
             <Button className="mr-2" variant="primary" size="sm" onClick={handleShow}>Update</Button>
 
-            <Dialog show={show} headerText="Edit Idiom" handleClose={handleHide} centered={false}>
+            <Dialog show={show} headerText="Edit TODO" handleClose={handleHide} centered={false}>
                 <EditTodo word={word} handleToogle={handleHide} findOneAndUpdate={findOneAndUpdate} showMsg={showMsg} />
             </Dialog>
             <Snackbar />

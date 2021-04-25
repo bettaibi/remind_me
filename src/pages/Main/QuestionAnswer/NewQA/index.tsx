@@ -38,7 +38,7 @@ export const NewQA: React.FC<commonProps> = ({handleToogle, saveByKey, showMsg})
                 resetForm();
             }
             else{
-                showMsg('Failed to Created', 'Failed to persist', 'danger');
+                showMsg('Failed to Created', res.message, 'warning');
             }
             
         }

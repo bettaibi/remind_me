@@ -16,7 +16,7 @@ const INITIAL_VALUE: AdjectiveModel = {
     label: '',
     definition: '',
     examples: ['', '', ''],
-    synonyms: ['', ''],
+    synonyms: ['', '', '', ''],
     translation: '',
     spelling: '',
     comparative: '',
@@ -59,7 +59,7 @@ export const NewAdjective: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
                 resetForm();
             }
             else {
-                showMsg('Failed to Created', 'Failed to persist', 'danger');
+                showMsg('Failed to Created', res.message, 'warning');
             }
         }
         catch (err) {
@@ -172,7 +172,7 @@ export const NewAdjective: React.FC<AddProps> = ({ handleToogle, saveByKey }) =>
                                                         <React.Fragment>
                                                             <div className="mb-2">
                                                                 <h6>Synonyms</h6>
-                                                                <small className="text-secondary">Enter two synonyms related to inserted word (this section is optional). </small>
+                                                                <small className="text-secondary">Enter a few synonyms related to inserted word (this section is optional). </small>
                                                             </div>
 
                                                             <Form.Row>

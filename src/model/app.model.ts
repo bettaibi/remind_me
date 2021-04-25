@@ -118,6 +118,7 @@ export interface PhrasalModel{
     label: string;
     definition: string;
     examples: string[];
+    synonyms: string[];
     translation: string;
     spelling: string;
 }

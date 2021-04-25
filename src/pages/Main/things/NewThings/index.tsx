@@ -21,8 +21,7 @@ const schema = yup.object().shape({
     things: yup.array().of(
         yup.object().shape({
             name: yup.string().required('Name is required'),
-            translation: yup.string().required('Translation is required'),
-            utility: yup.string().required('Utility is required'),
+            translation: yup.string().required('Translation is required')
         })
     )
 })
@@ -166,11 +165,7 @@ const ThingsForm: React.FC<ThingsFormProps> = ({ save, isLoading }) => {
                                                 <Form.Group>
                                                     <Form.Label>Utility</Form.Label>
                                                     <Form.Control autoComplete="off" size="sm" as="textarea" placeholder="Is That thing useful?" name={`things.${i}.utility`}
-                                                        onChange={handleChange} onBlur={handleBlur} value={values.things[i].utility}
-                                                        isInvalid={touched.things && !!errors.things} />
-                                                    <Form.Control.Feedback type="invalid">
-                                                        Utility is required
-                                                  </Form.Control.Feedback>
+                                                        onChange={handleChange} onBlur={handleBlur} value={values.things[i].utility}/>
                                                 </Form.Group>
                                             </div>
                                         ))}

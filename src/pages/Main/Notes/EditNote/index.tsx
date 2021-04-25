@@ -73,7 +73,7 @@ export const EditNote: React.FC<EditProps> = ({handleToogle, word, findOneAndUpd
  
                              <Form.Group>
                                  <Form.Label>Note</Form.Label>
-                                 <Form.Control autoComplete="off" size="sm" placeholder="your notes here.." name="note"
+                                 <Form.Control  as="textarea" autoComplete="off" size="sm" placeholder="your notes here.." name="note"
                                      onChange={handleChange} onBlur={handleBlur} value={values.note}
                                      isInvalid={touched.note && !!errors.note} />
  

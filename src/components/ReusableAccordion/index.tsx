@@ -23,7 +23,7 @@ export const AccordionItems: React.FC<AccordionItemsProps> = ({children, eventKe
     return (
         <Card>
             <Accordion.Toggle className="bg-light d-flex flex-row justify-content-between" as={Card.Header} eventKey={eventKey}>
-                <p className="m-0">{headerText}</p>
+                <p className="m-0 text-capitalize">{headerText}</p>
                 <ChevronRight />
             </Accordion.Toggle>
 

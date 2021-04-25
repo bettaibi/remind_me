@@ -38,7 +38,7 @@ export const NewIdiom: React.FC<commonProps> = ({handleToogle, saveByKey, showMs
                 resetForm();
             }
             else{
-                showMsg('Failed to Created', 'Failed to persist', 'danger');
+                showMsg('Failed to Created', res.message, 'warning');
             }
             
         }

@@ -69,7 +69,7 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
         <React.Fragment>
             <WordContent word={word} />
 
-            <div className="text-right">
+            <div className="text-right mt-3">
                 <EditItemContainer word = {word} findOneAndUpdate = {findOneAndUpdate} />
                 <RemoveItemContainer word = {word} findOneAndDelete = {findOneAndDelete} />
             </div>

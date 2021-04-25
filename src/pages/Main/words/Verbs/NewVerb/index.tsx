@@ -68,7 +68,7 @@ export const NewVerb: React.FC<commonProps> = ({ handleToogle, saveByKey }) => {
                 resetForm();
             }
             else{
-                showMsg('Failed to Created', 'Failed to persist a new verb', 'danger');
+                showMsg('Failed to Created', res.message, 'warning');
             }
             
         }

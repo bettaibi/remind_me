@@ -47,7 +47,7 @@ export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
                 resetForm();
             }
             else{
-                showMsg('Failed to Created', 'Failed to persist', 'danger');
+                showMsg('Failed to Created', res.message, 'warning');
             }
             
         }
@@ -78,7 +78,7 @@ export const NewNote: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
 
                             <Form.Group>
                                 <Form.Label>Note</Form.Label>
-                                <Form.Control spellCheck="true" autoComplete="off" size="sm" placeholder="your notes here.." name="note"
+                                <Form.Control as="textarea" spellCheck="true" autoComplete="off" size="sm" placeholder="your notes here.." name="note"
                                     onChange={handleChange} onBlur={handleBlur} value={values.note}
                                     isInvalid={touched.note && !!errors.note} />
 
