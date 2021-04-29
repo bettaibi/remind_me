@@ -36,7 +36,7 @@ const Todos: React.FC = () => {
 
     return (
         <React.Fragment>
-            <AddTodoContainer saveByKey={saveByKey} />
+            <AddTodoContainer saveByKey={saveByKey} recordsNumber = {todos.length} />
 
             <PaginatedFiltrableList dataSource={todos}>
                 {
@@ -82,15 +82,17 @@ const Todo: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 
 interface NewItemProps {
     saveByKey: (obj: any, id: string) => any;
+    recordsNumber: number;
 }
 
-const AddTodoContainer: React.FC<NewItemProps> = ({ saveByKey }) => {
+const AddTodoContainer: React.FC<NewItemProps> = ({ saveByKey, recordsNumber }) => {
     const { show, handleHide, handleShow } = useToggleState();
     const { Snackbar, showMsg } = useSnackbar();
 
     return (
         <React.Fragment>
-            <div className="text-right mb-3">
+            <div className="mb-3 d-flex flex-row justify-content-between align-items-center">
+                <span className="text-muted">RESULTS: {recordsNumber}</span>
                 <Button onClick={handleShow} size="sm">ADD A NEW TODO</Button>
             </div>
 
