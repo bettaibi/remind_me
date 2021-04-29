@@ -12,9 +12,9 @@ import { deleteTodo, getTodos } from '../../../store/actions/todos.actions';
 import { EditTodo } from './EditTodos';
 import { NewTodo } from './NewTodo';
 import { WordEditProps, WordRemoveProps, wordsProps } from '../words/shared/words.model';
-import { AccordionItems, ReusableAccordion } from '../../../components/ReusableAccordion';
 import { VolumeUp } from 'react-bootstrap-icons';
 import useAssistant from '../../../components/useAssistant';
+import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 
 const Todos: React.FC = () => {
     const todos = useSelector((appState: AppState) => appState.todos);
@@ -38,15 +38,13 @@ const Todos: React.FC = () => {
         <React.Fragment>
             <AddTodoContainer saveByKey={saveByKey} />
 
-            <ReusableAccordion>
+            <PaginatedFiltrableList dataSource={todos}>
                 {
-                    todos.map((item: any, idx: number) => (
-                        <AccordionItems key={item.id} eventKey={'ev' + idx} headerText={item.label} >
-                            <Todo word={item} findOneAndUpdate={findOneAndUpdate} findOneAndDelete={findOneAndDelete} />
-                        </AccordionItems>
-                    ))
+                    (item) => (
+                        <Todo word={item} findOneAndUpdate={findOneAndUpdate} findOneAndDelete={findOneAndDelete} />
+                    )
                 }
-            </ReusableAccordion>
+            </PaginatedFiltrableList>
 
         </React.Fragment>
     )
