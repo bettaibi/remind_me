@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Pagination } from 'react-bootstrap';
 
-
 export const useCustomPagination = (array: any[], itemsPerPage: number) => {
-    
+
     const [currentPage, setCurrentPage] = useState<number>(0);
 
     const visitedPages = currentPage * itemsPerPage;
@@ -41,14 +40,22 @@ export const useCustomPagination = (array: any[], itemsPerPage: number) => {
         <Pagination>
             <Pagination.First disabled={currentPage === 0} onClick={firstSlice} />
             <Pagination.Prev disabled={currentPage === 0} onClick={prevSlice} />
+
             {
-                [...Array(slices)].map((item, index) => (
-                    <Pagination.Item key={'slice' + index}
-                        active={currentPage === index} onClick={() => newSlice(index)} >
-                        {index + 1}
-                    </Pagination.Item>
-                ))
+                currentPage < (slices - 1) &&
+                <Pagination.Item active onClick={() => newSlice(currentPage)}>{currentPage + 1}</Pagination.Item>
             }
+            {
+                currentPage < (slices - 2) &&
+                <Pagination.Item onClick={() => newSlice(currentPage + 1)}>{currentPage + 2}</Pagination.Item>
+            }
+           
+            {
+                slices > 4 &&
+                <Pagination.Ellipsis disabled></Pagination.Ellipsis>
+            }
+            <Pagination.Item active={currentPage === (slices - 1)} onClick={() => newSlice(slices - 1)}>{slices}</Pagination.Item>
+
             <Pagination.Next disabled={currentPage === (slices - 1)} onClick={nextSlice} />
             <Pagination.Last disabled={currentPage === (slices - 1)} onClick={lastSlice} />
         </Pagination>
