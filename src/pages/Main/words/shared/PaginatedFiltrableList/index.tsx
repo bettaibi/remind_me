@@ -12,7 +12,7 @@ interface PaginatedFiltrableListProps {
 export const PaginatedFiltrableList: React.FC<PaginatedFiltrableListProps> = ({dataSource, children}) => {
 
     const { setTerm, filterHandler } = useFilter([...dataSource]);
-    let { CustomPagination, list } = useCustomPagination(filterHandler(), 6);
+    let { CustomPagination, list } = useCustomPagination(filterHandler(), 8);
 
     const handleChange = (e: any) => {
         setTerm(e.target.value);

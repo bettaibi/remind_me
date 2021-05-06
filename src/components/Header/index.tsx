@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
             <header className="header shadow-sm bg-white">
                 <Container className="h-100">
                     <div className="h-100 d-flex flex-row justify-content-between align-items-center">
-                        <NavLink to="/home" className="d-flex flex-column align-items-center btn-icon">
+                        <NavLink to="/home" exact className="d-flex flex-column align-items-center btn-icon">
                             <PieChart size="18" />
                             <span className="fs-14">Progress</span>
                         </NavLink>
