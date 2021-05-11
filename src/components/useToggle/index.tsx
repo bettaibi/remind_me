@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-export const useToggleState = () =>{
+export const useToggle = () =>{
 
     const [show, setShow] = useState<boolean>(false);
 

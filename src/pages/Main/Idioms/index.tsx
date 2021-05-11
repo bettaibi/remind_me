@@ -4,7 +4,7 @@ import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { NewIdiom } from './NewIdom';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
 import { EditIdiom } from './EditIdiom';
-import { useToggleState } from '../../../components/useToggleState';
+import { useToggle } from '../../../components/useToggle';
 import { Dialog } from '../../../components/Dialog';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../model/app.model';
@@ -77,7 +77,7 @@ const ItemContent: React.FC<wordContentProps> = ({ word }) => {
 };
 
 const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
-    const { show, handleHide, handleShow } = useToggleState();
+    const { show, handleHide, handleShow } = useToggle();
     const {Snackbar, showMsg} = useSnackbar();
 
     return (
@@ -96,7 +96,7 @@ interface NewItemProps{
     saveByKey: (obj: any, id: string) => any;
 }
 const NewItemContainer: React.FC<NewItemProps> = ({saveByKey}) => {
-    const { show, handleHide, handleShow } = useToggleState();
+    const { show, handleHide, handleShow } = useToggle();
     const {Snackbar, showMsg} = useSnackbar();
 
     return (

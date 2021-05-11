@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Dialog } from '../Dialog';
 import { Button, Spinner } from 'react-bootstrap';
-import { useToggleState } from '../useToggleState';
+import { useToggle } from '../useToggle';
 
 interface ConfirmDialogProps {
     message: string;
@@ -9,7 +9,7 @@ interface ConfirmDialogProps {
 }
 
 export const useConfirmDialog = (obj: ConfirmDialogProps) => {
-    const { handleToggle, show, handleHide } = useToggleState();
+    const { handleToggle, show, handleHide } = useToggle();
     const [isLoading, setIsloading] = useState<boolean>(false);
 
     useEffect(() => {

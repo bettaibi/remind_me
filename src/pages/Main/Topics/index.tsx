@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { FullPageContainer } from '../../../components/FullPageContainer';
-import { useToggleState } from '../../../components/useToggleState';
+import { useToggle } from '../../../components/useToggle';
 import { AppState, VocabularyModal } from '../../../model/app.model';
 import { deleteTopic, getTopics } from '../../../store/actions/topic.actions';
 import { PaginatedFiltrableList } from '../words/shared/PaginatedFiltrableList';
@@ -108,7 +108,7 @@ const ItemContent: React.FC<wordContentProps> = ({ word }) => {
 };
 
 const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
-    const { handleToggle, show } = useToggleState();
+    const { handleToggle, show } = useToggle();
 
     return (
         <React.Fragment>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FullPageContainer } from '../../../../../components/FullPageContainer';
 import { Button } from 'react-bootstrap';
-import { useToggleState } from '../../../../../components/useToggleState';
+import { useToggle } from '../../../../../components/useToggle';
 
 interface SubjectProps {
     definition: string;
@@ -10,7 +10,7 @@ interface SubjectProps {
 }
 
 export const Subject: React.FC<SubjectProps> = ({title, definition, children}) => {
-    const { handleToggle, show } = useToggleState();
+    const { handleToggle, show } = useToggle();
 
     return (
         <React.Fragment>

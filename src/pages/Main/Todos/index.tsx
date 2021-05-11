@@ -5,7 +5,7 @@ import { Collections, useCache } from '../../../cache';
 import { useConfirmDialog } from '../../../components/ConfirmDialog';
 import { Dialog } from '../../../components/Dialog';
 import { useSnackbar } from '../../../components/Snackbar';
-import { useToggleState } from '../../../components/useToggleState';
+import { useToggle } from '../../../components/useToggle';
 import { useSharedContext } from '../../../Context';
 import { AppState } from '../../../model/app.model';
 import { deleteTodo, getTodos } from '../../../store/actions/todos.actions';
@@ -86,7 +86,7 @@ interface NewItemProps {
 }
 
 const AddTodoContainer: React.FC<NewItemProps> = ({ saveByKey, recordsNumber }) => {
-    const { show, handleHide, handleShow } = useToggleState();
+    const { show, handleHide, handleShow } = useToggle();
     const { Snackbar, showMsg } = useSnackbar();
 
     return (
@@ -105,7 +105,7 @@ const AddTodoContainer: React.FC<NewItemProps> = ({ saveByKey, recordsNumber }) 
 }
 
 const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
-    const { show, handleHide, handleShow } = useToggleState();
+    const { show, handleHide, handleShow } = useToggle();
     const { Snackbar, showMsg } = useSnackbar();
 
     return (

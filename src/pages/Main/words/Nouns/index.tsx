@@ -6,7 +6,7 @@ import { Subject } from '../shared/Subject';
 import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditNoun } from './EditNoun';
-import { useToggleState } from '../../../../components/useToggleState';
+import { useToggle } from '../../../../components/useToggle';
 import { AppState } from '../../../../model/app.model';
 import { useSelector } from 'react-redux';
 import { deleteNoun, getNouns } from '../../../../store/actions/noun.actions';
@@ -76,7 +76,7 @@ const Word: React.FC<wordsProps> = ({ word, findOneAndUpdate, findOneAndDelete }
 }
 
 const EditItemContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
-    const { handleToggle, show } = useToggleState();
+    const { handleToggle, show } = useToggle();
 
     return (
         <React.Fragment>

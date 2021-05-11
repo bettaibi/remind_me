@@ -11,7 +11,7 @@ import { LoginForm } from '../../../model/app.model';
 import * as yup from 'yup';
 
 import logo from '../../../assets/img/logo90.png';
-import { useToggleState } from '../../../components/useToggleState';
+import { useToggle } from '../../../components/useToggle';
 import { useSharedContext } from '../../../Context';
 
 const defaultState: LoginForm = { email: '', password: '' };
@@ -110,7 +110,7 @@ const Signin: React.FC = () => {
 }
 
 const DialogContainer = () => {
-    const { show, handleHide, handleShow } = useToggleState();
+    const { show, handleHide, handleShow } = useToggle();
 
     const recoverPassword = (e: any) => {
         e.preventDefault();

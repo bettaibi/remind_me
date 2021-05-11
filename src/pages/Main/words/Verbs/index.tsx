@@ -6,7 +6,7 @@ import { Subject } from '../shared/Subject';
 import { PaginatedFiltrableList } from '../shared/PaginatedFiltrableList';
 import { FullPageContainer } from '../../../../components/FullPageContainer';
 import { EditVerb } from './EditVerb';
-import { useToggleState } from '../../../../components/useToggleState';
+import { useToggle } from '../../../../components/useToggle';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../../model/app.model';
 import { deleteVerb, getVerbs } from '../../../../store/actions/verb.actions';
@@ -75,7 +75,7 @@ const Verb: React.FC<wordsProps> = ({ word, findOneAndDelete, findOneAndUpdate }
 }
 
 const EditVerbContainer: React.FC<WordEditProps> = ({ word, findOneAndUpdate }) => {
-    const { handleToggle, show } = useToggleState();
+    const { handleToggle, show } = useToggle();
 
     return (
         <React.Fragment>
