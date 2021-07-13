@@ -1,4 +1,4 @@
-import {firestore} from '../firebase';
+import { firestore } from '../firebase';
 
 export const useFireStore = () => {
 
@@ -9,4 +9,4 @@ export const useFireStore = () => {
     return {
 
     }
-}
+};

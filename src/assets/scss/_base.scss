@@ -151,6 +151,9 @@ html, body{
     
     @media (max-width: 576px){
         grid-template-columns: repeat(1, 1fr);
+        .xs-t{
+            margin-top: 1rem;
+        }
     }
 }
 
@@ -159,7 +162,6 @@ html, body{
         display: none !important;
     }
 }
-
 
 #zoom-template{
     z-index: 9999999999999999;

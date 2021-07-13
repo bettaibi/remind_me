@@ -1,3 +1,4 @@
+import { Collections } from ".";
 import { CustomResponse } from "../model/app.model";
 import db from './db';
 
@@ -112,6 +113,22 @@ const useCache = (collection: string) => {
         }
     };
 
+    async function getStatistics (): Promise<CustomResponse> {
+        try{
+            const verbs = await db.collection(Collections.VERBS).get();
+            const nouns = await db.collection(Collections.NOUNS).get();
+            const adjectives = await db.collection(Collections.ADJECTIVES).get();
+            const adverbs = await db.collection(Collections.ADVERBS).get();
+            const phrasalVerb = await db.collection(Collections.PHRASALVERBS).get();
+            const linkers = await db.collection(Collections.LINKERS).get();
+
+            return toJson(true, 'get Statistics', [verbs.length, nouns.length, adjectives.length, adverbs.length, phrasalVerb.length, linkers.length]);
+        }
+        catch(err){
+            throw err;
+        }
+    }
+
 
     return {
         save,
@@ -122,7 +139,8 @@ const useCache = (collection: string) => {
         drop,
         init,
         find,
-        findOne
+        findOne,
+        getStatistics
     }
 }
 
