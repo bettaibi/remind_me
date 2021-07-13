@@ -8,7 +8,6 @@ import {
     Stickies,
     PencilSquare,
     QuestionOctagon
-
 } from 'react-bootstrap-icons';
 import { v4 } from 'uuid';
 
@@ -48,7 +47,8 @@ export const navigations: Navigation[] = [
 
     {id: v4(), title: 'Settings', icon: <Gear />, subItems: [
         {id: v4(), title: 'Voice Assistance', path: '/home/voice-assistance'},
-        {id: v4(), title: 'Account Setting', path: '/home/profile'}
+        {id: v4(), title: 'Account Setting', path: '/home/profile'},
+        {id: v4(), title: 'Backup', path: '/home/backup'}
     ]},
 ];
 

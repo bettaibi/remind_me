@@ -18,6 +18,7 @@ const Linkers = lazy(() => import('./words/Linkers'));
 const Adverbs = lazy(() => import('./words/Adverbs'));
 const Adjectives = lazy(() => import('./words/Adjectives'));
 const PhrasalVerbs = lazy(() => import('./words/PhrasalVerbs'));
+const Backup = lazy(() => import('./Backup'));
 const Profile = lazy(() => import('./Profile'));
 const QuestionAnswer = lazy(() => import('./QuestionAnswer'));
 const Todos = lazy(() => import('./Todos'));
@@ -46,6 +47,7 @@ const Main: React.FC = () => {
                     <Route path="/home/profile" component={Profile} />
                     <Route path="/home/QA" component= {QuestionAnswer} />
                     <Route path="/home/todos" component = {Todos} />
+                    <Route path="/home/Backup" component = {Backup} />
                 </Switch>
             </Suspense>
         </main>
