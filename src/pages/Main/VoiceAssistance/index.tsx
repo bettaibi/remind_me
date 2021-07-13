@@ -5,7 +5,7 @@ import UseAssistant from '../../../components/useAssistant';
 
 const VoiceAssistance: React.FC = () => {
     const { setAssistantVoice, voiceHandler, changeAssistantVoice, currentVoice, voices} = UseAssistant();
-    const [text, setText] = useState<string>('Hello, How it is going?');
+    const [text, setText] = useState<string>('Hello, How is it going?');
 
     const voiceChangeHandler = (e: any) =>{
         try{

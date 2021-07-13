@@ -2,9 +2,10 @@ import React from 'react';
 
 const Games: React.FC = () => {
     return (
-        <div>
-            This is a Games Component
-        </div>
+        <p>
+            This page is reserved for games.
+            The component is on progress. we will infom you when we make changes
+        </p>
     )
 }
 

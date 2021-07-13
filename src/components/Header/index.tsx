@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
 
                         <NavLink to="/home/todos" className="d-flex flex-column align-items-center btn-icon">
                             <Check2Circle size="18" />
-                            <span className="fs-14">Todos</span>
+                            <span className="fs-14">My draft</span>
                         </NavLink>
                         
                         <NavLink to="/home/games" className="d-flex flex-column align-items-center btn-icon">

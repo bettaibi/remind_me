@@ -63,7 +63,7 @@ export const NewTopic: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
             <Formik initialValues={INITIAL_VALUE} onSubmit={(values, {resetForm}) => create(values, resetForm)}
                 validationSchema={schema}>
                 {
-                    ({ handleSubmit, handleChange, handleBlur, values, isValid, touched, errors }) => (
+                    ({ handleSubmit, handleChange, handleBlur, values, touched, errors }) => (
                         <Form onSubmit={handleSubmit}>
                             <FullPageHeader handleToggle={handleToogle} title="New Topic" />
                             <Container className="py-3">
@@ -85,13 +85,13 @@ export const NewTopic: React.FC<AddProps> = ({ handleToogle, saveByKey }) => {
 
                                 <FieldArray name="vocabs">
                                     {
-                                        ({ remove, push }) => (
+                                        ({ remove, unshift }) => (
                                             <React.Fragment>
                                                 <div className="d-flex flex-row justify-content-between align-items-center">
                                                     <h6 className="m-0">RELATED WORDS</h6>
                                                     <div>
                                                         <Button size="sm" variant="success" className="mr-2"
-                                                            onClick={() => push({ name: '', translation: '', utility: '' })}>
+                                                            onClick={() => unshift({ name: '', definition: '', example: ''  })}>
                                                             New Word
                                                         </Button>
                                                     </div>

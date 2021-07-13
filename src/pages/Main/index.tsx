@@ -6,9 +6,7 @@ const GrammarSearch = lazy(() => import('./GrammarSearch'));
 const WordDefinition = lazy(() => import('./wordDefinition'));
 const VoiceAssistance = lazy(() => import('./VoiceAssistance'));
 const MyProgress = lazy(() => import('./MyProgress'));
-const ListOfThings = lazy(() => import('./things/ListOfThings'));
 const TensePractise = lazy(() => import('./TensePractise'));
-const NewThings = lazy(() => import('./things/NewThings'));
 
 const Games = lazy(() => import('./Games'));
 const Topics = lazy(() => import('./Topics'));
@@ -42,8 +40,6 @@ const Main: React.FC = () => {
                     <Route path="/home/words/linkers" component={Linkers} />
                     <Route path="/home/words/phrasal-verbs" component={PhrasalVerbs} />
                     <Route path="/home/idioms" component={Idioms} />
-                    <Route path="/home/things/list" component={ListOfThings} />
-                    <Route path="/home/things/new" component={NewThings} />
                     <Route path="/home/topics" component={Topics} />
                     <Route path="/home/notes" component={Notes} />
                     <Route path="/home/tenses" component={TensePractise} />

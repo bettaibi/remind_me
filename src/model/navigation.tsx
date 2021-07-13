@@ -3,7 +3,6 @@ import {
     Gear, 
     ClipboardCheck, 
     CardChecklist, 
-    Image, 
     JournalBookmark, 
     JournalCheck,
     Stickies,
@@ -39,11 +38,6 @@ export const navigations: Navigation[] = [
 
     {id: v4(), title: 'Phrases & Idioms', icon: <Stickies />, path: '/home/idioms'},
 
-    {id: v4(), title: 'Things In The Pic', icon: <Image />, subItems: [
-        {id: v4(), title: 'List of things', path: '/home/things/list'},
-        {id: v4(), title: 'Create New', path: '/home/things/new'},
-    ]},
-
     {id: v4(), title: 'English Topics', icon: <JournalBookmark />, path: '/home/topics'},
     {id: v4(), title: 'English Grammar Notes', icon: <JournalCheck />, path: '/home/notes'},
     {id: v4(), title: 'English Tenses Practise', icon: <PencilSquare />, path: '/home/tenses'},
@@ -54,8 +48,7 @@ export const navigations: Navigation[] = [
 
     {id: v4(), title: 'Settings', icon: <Gear />, subItems: [
         {id: v4(), title: 'Voice Assistance', path: '/home/voice-assistance'},
-        {id: v4(), title: 'Notification', path: '/word'},
-        {id: v4(), title: 'Account Setting', path: '/word'}
+        {id: v4(), title: 'Account Setting', path: '/home/profile'}
     ]},
 ];
 

@@ -82,13 +82,13 @@ export const EditTopic:React.FC<EditProps> = ({handleToogle, word, findOneAndUpd
 
                                 <FieldArray name="vocabs">
                                     {
-                                        ({ remove, push }) => (
+                                        ({ remove, unshift }) => (
                                             <React.Fragment>
                                                 <div className="d-flex flex-row justify-content-between align-items-center">
                                                     <h6 className="m-0">RELATED WORDS</h6>
                                                     <div>
                                                         <Button size="sm" variant="success" className="mr-2"
-                                                            onClick={() => push({ name: '', translation: '', utility: '' })}>
+                                                            onClick={() => unshift({ name: '', definition: '', example: ''  })}>
                                                             New Word
                                                         </Button>
                                                     </div>

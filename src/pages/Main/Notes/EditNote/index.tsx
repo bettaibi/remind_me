@@ -95,11 +95,11 @@ export const EditNote: React.FC<EditProps> = ({handleToogle, word, findOneAndUpd
  
                              <FieldArray name="examples">
                                  {
-                                     ({ push, remove }) => (
+                                     ({ unshift, remove }) => (
                                          <React.Fragment>
                                              <div className="d-flex flex-row justify-content-between align-items-center">
                                                  <h6 className="m-0">Examples</h6>
-                                                 <Button size="sm" variant="success" onClick={() => push({ sentence: '', answers: [''] })}>New Example</Button>
+                                                 <Button size="sm" variant="success" onClick={() => unshift({ sentence: '', answers: [''] })}>New Example</Button>
                                              </div>
  
                                              {
@@ -131,7 +131,7 @@ export const EditNote: React.FC<EditProps> = ({handleToogle, word, findOneAndUpd
                                                                          
                                                                              <div className="d-flex flex-row justify-content-between align-items-center">
                                                                                  <h6 className="m-0">Possible Answers</h6>
-                                                                                 <Button size="sm" variant="info" onClick= {() => helper.push('')}>New Answer</Button>
+                                                                                 <Button size="sm" variant="info" onClick= {() => helper.unshift('')}>New Answer</Button>
                                                                              </div>
                                                                             { values.examples[i].answers.length > 0 && values.examples[i].answers.map((item: string, j: number) => (
                                                                                  <Form.Group key={'answer'+i+j}>
