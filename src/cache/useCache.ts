@@ -1,5 +1,5 @@
 import { Collections } from ".";
-import { CustomResponse } from "../model/app.model";
+import { BackupDataModel, CustomResponse } from "../model/app.model";
 import db from './db';
 
 const toJson = (success: boolean, msg: string, data?: any): CustomResponse => {
@@ -83,10 +83,21 @@ const useCache = (collection: string) => {
         }
     };
 
-    async function init (data: any[]): Promise<CustomResponse> {
+    async function init (data: any): Promise<CustomResponse> {
         try{
-            const datasource = await db.collection(collection).set(data);
-            return toJson(true, 'Init the whole collection', datasource);
+            await db.collection(Collections.VERBS).set(JSON.parse(data.verbs));
+            await db.collection(Collections.IDIOMS).set(JSON.parse(data.idioms));
+            await db.collection(Collections.ADJECTIVES).set(JSON.parse(data.adjectives));
+            await db.collection(Collections.PHRASALVERBS).set(JSON.parse(data.phrasalVerbs));
+            await db.collection(Collections.ADVERBS).set(JSON.parse(data.adverbs));
+            await db.collection(Collections.TENSES).set(JSON.parse(data.tenses));
+            await db.collection(Collections.TOPICS).set(JSON.parse(data.topics));
+            await db.collection(Collections.LINKERS).set(JSON.parse(data.linkers));
+            await db.collection(Collections.QA).set(JSON.parse(data.qa));
+            await db.collection(Collections.NOTES).set(JSON.parse(data.notes));
+            await db.collection(Collections.NOUNS).set(JSON.parse(data.nouns));
+
+            return toJson(true, 'Init the whole collections');
         }
         catch(err){
             return toJson(false, 'Failed to remove');
@@ -129,6 +140,23 @@ const useCache = (collection: string) => {
         }
     }
 
+    async function getDatetoStore(): Promise<BackupDataModel>{
+
+        return {
+            verbs: JSON.stringify(await db.collection(Collections.VERBS).get()),
+            nouns: JSON.stringify(await db.collection(Collections.NOUNS).get()),
+            adjectives: JSON.stringify(await db.collection(Collections.ADJECTIVES).get()),
+            adverbs: JSON.stringify(await db.collection(Collections.ADVERBS).get()),
+            phrasalVerbs: JSON.stringify(await db.collection(Collections.PHRASALVERBS).get()),
+            linkers: JSON.stringify(await db.collection(Collections.LINKERS).get()),
+            idioms: JSON.stringify(await db.collection(Collections.IDIOMS).get()),
+            notes: JSON.stringify(await db.collection(Collections.NOTES).get()),
+            tenses: JSON.stringify(await db.collection(Collections.TENSES).get()),
+            topics: JSON.stringify(await db.collection(Collections.TOPICS).get()),
+            qa: JSON.stringify(await db.collection(Collections.QA).get()),
+        };
+    }
+
 
     return {
         save,
@@ -140,7 +168,8 @@ const useCache = (collection: string) => {
         init,
         find,
         findOne,
-        getStatistics
+        getStatistics,
+        getDatetoStore
     }
 }
 

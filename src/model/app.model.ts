@@ -200,3 +200,24 @@ export interface TodosModel{
     label: string;
     description: string;
 }
+
+export interface BackupDataModel{
+    verbs?: string;
+    adjectives?: string;
+    nouns?: string;
+    phrasalVerbs?: string;
+    adverbs?: string;
+    linkers?: string;
+    idioms?: string;
+    topics?: string;
+    notes?: string;
+    tenses?: string;
+    qa?: string;
+}
+
+export interface BackupDatesModel{
+    uploadedAt?: number | null;
+    mergedAt?: number | null;
+}
+
+
