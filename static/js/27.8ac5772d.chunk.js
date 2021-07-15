@@ -1,2 +1,0 @@
-(this.webpackJsonpremind_me=this.webpackJsonpremind_me||[]).push([[27],{344:function(e,n,i){"use strict";i.r(n);i(1);var s=i(2);n.default=function(){return Object(s.jsx)("div",{children:"This is a Games Component"})}}}]);
-//# sourceMappingURL=27.8ac5772d.chunk.js.map

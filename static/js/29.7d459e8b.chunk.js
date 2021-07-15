@@ -1,0 +1,2 @@
+(this.webpackJsonpremind_me=this.webpackJsonpremind_me||[]).push([[29],{387:function(e,n,s){"use strict";s.r(n);s(1);var i=s(2);n.default=function(){return Object(i.jsx)("p",{children:"This page is reserved for games. The component is on progress. we will infom you when we make changes"})}}}]);
+//# sourceMappingURL=29.7d459e8b.chunk.js.map
