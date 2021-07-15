@@ -213,6 +213,7 @@ export interface BackupDataModel{
     notes?: string;
     tenses?: string;
     qa?: string;
+    todos?: string;
 }
 
 export interface BackupDatesModel{

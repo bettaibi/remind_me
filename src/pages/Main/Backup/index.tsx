@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Form
@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import { useSharedContext } from '../../../Context';
 import { useFireStore } from '../../../firebase/useFirestore';
-import { BackupDataModel, BackupDatesModel } from '../../../model/app.model';
+import { BackupDataModel } from '../../../model/app.model';
 import { useCache } from '../../../cache';
 import { useSnackbar } from '../../../components/Snackbar';
 
@@ -20,24 +20,24 @@ const schema = yup.object().shape({
 });
 
 const Backup: React.FC = () => {
-    const [ uploadedAt, setUploadedAt ] = useState(null);
-    const [ mergedAt, setmergedAt ] = useState(null);
-    const {user} = useSharedContext();
+    const [uploadedAt, setUploadedAt] = useState(null);
+    const [mergedAt, setmergedAt] = useState(null);
+    const { user } = useSharedContext();
     const { getlastBackupDates } = useFireStore();
 
-    useEffect(()=> {
+    useEffect(() => {
         getdates();
     }, []);
 
-    async function getdates(){
-        try{
+    async function getdates() {
+        try {
             const doc = await getlastBackupDates(user.uid);
-            if(doc.exists){
+            if (doc.exists) {
                 setUploadedAt(doc.data()?.uploadedAt || null);
                 setmergedAt(doc.data()?.mergedAt || null);
             }
         }
-        catch(err){
+        catch (err) {
             throw err;
         }
     }
@@ -51,73 +51,80 @@ const Backup: React.FC = () => {
                 <b className="text-dark">Merge Data</b> to update your current saved data with the latest backup stored file. <br />
                 <strong className="text-primary">Upload Data</strong> in order to generate a new backup file and store it on the server. <br />
                 <span className="d-flex flex-column mt-1">
-                    <small className="text-secondary"> Latest Merge: {uploadedAt?new Date(uploadedAt || '').toLocaleDateString("en-us"):'Not mention'}</small>
-                    <small className="text-secondary"> Latest Upload: {mergedAt?new Date(mergedAt || '').toLocaleDateString("en-us") :'No file found'}</small>
+                    <small className="text-secondary"> Latest Merge: {uploadedAt ? new Date(uploadedAt || '').toLocaleDateString("en-us") : 'Not mention'}</small>
+                    <small className="text-secondary"> Latest Upload: {mergedAt ? new Date(mergedAt || '').toLocaleDateString("en-us") : 'No file found'}</small>
                 </span>
-        
+
             </p>
             < CodeSecret id={user.uid} uploadedAt={uploadedAt} mergedAt={mergedAt} />
         </div>
     )
 };
 
-interface CodeSecretProps{
+interface CodeSecretProps {
     id: string;
     uploadedAt: number | null;
     mergedAt: number | null;
 }
-const CodeSecret: React.FC<CodeSecretProps> = ({id, uploadedAt, mergedAt}) => {
+const CodeSecret: React.FC<CodeSecretProps> = ({ id, uploadedAt, mergedAt }) => {
     const { getDatetoStore, init } = useCache('');
     const { updateStoredData, updateDates, getStoredData } = useFireStore();
     const { Snackbar, showMsg } = useSnackbar();
 
-    const mergeData = (resetForm: ()=> void) => {
-        try{
-            getStoredData(id).then((doc)=> {
-                if(doc.exists){
-                    init(doc.data()).then((res)=> {
-                        if(res.success){
-                            updateDates(id, {uploadedAt, mergedAt: Date.now()}).then(()=> {
-                                showMsg('Success', 'your data is successfully merged', 'success');
-                                resetForm();
-                            }).catch(err => {
-                                showMsg('Failure', err.message, 'warning');
-                            });
-                        }
-                        else{
-                            showMsg('Failure', 'Failed to merge data', 'warning');
-                        }
-                    })
-                }
-                else{
-                    showMsg('Failure', 'Failed to reach data from the server', 'warning');
-                }
-            }).catch(err => {
-                showMsg('Failure', err.message, 'warning');
-            });
-        }
-        catch(err){
-            showMsg('Failure', 'Failed to merge data', 'warning');
-        }
-    };
+    const mergeData = async (resetForm: () => void) => {
+        const result = window.confirm('Merge a new Data, confirm?');
+        if (result) {
+            try {
+                getStoredData(id).then(async (doc) => {
+                    if (doc.exists) {
+                        // for await (const [key, value] of Object.entries(Object(doc.data()))) {
+                        //     let arrayData = JSON.parse(String(value));
+                        //     arrayData = arrayData.map((item: any) => {
+                        //         return { ...item, _key: item.id };
+                        //     });
+                        //     await init(key, arrayData);
+                        // }
+                        // updateDates(id, {uploadedAt, mergedAt: Date.now()}).then(()=> {
+                        //     showMsg('Success', 'your data is successfully merged', 'success');
+                        //     resetForm();
+                        // }).catch(err => {
+                        //     showMsg('Failure', err.message, 'warning');
+                        // });
 
-    const uploadData = async (resetForm: ()=> void) => {
-        try{
-            const dataModel: BackupDataModel = await getDatetoStore();
-            updateStoredData(id, dataModel).then(()=> {
-                updateDates(id, {uploadedAt: Date.now(), mergedAt}).then(()=> {
-                    showMsg('Success', 'A new copy is uploaded', 'success');
-                    resetForm();
+                    }
+                    else {
+                        showMsg('Failure', 'Failed to reach data from the server', 'warning');
+                    }
                 }).catch(err => {
                     showMsg('Failure', err.message, 'warning');
                 });
-            }).catch(err => {
-                console.log(err.message)
-                showMsg('Failure', err.message, 'warning');
-            });
-        } 
-        catch(err){
-            showMsg('Failure', 'Failed to upload data', 'warning');
+            }
+            catch (err) {
+                showMsg('Failure', 'Failed to merge data', 'warning');
+            }
+        }
+    };
+
+    const uploadData = async (resetForm: () => void) => {
+        const result = window.confirm('Upload a new copy into the server, confirm?');
+        if (result) {
+            try {
+                const dataModel: BackupDataModel = await getDatetoStore();
+                updateStoredData(id, dataModel).then(() => {
+                    updateDates(id, { uploadedAt: Date.now(), mergedAt }).then(() => {
+                        showMsg('Success', 'A new copy is uploaded', 'success');
+                        resetForm();
+                    }).catch(err => {
+                        showMsg('Failure', err.message, 'warning');
+                    });
+                }).catch(err => {
+                    console.log(err.message)
+                    showMsg('Failure', err.message, 'warning');
+                });
+            }
+            catch (err) {
+                showMsg('Failure', 'Failed to upload data', 'warning');
+            }
         }
     };
 
@@ -138,10 +145,10 @@ const CodeSecret: React.FC<CodeSecretProps> = ({id, uploadedAt, mergedAt}) => {
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <div className="text-right mt-3">
-                                <Button size="sm" variant="dark" className="mr-2" onClick={()=> mergeData(handleReset)}
-                                disabled={values.code !== mySecret}>Merge Data</Button>
-                                <Button size="sm" variant="primary"  onClick={()=> uploadData(handleReset)}
-                                 disabled={values.code !== mySecret}>Upload data</Button>
+                                <Button size="sm" variant="dark" className="mr-2" onClick={() => mergeData(handleReset)}
+                                    disabled={values.code !== mySecret}>Merge Data</Button>
+                                <Button size="sm" variant="primary" onClick={() => uploadData(handleReset)}
+                                    disabled={values.code !== mySecret}>Upload data</Button>
                             </div>
                         </Form>
                     )

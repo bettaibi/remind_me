@@ -83,24 +83,12 @@ const useCache = (collection: string) => {
         }
     };
 
-    async function init (data: any): Promise<CustomResponse> {
+    async function init (key: string, value: any[]): Promise<void> {
         try{
-            await db.collection(Collections.VERBS).set(JSON.parse(data.verbs));
-            await db.collection(Collections.IDIOMS).set(JSON.parse(data.idioms));
-            await db.collection(Collections.ADJECTIVES).set(JSON.parse(data.adjectives));
-            await db.collection(Collections.PHRASALVERBS).set(JSON.parse(data.phrasalVerbs));
-            await db.collection(Collections.ADVERBS).set(JSON.parse(data.adverbs));
-            await db.collection(Collections.TENSES).set(JSON.parse(data.tenses));
-            await db.collection(Collections.TOPICS).set(JSON.parse(data.topics));
-            await db.collection(Collections.LINKERS).set(JSON.parse(data.linkers));
-            await db.collection(Collections.QA).set(JSON.parse(data.qa));
-            await db.collection(Collections.NOTES).set(JSON.parse(data.notes));
-            await db.collection(Collections.NOUNS).set(JSON.parse(data.nouns));
-
-            return toJson(true, 'Init the whole collections');
+            await db.collection(key.toUpperCase()).set(value, { keys: true });
         }
         catch(err){
-            return toJson(false, 'Failed to remove');
+            throw err;
         }
     };
 
@@ -154,6 +142,7 @@ const useCache = (collection: string) => {
             tenses: JSON.stringify(await db.collection(Collections.TENSES).get()),
             topics: JSON.stringify(await db.collection(Collections.TOPICS).get()),
             qa: JSON.stringify(await db.collection(Collections.QA).get()),
+            todos: JSON.stringify(await db.collection(Collections.TODOS).get()),
         };
     }
 
