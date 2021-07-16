@@ -1,10 +1,16 @@
-import React from 'react';
-import Skeleton from 'react-loading-skeleton';
+import React, {useEffect, useState} from 'react';
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 
 const WordsLoadingPage: React.FC = () => {
-    
+    const [mode, setMode] = useState<boolean>(false);
+
+    useEffect(() =>{
+        let matched = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setMode(matched);
+    }, []);
+
     return (
-        <React.Fragment>
+        <SkeletonTheme color={mode?'#474c52': ''} highlightColor={mode?'#444': ''}>
             <div className="bg-light border rounded p-3 mb-3">
                 <p>
                     <Skeleton count={2} /> 
@@ -29,7 +35,7 @@ const WordsLoadingPage: React.FC = () => {
                     <Skeleton style={{width: '100px', height: '30px'}}/> 
                 </div>
             </div>
-        </React.Fragment>
+        </SkeletonTheme>
     )
 }
 

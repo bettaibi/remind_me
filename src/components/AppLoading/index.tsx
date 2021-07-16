@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Skeleton from 'react-loading-skeleton';
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import WordsLoadingPage from '../../pages/Main/words/shared/WordsLoadingPage';
 
+let mode = sessionStorage.getItem('mode');
+console.log(mode)
+
 const AppLoading: React.FC = () => {
+    const [mode, setMode] = useState<boolean>(false);
+
+    useEffect(() =>{
+        let matched = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setMode(matched);
+    }, []);
+
     return (
-        <React.Fragment>
+        <SkeletonTheme color={mode?'#474c52': ''} highlightColor={mode?'#444': ''}>
             <div className="status-bar bg-primary text-light py-1">
                 <div className="container d-flex justify-content-between align-items-center h-100">
                     <Skeleton style={{ width: '200px' }} />
@@ -40,7 +50,7 @@ const AppLoading: React.FC = () => {
                     </Col>
                 </Row>
             </Container>
-        </React.Fragment>
+        </SkeletonTheme>
     )
 }
 

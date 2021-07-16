@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { Form, Alert } from 'react-bootstrap';
 import { VolumeUp } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import Skeleton from 'react-loading-skeleton';
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import { AppState, WordDefinitionForm, DefinitionForm, MeaningsForm } from '../../../model/app.model';
 import { updateDefinition } from '../../../store/actions/definition.actions';
 import axios from "axios";
@@ -171,9 +171,16 @@ const DefinitionResult: React.FC<DefinitionResultProps> = ({ data }) => {
 };
 
 const DefinitionSkeleton: React.FC = () => {
+    const [mode, setMode] = useState<boolean>(false);
+
+    useEffect(() =>{
+        let matched = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setMode(matched);
+    }, []);
 
     return (
-        <div className="border rounded p-3 my-3 bg-light">
+        <SkeletonTheme color={mode?'#474c52': ''} highlightColor={mode?'#444': ''}>
+             <div className="border rounded p-3 my-3 bg-light">
             <h5> <Skeleton /></h5>
             <span> <Skeleton /> </span>
             <h6> <Skeleton /></h6>
@@ -220,6 +227,7 @@ const DefinitionSkeleton: React.FC = () => {
                 </div>
             </div>
         </div>
+        </SkeletonTheme>
     )
 }
 

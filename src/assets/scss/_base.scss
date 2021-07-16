@@ -166,3 +166,6 @@ html, body{
 #zoom-template{
     z-index: 9999999999999999;
 }
+[data-testid = "canvas"]{
+    max-width: 100%;
+}

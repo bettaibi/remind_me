@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, Table, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { AppState } from '../../../model/app.model';
 import { setLatestConjugatedVerb } from '../../../store/actions/conjugation.actions';
-import Skeleton from 'react-loading-skeleton';
+import Skeleton, {SkeletonTheme} from 'react-loading-skeleton';
 import * as Yup from 'yup';
 import axios from 'axios';
 
@@ -118,9 +118,15 @@ const TenseDisplay: React.FC<TenseDisplayProps> = ({payload, str, color, variant
 
 const LoadingPage: React.FC = () =>{
     const arr = [12321,9955,77878,22125];
+    const [mode, setMode] = useState<boolean>(false);
+
+    useEffect(() =>{
+        let matched = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setMode(matched);
+    }, []);
 
     return(
-        <React.Fragment>
+        <SkeletonTheme color={mode?'#474c52': ''} highlightColor={mode?'#444': ''}>
             <div className="text-center border rounded mb-3 mt-3 p-3 bg-light">
                 <span style={{marginRight: '1rem'}}> <Skeleton /></span>
                 <span> <Skeleton /> </span>
@@ -159,7 +165,7 @@ const LoadingPage: React.FC = () =>{
                 </div>
             </div>
 
-        </React.Fragment>
+        </SkeletonTheme>
     )
 };
 
